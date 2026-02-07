@@ -1,409 +1,109 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Informasi Sekolah</title>
-    <!-- Library CSS (Tailwind, ChartJS, FontAwesome) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
-        .bg-portal { background: linear-gradient(to right, #0f172a, #1e293b); } /* Warna Header Gelap Elegan */
-        .hidden-section { display: none !important; }
-        
-        /* Animasi Loading */
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #3b82f6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        /* Toast Notification */
-        .toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 4px; padding: 16px; position: fixed; z-index: 999; left: 50%; bottom: 30px; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+const SPREADSHEET_ID = '1-EnWGBXyeWoVOxRRTSvguzgxdZ-KVCbjL8gitpGglrE'; // Pastikan ID Benar
 
-        /* Helpers */
-        .poster-card:hover { transform: scale(1.02); transition: transform 0.3s; }
-        .whitespace-pre-line { white-space: pre-line; }
-    </style>
-</head>
-<body class="flex flex-col min-h-screen text-gray-800">
+function getDb() { return SpreadsheetApp.openById(SPREADSHEET_ID); }
+function responseJSON(data) { return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON); }
 
-    <!-- KONFIGURASI API (SUDAH DIPASANG) -->
-    <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec";
-    </script>
+// FUNGSI AMAN (Mencegah Error)
+function getSafeData(sheetName, numCols) {
+  try {
+    const ss = getDb();
+    const sheet = ss.getSheetByName(sheetName);
+    if (!sheet) return [];
+    if (sheet.getLastRow() < 2) return [];
+    return sheet.getRange(2, 1, sheet.getLastRow() - 1, numCols).getValues();
+  } catch (e) { return []; }
+}
 
-    <!-- HEADER -->
-    <header class="bg-portal text-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <img id="header-logo" src="" class="h-10 w-10 bg-white rounded-full p-1 hidden shadow">
-                <div>
-                    <h1 class="text-xl font-bold leading-none" id="header-nama">MEMUAT...</h1>
-                    <p class="text-xs text-gray-400 tracking-widest">PORTAL RESMI</p>
-                </div>
-            </div>
-            <!-- Login Icon -->
-            <button onclick="navigate('login')" class="text-gray-400 hover:text-white p-2"><i class="fas fa-lock text-sm"></i></button>
-        </div>
-        
-        <!-- MENU NAVIGASI -->
-        <div class="bg-white/5 border-t border-white/10">
-            <div class="container mx-auto px-4 flex justify-center space-x-2 py-2 overflow-x-auto text-sm font-medium no-scrollbar">
-                <button onclick="navigate('home')" class="px-3 py-1 rounded hover:bg-white/10 whitespace-nowrap"><i class="fas fa-home"></i> Home</button>
-                <button onclick="navigate('profil')" class="px-3 py-1 rounded hover:bg-white/10 whitespace-nowrap"><i class="fas fa-university"></i> Profil</button>
-                <button onclick="navigate('guru')" class="px-3 py-1 rounded hover:bg-white/10 whitespace-nowrap"><i class="fas fa-chalkboard-teacher"></i> Guru</button>
-                <button onclick="navigate('spmb')" class="px-3 py-1 rounded bg-yellow-600 hover:bg-yellow-500 text-white whitespace-nowrap"><i class="fas fa-user-plus"></i> SPMB</button>
-                <button onclick="navigate('download')" class="px-3 py-1 rounded hover:bg-white/10 whitespace-nowrap"><i class="fas fa-download"></i> Download</button>
-            </div>
-        </div>
-    </header>
+// --- API GET (BACA DATA) ---
+function doGet(e) {
+  const op = e.parameter.action;
+  
+  if (op === 'getPublicData') {
+    const config = {};
+    const dataConfig = getSafeData('Config', 2);
+    dataConfig.forEach(r => { if(r[0]) config[r[0]] = r[1]; });
 
-    <!-- LOADING BAR -->
-    <div id="loading-bar" class="bg-yellow-100 text-yellow-800 text-xs text-center py-2 font-bold transition-all">
-        <span class="loader align-middle mr-2"></span> Menghubungkan ke Server Sekolah...
-    </div>
+    // Data Guru (Public)
+    const dataGuru = getSafeData('Guru', 8).map(r => ({ nama: r[3], nip: r[4], mapel: r[5], foto: r[7] }));
+    
+    // Data Siswa
+    const dataSiswa = getSafeData('Siswa', 3);
+    let l=0, p=0; dataSiswa.forEach(r => { l+=Number(r[1]||0); p+=Number(r[2]||0); });
 
-    <!-- MAIN CONTENT -->
-    <main class="flex-grow container mx-auto px-4 py-6">
-        
-        <!-- 1. HOME -->
-        <section id="home" class="page-section">
-            <div class="relative h-64 md:h-80 rounded-xl overflow-hidden shadow-lg mb-8 bg-gray-300">
-                <img id="home-banner" src="" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-black/40 flex items-end p-6">
-                    <h2 class="text-3xl md:text-4xl text-white font-bold drop-shadow-md" id="banner-title">Website Resmi</h2>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-3 gap-4 mb-8 text-center text-white">
-                <div class="bg-blue-600 p-4 rounded-lg shadow"><h3 class="text-2xl font-bold" id="stat-siswa">0</h3><p class="text-xs">SISWA</p></div>
-                <div class="bg-green-600 p-4 rounded-lg shadow"><h3 class="text-2xl font-bold" id="stat-guru">0</h3><p class="text-xs">GURU</p></div>
-                <div class="bg-purple-600 p-4 rounded-lg shadow"><h3 class="text-2xl font-bold" id="stat-kelas">0</h3><p class="text-xs">KELAS</p></div>
-            </div>
+    // Data Galeri (Foto, Video, Musik)
+    const dataGaleri = getSafeData('Galeri', 3).map(r => ({ tipe: r[0], judul: r[1], link: r[2] }));
 
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h3 class="font-bold border-b pb-2 mb-2"><i class="fas fa-bullhorn text-yellow-500"></i> Berita Terbaru</h3>
-                    <div id="list-berita" class="space-y-3 text-sm"></div>
-                </div>
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h3 class="font-bold border-b pb-2 mb-2"><i class="fas fa-chart-bar text-blue-500"></i> Statistik Siswa</h3>
-                    <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-gray-100"><tr><th class="p-2 text-left">Kelas</th><th>L</th><th>P</th><th>Tot</th></tr></thead><tbody id="tbl-siswa"></tbody></table></div>
-                </div>
-            </div>
-        </section>
+    // Berita & DL
+    const berita = getSafeData('Berita', 4).reverse().slice(0, 3);
+    const download = getSafeData('Downloads', 3);
 
-        <!-- 2. PROFIL (VISI MISI & POSTER) -->
-        <section id="profil" class="hidden-section page-section">
-            <h2 class="text-2xl font-bold mb-6 text-center text-blue-800">Profil Sekolah</h2>
-            
-            <div class="bg-white p-8 rounded-xl shadow-lg mb-8 text-center">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">VISI</h3>
-                <p id="view-visi" class="text-lg text-gray-600 italic whitespace-pre-line">...</p>
-                <hr class="my-6">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">MISI</h3>
-                <div id="view-misi" class="text-gray-700 leading-relaxed whitespace-pre-line">...</div>
-            </div>
+    return responseJSON({
+      status: 'success', config: config,
+      stats: { siswa: l+p, guru: dataGuru.length, kelas: dataSiswa.length },
+      guruList: dataGuru, siswaDetail: dataSiswa,
+      galeri: dataGaleri, // Data Multimedia
+      berita: berita, downloads: download
+    });
+  }
+  return responseJSON({status:'error'});
+}
 
-            <!-- POSTER EDUKASI -->
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-white p-4 rounded shadow text-center poster-card">
-                    <h3 class="font-bold text-gray-700 mb-2">7 Kebiasaan Anak Hebat</h3>
-                    <img id="img-7kebiasaan" src="" class="w-full h-auto rounded" onerror="this.style.display='none'">
-                </div>
-                <div class="bg-white p-4 rounded shadow text-center poster-card">
-                    <h3 class="font-bold text-gray-700 mb-2">8 Dimensi Profil Lulusan</h3>
-                    <img id="img-8dimensi" src="" class="w-full h-auto rounded" onerror="this.style.display='none'">
-                </div>
-            </div>
-        </section>
+// --- API POST (SIMPAN DATA) ---
+function doPost(e) {
+  const params = JSON.parse(e.postData.contents);
+  const op = params.action;
+  const db = getDb();
 
-        <!-- 3. GURU -->
-        <section id="guru" class="hidden-section page-section">
-            <h2 class="text-2xl font-bold mb-6 text-center text-blue-800">Data Guru & Staf</h2>
-            <div id="grid-guru" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
-        </section>
+  // LOGIN
+  if (op === 'login') {
+    let adminPass = 'admin123';
+    const conf = getSafeData('Config', 2);
+    conf.forEach(r => { if(r[0]==='AdminPassword') adminPass = String(r[1]); });
+    
+    if(params.user === 'admin' && String(params.pass) === adminPass) return responseJSON({ status: 'success', role: 'admin' });
+    
+    // Cek Guru
+    const guru = getSafeData('Guru', 8);
+    for(let g of guru) {
+      if(g[1] == params.user && g[2] == params.pass) return responseJSON({ status: 'success', role: 'guru', data: {nama:g[3]} });
+    }
+    return responseJSON({ status: 'error', message: 'Gagal Login' });
+  }
 
-        <!-- 4. DOWNLOAD -->
-        <section id="download" class="hidden-section page-section">
-            <h2 class="text-2xl font-bold mb-6 text-center text-blue-800">Download Area</h2>
-            <div class="bg-white rounded shadow overflow-hidden">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-800 text-white"><tr><th class="p-3 text-left">File</th><th class="p-3">Kategori</th><th class="p-3">Aksi</th></tr></thead>
-                    <tbody id="tbl-dl"></tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- 5. SPMB -->
-        <section id="spmb" class="hidden-section page-section max-w-3xl mx-auto">
-            <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
-                <h2 class="text-2xl font-bold text-center mb-4">SPMB Online</h2>
-                <div id="spmb-status-msg" class="text-center font-bold mb-4"></div>
-                
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-blue-50 p-4 rounded text-sm text-gray-700">
-                        <h4 class="font-bold text-blue-800 mb-2">Informasi</h4>
-                        <div id="spmb-info-content" class="whitespace-pre-line"></div>
-                        <a id="btn-wa" href="#" target="_blank" class="block mt-4 text-center bg-green-600 text-white py-2 rounded font-bold hover:bg-green-700 transition">Chat Panitia</a>
-                    </div>
-                    <div>
-                        <div id="spmb-tutup" class="hidden text-center text-red-500 font-bold py-10 bg-red-50 rounded">PENDAFTARAN DITUTUP</div>
-                        <form id="form-spmb" onsubmit="kirimSPMB(event)" class="hidden space-y-3">
-                            <input type="text" name="nama" placeholder="Nama Lengkap" class="w-full border p-2 rounded" required>
-                            <input type="number" name="nik" placeholder="NIK" class="w-full border p-2 rounded" required>
-                            <input type="text" name="asal" placeholder="Asal Sekolah" class="w-full border p-2 rounded" required>
-                            <input type="text" name="ttl" placeholder="TTL" class="w-full border p-2 rounded" required>
-                            <input type="text" name="ortu" placeholder="Nama Ortu" class="w-full border p-2 rounded" required>
-                            <input type="text" name="hp" placeholder="No HP/WA" class="w-full border p-2 rounded" required>
-                            <button type="submit" id="btn-spmb-submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded">Kirim Pendaftaran</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. LOGIN -->
-        <section id="login" class="hidden-section page-section flex justify-center py-20">
-            <div class="bg-white p-8 rounded shadow-xl w-full max-w-sm text-center">
-                <h2 class="font-bold text-xl mb-6">Login Admin</h2>
-                <form onsubmit="doLogin(event)">
-                    <input type="text" id="u" class="w-full border p-2 mb-2 rounded" placeholder="Username" required>
-                    <input type="password" id="p" class="w-full border p-2 mb-4 rounded" placeholder="Password" required>
-                    <button type="submit" id="btn-login" class="w-full bg-blue-800 text-white font-bold py-2 rounded">MASUK</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- 7. ADMIN PANEL -->
-        <section id="admin" class="hidden-section page-section">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Panel Admin</h2>
-                <button onclick="location.reload()" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Keluar</button>
-            </div>
-            
-            <div class="bg-white p-6 rounded shadow mb-6">
-                <h3 class="font-bold mb-4 border-b pb-2 text-blue-600">Konfigurasi Utama & Profil</h3>
-                <form onsubmit="saveConfig(event)" class="grid md:grid-cols-2 gap-4 text-sm">
-                    <input type="text" id="cfg-nama" placeholder="Nama Sekolah" class="border p-2 rounded">
-                    <input type="text" id="cfg-logo" placeholder="Logo URL" class="border p-2 rounded">
-                    <input type="text" id="cfg-banner" placeholder="Banner URL" class="border p-2 rounded">
-                    <input type="text" id="cfg-alamat" placeholder="Alamat" class="border p-2 rounded">
-                    <textarea id="cfg-running" placeholder="Running Text" class="border p-2 rounded md:col-span-2"></textarea>
-                    
-                    <div class="md:col-span-2 font-bold mt-2 text-blue-600">Setting SPMB</div>
-                    <select id="cfg-spmb-stat" class="border p-2 rounded"><option value="Tutup">Tutup</option><option value="Buka">Buka</option></select>
-                    <textarea id="cfg-spmb-info" placeholder="Info SPMB" class="border p-2 rounded md:col-span-2 h-20"></textarea>
-                    
-                    <div class="md:col-span-2 font-bold mt-2 text-blue-600">Visi & Misi</div>
-                    <textarea id="cfg-visi" placeholder="Visi" class="border p-2 rounded md:col-span-2"></textarea>
-                    <textarea id="cfg-misi" placeholder="Misi" class="border p-2 rounded md:col-span-2 h-24"></textarea>
-
-                    <div class="md:col-span-2 font-bold mt-2 text-blue-600">Link Gambar Profil</div>
-                    <input type="text" id="cfg-url-7k" placeholder="URL Poster 7 Kebiasaan" class="border p-2 rounded">
-                    <input type="text" id="cfg-url-8d" placeholder="URL Poster 8 Dimensi" class="border p-2 rounded">
-
-                    <button type="submit" id="btn-save-cfg" class="bg-green-600 text-white py-2 rounded font-bold md:col-span-2 hover:bg-green-700">SIMPAN SEMUA PERUBAHAN</button>
-                </form>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-gray-900 text-gray-400 py-8 text-sm mt-auto text-center">
-        <h3 class="text-white font-bold mb-2" id="foot-nama">SEKOLAH</h3>
-        <p id="foot-alamat">...</p>
-        <p class="mt-4 text-xs">&copy; 2026 Sistem Informasi Sekolah.</p>
-    </footer>
-
-    <!-- TOAST ALERT -->
-    <div id="toast" class="toast">Pesan...</div>
-
-    <!-- LOGIKA APP -->
-    <script>
-        // --- 1. KOMUNIKASI DATA (FETCH API) ---
-        async function fetchAPI(action, method = 'GET', data = null) {
-            try {
-                let url = `${API_URL}?action=${action}`;
-                let options = { method: method };
-                if (method === 'POST') {
-                    options.body = JSON.stringify({ action: action, ...data });
-                    options.headers = { "Content-Type": "text/plain;charset=utf-8" };
-                }
-                const response = await fetch(url, options);
-                const json = await response.json();
-                return json;
-            } catch (error) {
-                console.error("API Error:", error);
-                showToast("Gagal koneksi server!");
-                document.getElementById('loading-bar').innerText = "Gagal Terhubung. Coba Refresh.";
-                document.getElementById('loading-bar').className = "bg-red-500 text-white text-center py-2 font-bold";
-                return null;
-            }
+  // SIMPAN CONFIG (Termasuk Sosmed)
+  if (op === 'saveConfig') {
+    const sheet = db.getSheetByName('Config');
+    const data = sheet.getDataRange().getValues();
+    for (const [key, val] of Object.entries(params.data)) {
+        let found = false;
+        for(let i=0; i<data.length; i++) {
+            if(data[i][0] === key) { sheet.getRange(i+1, 2).setValue(val); found = true; break; }
         }
+        if(!found) sheet.appendRow([key, val]);
+    }
+    return responseJSON({ status: 'success' });
+  }
 
-        // --- 2. LOGIKA UTAMA ---
-        document.addEventListener('DOMContentLoaded', initApp);
+  // SIMPAN MULTIMEDIA (GALERI)
+  if (op === 'saveGaleri') {
+    db.getSheetByName('Galeri').appendRow([params.data.tipe, params.data.judul, params.data.link]);
+    return responseJSON({ status: 'success' });
+  }
+  
+  if (op === 'deleteGaleri') {
+    // Hapus berdasarkan Link (Unik)
+    const sheet = db.getSheetByName('Galeri');
+    const data = sheet.getDataRange().getValues();
+    for(let i=1; i<data.length; i++) {
+        if(data[i][2] == params.link) { sheet.deleteRow(i+1); return responseJSON({ status: 'success' }); }
+    }
+  }
 
-        function navigate(id) {
-            document.querySelectorAll('.page-section').forEach(e => e.classList.add('hidden-section'));
-            document.getElementById(id).classList.remove('hidden-section');
-            window.scrollTo(0,0);
-        }
+  // FITUR LAIN (Guru, Siswa, SPMB, dll - Standar)
+  if (op === 'submitSPMB') {
+      db.getSheetByName('PPDB').appendRow([new Date(), params.data.nama, params.data.nik, params.data.ttl, params.data.asal, params.data.ortu, params.data.hp, 'Menunggu']);
+      return responseJSON({ status: 'success' });
+  }
 
-        function showToast(msg) {
-            const x = document.getElementById("toast");
-            x.innerText = msg; x.className = "toast show";
-            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-        }
-
-        async function initApp() {
-            const res = await fetchAPI('getPublicData');
-            
-            if (res && res.status === 'success') {
-                document.getElementById('loading-bar').style.display = 'none'; // Sembunyikan loading jika sukses
-                const c = res.config;
-                
-                // --- RENDER CONFIG ---
-                const safeTxt = (id, txt) => { if(document.getElementById(id)) document.getElementById(id).innerText = txt || '-'; };
-                const safeSrc = (id, src) => { if(document.getElementById(id) && src) { document.getElementById(id).src = src; document.getElementById(id).classList.remove('hidden'); } };
-                const safeVal = (id, val) => { if(document.getElementById(id)) document.getElementById(id).value = val || ''; };
-
-                safeTxt('header-nama', c.NamaSekolah);
-                safeTxt('banner-title', c.NamaSekolah);
-                safeTxt('foot-nama', c.NamaSekolah);
-                safeTxt('foot-alamat', c.Alamat);
-                safeSrc('header-logo', c.LogoURL);
-                safeSrc('home-banner', c.BannerURL);
-                
-                safeTxt('view-visi', c.Visi);
-                safeTxt('view-misi', c.Misi);
-                safeSrc('img-7kebiasaan', c.Url_7Kebiasaan);
-                safeSrc('img-8dimensi', c.Url_8Dimensi);
-
-                // --- RENDER SPMB ---
-                document.getElementById('spmb-info-content').innerText = c.SPMB_Info || '-';
-                if (c.SPMB_Status === 'Buka') {
-                    document.getElementById('spmb-status-msg').innerText = "PENDAFTARAN DIBUKA";
-                    document.getElementById('spmb-status-msg').className = "text-center font-bold mb-4 text-green-600";
-                    document.getElementById('form-spmb').classList.remove('hidden');
-                    document.getElementById('spmb-tutup').classList.add('hidden');
-                } else {
-                    document.getElementById('spmb-status-msg').innerText = "PENDAFTARAN DITUTUP";
-                    document.getElementById('spmb-status-msg').className = "text-center font-bold mb-4 text-red-600";
-                    document.getElementById('form-spmb').classList.add('hidden');
-                    document.getElementById('spmb-tutup').classList.remove('hidden');
-                }
-                if(c.NoWaPPDB) document.getElementById('btn-wa').href = `https://wa.me/${c.NoWaPPDB}`;
-
-                // --- RENDER STATS & TABLE ---
-                safeTxt('stat-siswa', res.stats.siswa);
-                safeTxt('stat-guru', res.stats.guru);
-                safeTxt('stat-kelas', res.stats.kelas);
-
-                const tSiswa = document.getElementById('tbl-siswa'); tSiswa.innerHTML = '';
-                res.siswaDetail.forEach(r => tSiswa.innerHTML += `<tr class="border-b"><td class="p-2">${r[0]}</td><td class="text-center">${r[1]}</td><td class="text-center">${r[2]}</td><td class="text-center font-bold">${Number(r[1])+Number(r[2])}</td></tr>`);
-
-                const tBerita = document.getElementById('list-berita'); tBerita.innerHTML = '';
-                if(res.berita.length === 0) tBerita.innerHTML = '<div class="text-gray-500">Belum ada berita.</div>';
-                else res.berita.forEach(b => tBerita.innerHTML += `<div class="border-l-4 border-yellow-500 pl-2 mb-2"><div class="text-xs text-gray-500">${new Date(b[1]).toLocaleDateString()}</div><div class="font-bold text-sm">${b[0]}</div></div>`);
-
-                const tGuru = document.getElementById('grid-guru'); tGuru.innerHTML = '';
-                res.guruList.forEach(g => {
-                    tGuru.innerHTML += `
-                    <div class="bg-white p-4 rounded shadow text-center hover:shadow-lg transition">
-                        <img src="${g.foto||'https://via.placeholder.com/150'}" class="w-20 h-20 mx-auto rounded-full object-cover mb-2 border-2 border-blue-100">
-                        <h4 class="font-bold text-sm text-gray-800">${g.nama}</h4>
-                        <p class="text-xs text-gray-500 font-mono mt-1">NIP. ${g.nip||'-'}</p>
-                        <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded mt-2">${g.mapel}</span>
-                    </div>`;
-                });
-
-                const tDL = document.getElementById('tbl-dl'); tDL.innerHTML = '';
-                res.downloads.forEach(d => tDL.innerHTML += `<tr class="border-b"><td class="p-2 font-bold">${d[0]}</td><td class="text-xs text-gray-500">${d[2]}</td><td><a href="${d[1]}" target="_blank" class="text-blue-600 font-bold text-xs border border-blue-600 px-2 py-1 rounded hover:bg-blue-600 hover:text-white transition">Unduh</a></td></tr>`);
-
-                // --- ISI FORM ADMIN ---
-                safeVal('cfg-nama', c.NamaSekolah); safeVal('cfg-logo', c.LogoURL); safeVal('cfg-banner', c.BannerURL);
-                safeVal('cfg-alamat', c.Alamat); safeVal('cfg-running', c.RunningText);
-                safeVal('cfg-spmb-stat', c.SPMB_Status || 'Tutup'); safeVal('cfg-spmb-info', c.SPMB_Info);
-                safeVal('cfg-visi', c.Visi); safeVal('cfg-misi', c.Misi);
-                safeVal('cfg-url-7k', c.Url_7Kebiasaan); safeVal('cfg-url-8d', c.Url_8Dimensi);
-            }
-        }
-
-        // --- 3. AKSI USER ---
-        async function doLogin(e) {
-            e.preventDefault();
-            const u = document.getElementById('u').value;
-            const p = document.getElementById('p').value;
-            document.getElementById('btn-login').innerText = '...';
-            
-            const res = await fetchAPI('login', 'POST', { user: u, pass: p });
-            document.getElementById('btn-login').innerText = 'MASUK';
-            
-            if (res && res.status === 'success') {
-                navigate('admin');
-            } else {
-                showToast("Login Gagal: " + (res?.message || 'Error'));
-            }
-        }
-
-        async function saveConfig(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-save-cfg');
-            btn.innerText = 'Menyimpan...'; btn.disabled = true;
-            
-            const data = {
-                NamaSekolah: document.getElementById('cfg-nama').value,
-                LogoURL: document.getElementById('cfg-logo').value,
-                BannerURL: document.getElementById('cfg-banner').value,
-                Alamat: document.getElementById('cfg-alamat').value,
-                RunningText: document.getElementById('cfg-running').value,
-                SPMB_Status: document.getElementById('cfg-spmb-stat').value,
-                SPMB_Info: document.getElementById('cfg-spmb-info').value,
-                Visi: document.getElementById('cfg-visi').value,
-                Misi: document.getElementById('cfg-misi').value,
-                Url_7Kebiasaan: document.getElementById('cfg-url-7k').value,
-                Url_8Dimensi: document.getElementById('cfg-url-8d').value
-            };
-            
-            const res = await fetchAPI('saveConfig', 'POST', { data: data });
-            btn.innerText = 'SIMPAN SEMUA'; btn.disabled = false;
-            
-            if (res && res.status === 'success') {
-                showToast("Berhasil Disimpan!");
-                setTimeout(() => location.reload(), 1500);
-            } else {
-                showToast("Gagal menyimpan.");
-            }
-        }
-
-        async function kirimSPMB(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-spmb-submit');
-            btn.innerText = 'Mengirim...'; btn.disabled = true;
-            
-            const f = e.target;
-            const data = {
-                nama: f.nama.value, nik: f.nik.value, asal: f.asal.value,
-                ttl: f.ttl.value, ortu: f.ortu.value, hp: f.hp.value
-            };
-            
-            const res = await fetchAPI('submitSPMB', 'POST', { data: data });
-            btn.innerText = 'Kirim Pendaftaran'; btn.disabled = false;
-            
-            if (res && res.status === 'success') {
-                showToast("Pendaftaran Terkirim!");
-                f.reset();
-            } else {
-                showToast("Gagal mengirim.");
-            }
-        }
-    </script>
-</body>
-</html>
+  return responseJSON({ status: 'success' });
+}
