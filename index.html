@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Informasi Sekolah</title>
-    <!-- Library CSS -->
+    <!-- Library -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -23,325 +23,214 @@
 
     <style>
         body { background-color: #f8fafc; scroll-behavior: smooth; }
-        
-        /* Glassmorphism Header */
-        .glass-nav {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
+        .glass-nav { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
         .hidden-section { display: none !important; }
-        
-        /* Effects */
         .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .poster-card:hover { transform: scale(1.02); transition: transform 0.3s; }
-
-        /* Loader & Scrollbar */
         .loader { width: 48px; height: 48px; border: 5px solid #FFF; border-bottom-color: #3b82f6; border-radius: 50%; display: inline-block; animation: rotation 1s linear infinite; }
         @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
-
-        /* Toast & Audio */
-        .toast { visibility: hidden; min-width: 250px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 9999; left: 50%; transform: translateX(-50%); bottom: 30px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); font-weight: 600; }
+        .toast { visibility: hidden; min-width: 250px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 9999; left: 50%; transform: translateX(-50%); bottom: 30px; font-weight: 600; }
         .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-        audio { height: 30px; width: 100%; border-radius: 20px; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-gray-800 antialiased selection:bg-blue-100 selection:text-blue-900">
 
-    <!-- KONFIGURASI API (SUDAH DIPASANG) -->
+    <!-- KONFIGURASI API (WAJIB GANTI) -->
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec";
+        const API_URL = "PASTE_LINK_API_BARU_DISINI"; 
     </script>
 
     <!-- NAVBAR -->
     <nav class="glass-nav fixed w-full z-50 transition-all duration-300">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
                 <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
-                    <div class="relative">
-                        <div class="absolute inset-0 bg-blue-500 rounded-full blur opacity-20 group-hover:opacity-40 transition"></div>
-                        <img id="header-logo" src="" class="h-10 w-10 relative z-10 hidden object-contain">
-                    </div>
+                    <img id="header-logo" src="" class="h-10 w-10 hidden object-contain">
                     <div>
-                        <h1 class="text-white font-bold text-lg leading-tight tracking-tight" id="header-nama">LOADING...</h1>
+                        <h1 class="text-white font-bold text-lg leading-tight" id="header-nama">LOADING...</h1>
                         <p class="text-blue-400 text-[10px] font-bold tracking-widest uppercase">Portal Digital</p>
                     </div>
                 </div>
-
-                <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-1">
-                    <button onclick="navigate('home')" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Beranda</button>
-                    <button onclick="navigate('profil')" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Profil</button>
-                    <button onclick="navigate('galeri')" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Galeri</button>
-                    <button onclick="navigate('guru')" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Guru</button>
-                    <button onclick="navigate('download')" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Unduhan</button>
-                    <button onclick="navigate('spmb')" class="ml-2 px-5 py-2 text-sm font-bold bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full shadow-lg hover:shadow-blue-500/30 hover:scale-105 transition transform">PPDB Online</button>
-                    
-                    <!-- TOMBOL LOGIN MENU -->
-                    <button onclick="navigate('login')" class="ml-2 px-4 py-2 text-sm font-bold text-yellow-400 border border-yellow-400/30 rounded-lg hover:bg-yellow-400/10 transition flex items-center gap-2">
-                        <i class="fas fa-lock"></i> Login
-                    </button>
+                    <button onclick="navigate('home')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg">Beranda</button>
+                    <button onclick="navigate('profil')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg">Profil</button>
+                    <button onclick="navigate('guru')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg">Guru</button>
+                    <button onclick="navigate('galeri')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg">Galeri</button>
+                    <button onclick="navigate('download')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg">Unduhan</button>
+                    <button onclick="navigate('spmb')" class="ml-2 px-4 py-2 text-sm font-bold bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full shadow-lg hover:scale-105 transition">PPDB</button>
+                    <button onclick="navigate('login')" class="ml-2 px-3 py-2 text-sm font-bold text-yellow-400 border border-yellow-400/30 rounded-lg hover:bg-yellow-400/10 flex items-center gap-2"><i class="fas fa-lock"></i> Login</button>
                 </div>
-
-                <!-- Mobile Menu Button -->
-                <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden text-white p-2">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-            </div>
-        </div>
-        <!-- Mobile Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-primary border-t border-gray-800">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <button onclick="navigate('home')" class="block w-full text-left px-3 py-2 text-gray-300 hover:bg-white/10 rounded-md">Beranda</button>
-                <button onclick="navigate('profil')" class="block w-full text-left px-3 py-2 text-gray-300 hover:bg-white/10 rounded-md">Profil</button>
-                <button onclick="navigate('guru')" class="block w-full text-left px-3 py-2 text-gray-300 hover:bg-white/10 rounded-md">Guru</button>
-                <button onclick="navigate('galeri')" class="block w-full text-left px-3 py-2 text-gray-300 hover:bg-white/10 rounded-md">Galeri</button>
-                <button onclick="navigate('spmb')" class="block w-full text-left px-3 py-2 text-yellow-400 font-bold bg-white/5 rounded-md">PPDB Online</button>
-                <button onclick="navigate('login')" class="block w-full text-left px-3 py-2 text-white font-bold bg-blue-600 rounded-md mt-2">LOGIN ADMIN</button>
             </div>
         </div>
     </nav>
 
-    <!-- LOADING OVERLAY -->
+    <!-- LOADING -->
     <div id="loading-overlay" class="fixed inset-0 bg-primary z-[60] flex flex-col items-center justify-center transition-opacity duration-500">
         <span class="loader mb-4"></span>
         <p class="text-white font-medium animate-pulse">Menghubungkan ke Server Sekolah...</p>
     </div>
 
-    <!-- MAIN CONTENT -->
+    <!-- MAIN -->
     <main class="flex-grow pt-20 pb-10">
         
-        <!-- SECTION: HOME -->
+        <!-- HOME -->
         <section id="home" class="page-section container mx-auto px-4">
-            
-            <!-- Hero Banner -->
-            <div class="relative h-[300px] md:h-[500px] rounded-3xl overflow-hidden shadow-2xl mb-12 group bg-gray-200">
+            <div class="relative h-[300px] md:h-[500px] rounded-3xl overflow-hidden shadow-2xl mb-12 bg-gray-200">
+                <img id="home-banner" src="" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
-                <img id="home-banner" src="" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105" alt="Banner Sekolah">
-                
                 <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 z-20">
-                    <span class="inline-block px-3 py-1 bg-blue-600/90 backdrop-blur text-white text-xs font-bold rounded-full mb-3 shadow-lg">RESMI</span>
-                    <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" id="banner-title">Selamat Datang</h2>
-                    <div class="bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-xl max-w-2xl">
-                        <p class="text-gray-100 font-medium text-sm md:text-base" id="running-text">Memuat pengumuman...</p>
-                    </div>
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4" id="banner-title">Selamat Datang</h2>
+                    <div class="bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-xl max-w-2xl"><p class="text-gray-100 font-medium text-sm md:text-base" id="running-text">...</p></div>
                 </div>
             </div>
-
-            <!-- Stats Grid -->
+            <!-- Stats -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 -mt-16 md:-mt-24 relative z-30 px-2 md:px-6">
-                <div class="bg-white p-6 rounded-2xl shadow-xl card-hover border border-gray-100 flex items-center justify-between">
-                    <div><p class="text-gray-500 text-xs font-bold uppercase tracking-wider">Total Siswa</p><h3 class="text-4xl font-extrabold text-gray-800 mt-1" id="stat-siswa">0</h3></div>
-                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 text-2xl shadow-sm"><i class="fas fa-user-graduate"></i></div>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-xl card-hover border border-gray-100 flex items-center justify-between">
-                    <div><p class="text-gray-500 text-xs font-bold uppercase tracking-wider">Guru & Staf</p><h3 class="text-4xl font-extrabold text-gray-800 mt-1" id="stat-guru">0</h3></div>
-                    <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-green-600 text-2xl shadow-sm"><i class="fas fa-chalkboard-teacher"></i></div>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-xl card-hover border border-gray-100 flex items-center justify-between">
-                    <div><p class="text-gray-500 text-xs font-bold uppercase tracking-wider">Rombel Kelas</p><h3 class="text-4xl font-extrabold text-gray-800 mt-1" id="stat-kelas">0</h3></div>
-                    <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600 text-2xl shadow-sm"><i class="fas fa-school"></i></div>
-                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-xl card-hover border border-gray-100 flex justify-between"><div><p class="text-gray-500 text-xs font-bold uppercase">Siswa</p><h3 class="text-4xl font-extrabold text-gray-800" id="stat-siswa">0</h3></div><i class="fas fa-user-graduate text-3xl text-blue-200"></i></div>
+                <div class="bg-white p-6 rounded-2xl shadow-xl card-hover border border-gray-100 flex justify-between"><div><p class="text-gray-500 text-xs font-bold uppercase">Guru</p><h3 class="text-4xl font-extrabold text-gray-800" id="stat-guru">0</h3></div><i class="fas fa-chalkboard-teacher text-3xl text-green-200"></i></div>
+                <div class="bg-white p-6 rounded-2xl shadow-xl card-hover border border-gray-100 flex justify-between"><div><p class="text-gray-500 text-xs font-bold uppercase">Kelas</p><h3 class="text-4xl font-extrabold text-gray-800" id="stat-kelas">0</h3></div><i class="fas fa-school text-3xl text-purple-200"></i></div>
             </div>
-
-            <!-- Music Player -->
-            <div id="music-section" class="hidden bg-white/90 backdrop-blur border border-gray-200 p-4 rounded-2xl shadow-lg mb-10 flex items-center gap-4 max-w-xl mx-auto">
-                <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center text-white shrink-0 animate-pulse"><i class="fas fa-music"></i></div>
-                <div class="flex-grow min-w-0"><p class="text-xs font-bold text-gray-500 uppercase">Sedang Memutar</p><h4 class="font-bold text-gray-800 text-sm truncate" id="music-title">Mars Sekolah</h4></div>
-                <audio id="audio-player" controls class="h-8 w-32"></audio>
-            </div>
-
-            <!-- Content Grid -->
+            <!-- Content -->
             <div class="grid md:grid-cols-12 gap-8">
-                <!-- Berita -->
                 <div class="md:col-span-8 space-y-6">
-                    <div class="flex items-center justify-between mb-2">
-                        <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2"><span class="w-2 h-8 bg-blue-600 rounded-full"></span> Berita Terbaru</h3>
-                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 border-b pb-2">Berita Terbaru</h3>
                     <div id="list-berita" class="space-y-4"></div>
                 </div>
-
-                <!-- Sidebar -->
                 <div class="md:col-span-4 space-y-6">
                     <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                        <h4 class="font-bold text-gray-800 mb-4 border-b pb-2">Poster Edukasi</h4>
+                        <h4 class="font-bold text-gray-800 mb-4">Poster Edukasi</h4>
                         <div class="space-y-4">
-                            <img id="img-7kebiasaan" src="" class="w-full rounded-lg shadow-md cursor-pointer hover:opacity-90 transition poster-card" onclick="window.open(this.src)">
-                            <img id="img-8dimensi" src="" class="w-full rounded-lg shadow-md cursor-pointer hover:opacity-90 transition poster-card" onclick="window.open(this.src)">
+                            <img id="img-7kebiasaan" src="" class="w-full rounded-lg shadow-md cursor-pointer hover:opacity-90" onclick="window.open(this.src)">
+                            <img id="img-8dimensi" src="" class="w-full rounded-lg shadow-md cursor-pointer hover:opacity-90" onclick="window.open(this.src)">
                         </div>
                     </div>
-                    <div class="bg-gradient-to-br from-blue-600 to-blue-800 p-6 rounded-2xl shadow-lg text-white text-center">
-                        <i class="fas fa-file-signature text-4xl mb-3 opacity-80"></i>
-                        <h4 class="font-bold text-xl mb-1">SPMB 2026</h4>
-                        <button onclick="navigate('spmb')" class="w-full bg-white text-blue-700 font-bold py-2 mt-4 rounded-lg hover:bg-gray-100 transition shadow">Cek Informasi</button>
-                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION: PROFIL -->
+        <!-- PROFIL -->
         <section id="profil" class="hidden-section page-section container mx-auto px-4 max-w-5xl">
             <div class="text-center mb-10"><h2 class="text-3xl font-bold text-gray-800">Profil Sekolah</h2><div class="w-20 h-1 bg-blue-500 mx-auto mt-4 rounded-full"></div></div>
-            <div class="bg-white rounded-3xl shadow-xl overflow-hidden mb-10">
-                <div class="bg-gray-50 p-8 md:p-12 text-center border-b border-gray-100">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">VISI</h3>
-                    <p id="view-visi" class="text-xl md:text-2xl font-serif italic text-gray-600 leading-relaxed max-w-3xl mx-auto whitespace-pre-line">...</p>
-                </div>
-                <div class="p-8 md:p-12">
-                    <h3 class="text-lg font-bold text-gray-400 uppercase tracking-widest text-center mb-6">MISI KAMI</h3>
-                    <div id="view-misi" class="text-gray-700 leading-loose text-lg max-w-3xl mx-auto whitespace-pre-line text-center">...</div>
-                </div>
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden mb-10 p-8 text-center">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">VISI</h3><p id="view-visi" class="text-xl italic text-gray-600 whitespace-pre-line">...</p>
+                <hr class="my-8">
+                <h3 class="text-lg font-bold text-gray-400 uppercase tracking-widest mb-6">MISI KAMI</h3><div id="view-misi" class="text-gray-700 text-lg whitespace-pre-line">...</div>
             </div>
-            <!-- SOTK -->
-            <div class="bg-white p-6 rounded-3xl shadow-lg text-center">
-                <h3 class="font-bold text-xl text-gray-800 mb-6">Struktur Organisasi</h3>
-                <img id="img-sotk" src="" class="max-w-full h-auto mx-auto rounded-xl shadow-inner bg-gray-50 p-2" onerror="this.style.display='none'">
-            </div>
+            <div class="bg-white p-6 rounded-3xl shadow-lg text-center"><h3 class="font-bold text-xl text-gray-800 mb-6">Struktur Organisasi</h3><img id="img-sotk" src="" class="max-w-full h-auto mx-auto rounded-xl"></div>
         </section>
 
-        <!-- SECTION: GALERI -->
-        <section id="galeri" class="hidden-section page-section container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Galeri Kegiatan</h2>
-            <div class="mb-12">
-                <h3 class="font-bold text-xl text-gray-700 mb-4 flex items-center gap-2"><i class="fab fa-youtube text-red-600"></i> Video Dokumentasi</h3>
-                <div id="galeri-video" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-            </div>
-            <div>
-                <h3 class="font-bold text-xl text-gray-700 mb-4 flex items-center gap-2"><i class="fas fa-images text-blue-600"></i> Foto Terbaru</h3>
-                <div id="galeri-foto" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
-            </div>
-        </section>
-
-        <!-- SECTION: GURU -->
+        <!-- GURU -->
         <section id="guru" class="hidden-section page-section container mx-auto px-4">
-            <div class="text-center mb-10"><h2 class="text-3xl font-bold text-gray-800">Direktori Guru</h2><p class="text-gray-500 mt-2">Pendidik profesional yang siap membimbing siswa.</p></div>
+            <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">Direktori Guru</h2>
             <div id="grid-guru" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
         </section>
 
-        <!-- SECTION: DOWNLOAD -->
+        <!-- GALERI -->
+        <section id="galeri" class="hidden-section page-section container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">Galeri Sekolah</h2>
+            <div id="galeri-video" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"></div>
+            <div id="galeri-foto" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+        </section>
+
+        <!-- DOWNLOAD -->
         <section id="download" class="hidden-section page-section container mx-auto px-4 max-w-4xl">
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Dokumen & Unduhan</h2>
             <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-50 text-gray-500 uppercase font-bold text-xs"><tr><th class="p-4 text-left">Nama Dokumen</th><th class="p-4 text-left">Kategori</th><th class="p-4 text-center">Aksi</th></tr></thead>
-                    <tbody id="tbl-dl" class="divide-y divide-gray-100"></tbody>
-                </table>
+                <table class="w-full text-sm"><thead class="bg-gray-50 font-bold"><tr><th class="p-4 text-left">Nama Dokumen</th><th class="p-4 text-left">Kategori</th><th class="p-4 text-center">Aksi</th></tr></thead><tbody id="tbl-dl" class="divide-y divide-gray-100"></tbody></table>
             </div>
         </section>
 
-        <!-- SECTION: SPMB -->
+        <!-- SPMB -->
         <section id="spmb" class="hidden-section page-section container mx-auto px-4 max-w-4xl">
             <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
-                <div class="bg-blue-600 p-8 text-center text-white relative overflow-hidden">
-                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
-                    <i class="fas fa-file-signature text-5xl mb-4 relative z-10"></i>
-                    <h2 class="text-3xl font-bold relative z-10">Pendaftaran Siswa Baru</h2>
-                </div>
-                <div class="p-8 md:p-10">
+                <div class="bg-blue-600 p-8 text-center text-white"><h2 class="text-3xl font-bold">PPDB Online</h2></div>
+                <div class="p-8">
                     <div id="spmb-status-msg" class="text-center font-bold text-lg mb-6 p-3 rounded-lg"></div>
-                    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg mb-8">
-                        <h4 class="font-bold text-blue-800 mb-2">Informasi & Syarat</h4>
-                        <div id="spmb-info-content" class="text-gray-700 text-sm leading-relaxed whitespace-pre-line"></div>
-                    </div>
-                    <div id="spmb-tutup" class="hidden text-center py-10"><i class="fas fa-lock text-6xl text-gray-200 mb-4 block"></i><span class="text-gray-500 font-bold">Formulir Pendaftaran Belum Tersedia</span></div>
-                    <form id="form-spmb" onsubmit="kirimSPMB(event)" class="hidden space-y-6">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div><label class="block text-sm font-bold text-gray-700 mb-1">Nama Lengkap</label><input type="text" name="nama" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required></div>
-                            <div><label class="block text-sm font-bold text-gray-700 mb-1">NIK</label><input type="number" name="nik" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required></div>
-                        </div>
-                        <input type="text" name="ttl" placeholder="TTL" class="w-full border border-gray-300 p-3 rounded-lg" required>
-                        <input type="text" name="asal" placeholder="Asal Sekolah" class="w-full border border-gray-300 p-3 rounded-lg" required>
-                        <input type="text" name="ortu" placeholder="Nama Ortu" class="w-full border border-gray-300 p-3 rounded-lg" required>
-                        <input type="text" name="hp" placeholder="No WhatsApp" class="w-full border border-gray-300 p-3 rounded-lg" required>
-                        <button type="submit" id="btn-spmb" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 shadow-lg transform active:scale-95 transition">KIRIM PENDAFTARAN</button>
+                    <div class="bg-blue-50 p-6 rounded-lg mb-8 text-gray-700 text-sm whitespace-pre-line" id="spmb-info-content"></div>
+                    <div id="spmb-tutup" class="hidden text-center py-10 font-bold text-gray-500">Pendaftaran Belum Dibuka</div>
+                    <form id="form-spmb" onsubmit="kirimSPMB(event)" class="hidden space-y-4">
+                        <input type="text" name="nama" placeholder="Nama Lengkap" class="w-full border p-3 rounded-lg" required>
+                        <input type="number" name="nik" placeholder="NIK" class="w-full border p-3 rounded-lg" required>
+                        <input type="text" name="ttl" placeholder="TTL" class="w-full border p-3 rounded-lg" required>
+                        <input type="text" name="asal" placeholder="Asal Sekolah" class="w-full border p-3 rounded-lg" required>
+                        <input type="text" name="ortu" placeholder="Nama Ortu" class="w-full border p-3 rounded-lg" required>
+                        <input type="text" name="hp" placeholder="No WhatsApp" class="w-full border p-3 rounded-lg" required>
+                        <button type="submit" id="btn-spmb" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 shadow-lg">KIRIM</button>
                     </form>
                 </div>
             </div>
         </section>
 
-        <!-- ADMIN LOGIN -->
+        <!-- LOGIN -->
         <section id="login" class="hidden-section page-section flex justify-center items-center py-20">
-            <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center">
-                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600 text-2xl"><i class="fas fa-user-shield"></i></div>
+            <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center border-t-8 border-blue-600">
                 <h2 class="font-bold text-xl mb-6 text-gray-800">Login Administrator</h2>
                 <form onsubmit="doLogin(event)" class="space-y-4">
-                    <input type="text" id="u" class="w-full border p-3 rounded-lg bg-gray-50 focus:bg-white transition" placeholder="Username" required>
-                    <input type="password" id="p" class="w-full border p-3 rounded-lg bg-gray-50 focus:bg-white transition" placeholder="Password" required>
-                    <button type="submit" id="btn-login" class="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-gray-800 shadow-lg">MASUK SYSTEM</button>
+                    <input type="text" id="u" class="w-full border p-3 rounded-lg bg-gray-50" placeholder="Username" required>
+                    <input type="password" id="p" class="w-full border p-3 rounded-lg bg-gray-50" placeholder="Password" required>
+                    <button type="submit" id="btn-login" class="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-gray-800 shadow-lg">MASUK</button>
                 </form>
             </div>
         </section>
 
         <!-- ADMIN DASHBOARD -->
         <section id="admin" class="hidden-section page-section container mx-auto px-4">
-            <div class="flex justify-between items-center mb-8 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                <div><h2 class="text-2xl font-bold text-gray-800">Dashboard Admin</h2><p class="text-xs text-gray-500">Kelola data website sekolah</p></div>
-                <button onclick="location.reload()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm hover:bg-red-100">Keluar</button>
+            <div class="flex justify-between items-center mb-8 bg-white p-4 rounded-xl shadow-sm">
+                <h2 class="text-2xl font-bold text-gray-800">Dashboard Admin</h2>
+                <button onclick="location.reload()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm">Keluar</button>
             </div>
             <div class="flex flex-wrap gap-2 mb-6">
-                <button onclick="showTab('adm-utama')" class="flex-1 bg-white border py-3 rounded-lg font-bold text-sm shadow-sm">⚙️ Utama</button>
-                <button onclick="showTab('adm-sosmed')" class="flex-1 bg-white border py-3 rounded-lg font-bold text-sm shadow-sm">🌐 Sosmed</button>
-                <button onclick="showTab('adm-media')" class="flex-1 bg-white border py-3 rounded-lg font-bold text-sm shadow-sm">📷 Media</button>
+                <button onclick="showTab('adm-utama')" class="flex-1 bg-white border py-3 rounded-lg font-bold shadow-sm hover:bg-blue-50">⚙️ Utama</button>
+                <button onclick="showTab('adm-sosmed')" class="flex-1 bg-white border py-3 rounded-lg font-bold shadow-sm hover:bg-blue-50">🌐 Sosmed</button>
+                <button onclick="showTab('adm-media')" class="flex-1 bg-white border py-3 rounded-lg font-bold shadow-sm hover:bg-blue-50">📷 Media</button>
             </div>
             
-            <div id="adm-utama" class="adm-tab bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+            <div id="adm-utama" class="adm-tab bg-white p-6 rounded-2xl shadow-lg">
                 <form onsubmit="saveConfig(event)" class="grid md:grid-cols-2 gap-6 text-sm">
-                    <div class="col-span-2 text-lg font-bold text-blue-600 border-b pb-2 mb-2">Identitas Sekolah</div>
                     <input type="text" id="cfg-nama" placeholder="Nama Sekolah" class="w-full border p-2 rounded">
                     <input type="text" id="cfg-logo" placeholder="URL Logo" class="w-full border p-2 rounded">
-                    <input type="text" id="cfg-banner" placeholder="URL Banner Utama" class="w-full border p-2 rounded">
+                    <input type="text" id="cfg-banner" placeholder="URL Banner" class="w-full border p-2 rounded">
                     <input type="text" id="cfg-running" placeholder="Running Text" class="w-full border p-2 rounded">
-                    <div class="col-span-2 text-lg font-bold text-blue-600 border-b pb-2 mb-2 mt-4">Pengaturan SPMB</div>
-                    <select id="cfg-spmb-stat" class="w-full border p-2 rounded bg-gray-50"><option value="Tutup">🔴 Tutup</option><option value="Buka">🟢 Buka</option></select>
-                    <textarea id="cfg-spmb-info" class="w-full border p-2 rounded h-24 col-span-2" placeholder="Info & Syarat"></textarea>
-                    <button type="submit" id="btn-save-cfg" class="col-span-2 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg mt-4">SIMPAN PERUBAHAN</button>
+                    <div class="col-span-2 font-bold text-blue-600 border-b pb-2 mt-4">SPMB</div>
+                    <select id="cfg-spmb-stat" class="w-full border p-2 rounded bg-gray-50"><option value="Tutup">Tutup</option><option value="Buka">Buka</option></select>
+                    <textarea id="cfg-spmb-info" class="w-full border p-2 rounded h-24 col-span-2" placeholder="Info SPMB"></textarea>
+                    <button type="submit" id="btn-save-cfg" class="col-span-2 bg-blue-600 text-white py-3 rounded-xl font-bold mt-4">SIMPAN</button>
                 </form>
             </div>
 
-            <div id="adm-sosmed" class="adm-tab hidden bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <form onsubmit="saveConfig(event)" class="space-y-4 max-w-lg mx-auto">
-                    <div class="flex items-center gap-3"><i class="fab fa-facebook text-blue-600 text-xl w-6"></i><input type="text" id="cfg-fb" placeholder="Link Facebook" class="flex-grow border p-2 rounded"></div>
-                    <div class="flex items-center gap-3"><i class="fab fa-instagram text-pink-600 text-xl w-6"></i><input type="text" id="cfg-ig" placeholder="Link Instagram" class="flex-grow border p-2 rounded"></div>
-                    <div class="flex items-center gap-3"><i class="fab fa-tiktok text-black text-xl w-6"></i><input type="text" id="cfg-tiktok" placeholder="Link TikTok" class="flex-grow border p-2 rounded"></div>
-                    <div class="flex items-center gap-3"><i class="fab fa-youtube text-red-600 text-xl w-6"></i><input type="text" id="cfg-yt" placeholder="Link YouTube" class="flex-grow border p-2 rounded"></div>
-                    <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-xl font-bold mt-6 shadow-lg">SIMPAN SOSMED</button>
+            <div id="adm-sosmed" class="adm-tab hidden bg-white p-6 rounded-2xl shadow-lg">
+                <form onsubmit="saveConfig(event)" class="space-y-4">
+                    <div class="flex gap-2"><i class="fab fa-facebook text-blue-600 w-6 pt-2"></i><input type="text" id="cfg-fb" placeholder="Link Facebook" class="w-full border p-2 rounded"></div>
+                    <div class="flex gap-2"><i class="fab fa-instagram text-pink-600 w-6 pt-2"></i><input type="text" id="cfg-ig" placeholder="Link Instagram" class="w-full border p-2 rounded"></div>
+                    <div class="flex gap-2"><i class="fab fa-tiktok w-6 pt-2"></i><input type="text" id="cfg-tiktok" placeholder="Link TikTok" class="w-full border p-2 rounded"></div>
+                    <div class="flex gap-2"><i class="fab fa-youtube text-red-600 w-6 pt-2"></i><input type="text" id="cfg-yt" placeholder="Link YouTube" class="w-full border p-2 rounded"></div>
+                    <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-xl font-bold mt-4">SIMPAN SOSMED</button>
                 </form>
             </div>
 
-            <div id="adm-media" class="adm-tab hidden bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <div class="bg-gray-50 p-4 rounded-xl mb-6">
-                    <form onsubmit="saveGaleri(event)" class="flex flex-col md:flex-row gap-3">
-                        <select id="media-tipe" class="border p-2 rounded font-bold"><option value="Foto">Foto</option><option value="Video">Video YT</option><option value="Musik">Musik MP3</option></select>
-                        <input type="text" id="media-judul" placeholder="Judul" required class="border p-2 rounded flex-grow">
-                        <input type="text" id="media-link" placeholder="URL" required class="border p-2 rounded flex-grow">
-                        <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded font-bold hover:bg-purple-700">Upload</button>
-                    </form>
-                </div>
-                <div id="admin-media-list" class="space-y-2 text-sm max-h-80 overflow-y-auto pr-2"></div>
+            <div id="adm-media" class="adm-tab hidden bg-white p-6 rounded-2xl shadow-lg">
+                <form onsubmit="saveGaleri(event)" class="flex flex-col md:flex-row gap-3 bg-gray-50 p-4 rounded-xl mb-4">
+                    <select id="media-tipe" class="border p-2 rounded font-bold"><option value="Foto">Foto</option><option value="Video">Video YT</option><option value="Musik">Musik MP3</option></select>
+                    <input type="text" id="media-judul" placeholder="Judul" required class="border p-2 rounded flex-grow">
+                    <input type="text" id="media-link" placeholder="URL" required class="border p-2 rounded flex-grow">
+                    <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded font-bold">Upload</button>
+                </form>
+                <div id="admin-media-list" class="space-y-2 text-sm max-h-80 overflow-y-auto"></div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-primary text-white pt-16 pb-8 mt-auto">
-        <div class="container mx-auto px-4 text-center">
-            <h3 class="font-bold text-2xl mb-2 tracking-tight" id="foot-nama">SEKOLAH</h3>
-            <p class="text-blue-300 text-sm mb-8" id="foot-alamat">...</p>
-            <div class="flex justify-center gap-8 mb-10">
-                <a id="link-fb" href="#" target="_blank" class="text-white/50 hover:text-white hover:scale-125 transition transform"><i class="fab fa-facebook text-3xl"></i></a>
-                <a id="link-ig" href="#" target="_blank" class="text-white/50 hover:text-pink-500 hover:scale-125 transition transform"><i class="fab fa-instagram text-3xl"></i></a>
-                <a id="link-tk" href="#" target="_blank" class="text-white/50 hover:text-white hover:scale-125 transition transform"><i class="fab fa-tiktok text-3xl"></i></a>
-                <a id="link-yt" href="#" target="_blank" class="text-white/50 hover:text-red-500 hover:scale-125 transition transform"><i class="fab fa-youtube text-3xl"></i></a>
-            </div>
-            <p class="text-xs text-gray-500">&copy; 2026 Portal Sekolah Digital.</p>
+    <footer class="bg-primary text-white pt-16 pb-8 mt-auto text-center">
+        <h3 class="font-bold text-2xl mb-2" id="foot-nama">SEKOLAH</h3>
+        <p class="text-blue-300 text-sm mb-8" id="foot-alamat">...</p>
+        <div class="flex justify-center gap-8 mb-10">
+            <a id="link-fb" href="#" target="_blank" class="text-white/50 hover:text-white text-3xl"><i class="fab fa-facebook"></i></a>
+            <a id="link-ig" href="#" target="_blank" class="text-white/50 hover:text-pink-500 text-3xl"><i class="fab fa-instagram"></i></a>
+            <a id="link-tk" href="#" target="_blank" class="text-white/50 hover:text-white text-3xl"><i class="fab fa-tiktok"></i></a>
+            <a id="link-yt" href="#" target="_blank" class="text-white/50 hover:text-red-500 text-3xl"><i class="fab fa-youtube"></i></a>
         </div>
+        <p class="text-xs text-gray-500">&copy; 2026 Portal Sekolah Digital.</p>
     </footer>
 
     <div id="toast" class="toast">Notifikasi</div>
@@ -349,11 +238,22 @@
     <script>
         async function fetchAPI(act, meth='GET', d=null) {
             try {
+                let url = `${API_URL}?action=${act}`;
+                if(act === 'login') {
+                    // KHUSUS LOGIN: PAKAI GET (SESUAI BACKEND V10)
+                    url += `&user=${d.user}&pass=${d.pass}`;
+                    const res = await fetch(url);
+                    return await res.json();
+                }
+                
                 let opt = { method: meth };
-                if (meth === 'POST') { opt.body=JSON.stringify({action:act, data:d}); opt.headers={"Content-Type":"text/plain;charset=utf-8"}; }
-                const res = await fetch(`${API_URL}?action=${act}`, opt);
+                if (meth === 'POST') { 
+                    opt.body=JSON.stringify({action:act, data:d}); 
+                    opt.headers={"Content-Type":"text/plain;charset=utf-8"}; 
+                }
+                const res = await fetch(url, opt);
                 return await res.json();
-            } catch(e) { return null; }
+            } catch(e) { console.error(e); return null; }
         }
 
         document.addEventListener('DOMContentLoaded', initApp);
@@ -369,7 +269,7 @@
             
             if(res && res.status==='success') {
                 const c = res.config;
-                // Render
+                // Render Basic
                 const setT=(i,v)=>{if(document.getElementById(i))document.getElementById(i).innerText=v||'-'};
                 const setS=(i,v)=>{if(document.getElementById(i))document.getElementById(i).src=v||''; if(v)document.getElementById(i).classList.remove('hidden');};
                 const setV=(i,v)=>{if(document.getElementById(i))document.getElementById(i).value=v||''};
@@ -386,45 +286,42 @@
                 // Multimedia
                 const galeri = res.galeri||[];
                 const music = galeri.find(g=>g.tipe==='Musik');
-                if(music){ document.getElementById('music-section').classList.remove('hidden'); document.getElementById('music-title').innerText=music.judul; document.getElementById('audio-player').src=music.link; }
+                if(music && document.getElementById('music-section')){ document.getElementById('music-section').classList.remove('hidden'); document.getElementById('music-title').innerText=music.judul; document.getElementById('audio-player').src=music.link; }
                 
-                const dFoto=document.getElementById('galeri-foto'); dFoto.innerHTML='';
-                const dVid=document.getElementById('galeri-video'); dVid.innerHTML='';
-                const lAdm=document.getElementById('admin-media-list'); lAdm.innerHTML='';
+                const dFoto=document.getElementById('galeri-foto'); if(dFoto) dFoto.innerHTML='';
+                const dVid=document.getElementById('galeri-video'); if(dVid) dVid.innerHTML='';
+                const lAdm=document.getElementById('admin-media-list'); if(lAdm) lAdm.innerHTML='';
 
                 galeri.forEach(g=>{
-                    lAdm.innerHTML+=`<div class="flex justify-between items-center bg-gray-50 p-2 rounded mb-1 border"><div class="truncate text-xs font-bold mr-2">[${g.tipe}] ${g.judul}</div><button onclick="delGaleri('${g.link}')" class="text-red-500"><i class="fas fa-trash"></i></button></div>`;
-                    if(g.tipe==='Foto') dFoto.innerHTML+=`<div class="aspect-square bg-gray-200 rounded-xl overflow-hidden shadow-lg hover-scale cursor-pointer group relative"><img src="${g.link}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" onclick="window.open(this.src)"></div>`;
-                    else if(g.tipe==='Video') { let e=g.link.replace('watch?v=','embed/').replace('youtu.be/','youtube.com/embed/'); dVid.innerHTML+=`<div class="bg-white p-2 rounded-xl shadow-lg"><div class="aspect-video rounded-lg overflow-hidden"><iframe src="${e}" class="w-full h-full" frameborder="0" allowfullscreen></iframe></div></div>`; }
+                    if(lAdm) lAdm.innerHTML+=`<div class="flex justify-between items-center bg-gray-50 p-2 rounded mb-1 border"><div class="truncate text-xs font-bold mr-2">[${g.tipe}] ${g.judul}</div><button onclick="delGaleri('${g.link}')" class="text-red-500"><i class="fas fa-trash"></i></button></div>`;
+                    if(g.tipe==='Foto' && dFoto) dFoto.innerHTML+=`<div class="aspect-square bg-gray-200 rounded-xl overflow-hidden shadow-lg hover-scale cursor-pointer group relative"><img src="${g.link}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" onclick="window.open(this.src)"></div>`;
+                    else if(g.tipe==='Video' && dVid) { let e=g.link.replace('watch?v=','embed/').replace('youtu.be/','youtube.com/embed/'); dVid.innerHTML+=`<div class="bg-white p-2 rounded-xl shadow-lg"><div class="aspect-video rounded-lg overflow-hidden"><iframe src="${e}" class="w-full h-full" frameborder="0" allowfullscreen></iframe></div></div>`; }
                 });
 
                 // SPMB
-                document.getElementById('spmb-info-content').innerText = c.SPMB_Info||'-';
+                const info = document.getElementById('spmb-info-content'); if(info) info.innerText = c.SPMB_Info||'-';
                 if(c.SPMB_Status==='Buka') {
-                    document.getElementById('spmb-status-msg').innerHTML = "<span class='bg-green-100 text-green-700 px-4 py-1 rounded-full'>PENDAFTARAN DIBUKA</span>";
-                    document.getElementById('spmb-form-area').classList.remove('hidden'); document.getElementById('spmb-tutup').classList.add('hidden');
+                    if(document.getElementById('spmb-status-msg')) document.getElementById('spmb-status-msg').innerHTML = "<span class='bg-green-100 text-green-700 px-4 py-1 rounded-full'>PENDAFTARAN DIBUKA</span>";
+                    if(document.getElementById('spmb-form-area')) document.getElementById('spmb-form-area').classList.remove('hidden');
+                    if(document.getElementById('spmb-tutup')) document.getElementById('spmb-tutup').classList.add('hidden');
                 } else {
-                    document.getElementById('spmb-status-msg').innerHTML = "<span class='bg-red-100 text-red-700 px-4 py-1 rounded-full'>PENDAFTARAN DITUTUP</span>";
-                    document.getElementById('spmb-form-area').classList.add('hidden'); document.getElementById('spmb-tutup').classList.remove('hidden');
+                    if(document.getElementById('spmb-status-msg')) document.getElementById('spmb-status-msg').innerHTML = "<span class='bg-red-100 text-red-700 px-4 py-1 rounded-full'>PENDAFTARAN DITUTUP</span>";
+                    if(document.getElementById('spmb-form-area')) document.getElementById('spmb-form-area').classList.add('hidden');
+                    if(document.getElementById('spmb-tutup')) document.getElementById('spmb-tutup').classList.remove('hidden');
                 }
 
-                // Stats
+                // Stats & Tables
                 setT('stat-siswa',res.stats.siswa); setT('stat-guru',res.stats.guru); setT('stat-kelas',res.stats.kelas);
                 
-                const gGrid = document.getElementById('grid-guru'); gGrid.innerHTML='';
-                res.guruList.forEach(g => gGrid.innerHTML+=`<div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:-translate-y-2 transition border border-gray-100"><img src="${g.foto||'https://via.placeholder.com/150'}" class="w-24 h-24 mx-auto rounded-full object-cover mb-4 border-4 border-blue-50 shadow-sm"><h4 class="font-bold text-gray-800">${g.nama}</h4><p class="text-xs text-blue-500 font-bold uppercase mt-1">${g.mapel}</p><p class="text-[10px] text-gray-400 mt-2 font-mono bg-gray-50 inline-block px-2 py-1 rounded">NIP: ${g.nip||'-'}</p></div>`);
+                const gGrid = document.getElementById('grid-guru'); if(gGrid) { gGrid.innerHTML=''; res.guruList.forEach(g => gGrid.innerHTML+=`<div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:-translate-y-2 transition border border-gray-100"><img src="${g.foto||'https://via.placeholder.com/150'}" class="w-24 h-24 mx-auto rounded-full object-cover mb-4 border-4 border-blue-50 shadow-sm"><h4 class="font-bold text-gray-800">${g.nama}</h4><p class="text-xs text-blue-500 font-bold uppercase mt-1">${g.mapel}</p><p class="text-[10px] text-gray-400 mt-2 font-mono bg-gray-50 inline-block px-2 py-1 rounded">NIP: ${g.nip||'-'}</p></div>`); }
 
-                const lBerita = document.getElementById('list-berita'); lBerita.innerHTML='';
-                if(res.berita.length===0) lBerita.innerHTML='<div class="text-gray-400 text-center py-4 italic">Belum ada berita.</div>';
-                else res.berita.forEach(b => lBerita.innerHTML+=`<div class="bg-white border-l-4 border-blue-500 pl-4 py-2 hover:bg-gray-50 transition rounded-r-lg"><div class="text-xs text-gray-400 font-bold mb-1">${new Date(b[1]).toLocaleDateString()}</div><div class="font-bold text-gray-800 leading-tight">${b[0]}</div></div>`);
+                const lBerita = document.getElementById('list-berita'); if(lBerita) { lBerita.innerHTML=''; if(res.berita.length===0) lBerita.innerHTML='<div class="text-gray-400 text-center py-4 italic">Belum ada berita.</div>'; else res.berita.forEach(b => lBerita.innerHTML+=`<div class="bg-white border-l-4 border-blue-500 pl-4 py-2 hover:bg-gray-50 transition rounded-r-lg"><div class="text-xs text-gray-400 font-bold mb-1">${new Date(b[1]).toLocaleDateString()}</div><div class="font-bold text-gray-800 leading-tight">${b[0]}</div></div>`); }
 
-                const tSiswa = document.getElementById('tbl-siswa'); tSiswa.innerHTML='';
-                res.siswaDetail.forEach(r => tSiswa.innerHTML+=`<tr class="border-b border-gray-100 hover:bg-blue-50/50"><td class="p-3 font-medium text-gray-700">${r[0]}</td><td class="text-center text-blue-600 font-bold bg-blue-50/30">${r[1]}</td><td class="text-center text-pink-600 font-bold bg-pink-50/30">${r[2]}</td><td class="text-center font-extrabold text-gray-800">${Number(r[1])+Number(r[2])}</td></tr>`);
+                const tSiswa = document.getElementById('tbl-siswa'); if(tSiswa) { tSiswa.innerHTML=''; res.siswaDetail.forEach(r => tSiswa.innerHTML+=`<tr class="border-b border-gray-100 hover:bg-blue-50/50"><td class="p-3 font-medium text-gray-700">${r[0]}</td><td class="text-center text-blue-600 font-bold bg-blue-50/30">${r[1]}</td><td class="text-center text-pink-600 font-bold bg-pink-50/30">${r[2]}</td><td class="text-center font-extrabold text-gray-800">${Number(r[1])+Number(r[2])}</td></tr>`); }
 
-                const tDL = document.getElementById('tbl-dl'); tDL.innerHTML='';
-                res.downloads.forEach(d => tDL.innerHTML+=`<tr class="border-b border-gray-50 hover:bg-gray-50"><td class="p-4 font-bold text-gray-700">${d[0]}</td><td class="text-xs text-gray-500 uppercase tracking-wide font-bold">${d[2]}</td><td class="text-center"><a href="${d[1]}" target="_blank" class="inline-block bg-blue-100 text-blue-700 font-bold text-xs px-3 py-1.5 rounded-lg hover:bg-blue-600 hover:text-white transition shadow-sm">Unduh</a></td></tr>`);
+                const tDL = document.getElementById('tbl-dl'); if(tDL) { tDL.innerHTML=''; res.downloads.forEach(d => tDL.innerHTML+=`<tr class="border-b border-gray-50 hover:bg-gray-50"><td class="p-4 font-bold text-gray-700">${d[0]}</td><td class="text-xs text-gray-500 uppercase tracking-wide font-bold">${d[2]}</td><td class="text-center"><a href="${d[1]}" target="_blank" class="inline-block bg-blue-100 text-blue-700 font-bold text-xs px-3 py-1.5 rounded-lg hover:bg-blue-600 hover:text-white transition shadow-sm">Unduh</a></td></tr>`); }
 
-                // Admin Prefill
+                // Prefill Admin
                 const flds=['cfg-nama','cfg-logo','cfg-banner','cfg-alamat','cfg-running','cfg-spmb-stat','cfg-spmb-info','cfg-fb','cfg-ig','cfg-tiktok','cfg-yt'];
                 const keys=['NamaSekolah','LogoURL','BannerURL','Alamat','RunningText','SPMB_Status','SPMB_Info','Facebook','Instagram','TikTok','YoutubeChannel'];
                 flds.forEach((id,i)=>setV(id, c[keys[i]]));
@@ -434,8 +331,12 @@
         async function doLogin(e) {
             e.preventDefault();
             const u=document.getElementById('u').value, p=document.getElementById('p').value;
-            const res = await fetchAPI('login', 'POST', {user:u, pass:p});
-            if(res && res.status==='success') navigate('admin'); else showToast('Login Gagal');
+            const b=document.getElementById('btn-login'); b.innerText='...';
+            // LOGIN USE GET METHOD (V10 BACKEND)
+            const res = await fetchAPI('login', 'GET', {user:u, pass:p});
+            b.innerText='MASUK';
+            if(res && res.status==='success') { showToast('Login Berhasil'); navigate('admin'); }
+            else showToast('Login Gagal');
         }
 
         async function saveConfig(e) {
@@ -464,7 +365,7 @@
             const f=e.target, b=document.getElementById('btn-spmb'); b.innerText='Mengirim...'; b.disabled=true;
             const d = { nama: f.nama.value, nik: f.nik.value, asal: f.asal.value, ttl: f.ttl.value, ortu: f.ortu.value, hp: f.hp.value };
             const res = await fetchAPI('submitSPMB', 'POST', { data:d });
-            b.innerText='KIRIM FORMULIR'; b.disabled=false;
+            b.innerText='KIRIM PENDAFTARAN'; b.disabled=false;
             if(res && res.status==='success') { showToast('Terkirim!'); f.reset(); } else showToast('Gagal');
         }
     </script>
