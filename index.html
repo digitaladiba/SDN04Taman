@@ -4,369 +4,341 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Informasi Sekolah</title>
-    <!-- Library -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
-                    colors: { primary: '#0f172a', accent: '#3b82f6', gold: '#eab308' }
-                }
-            }
-        }
-    </script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f8fafc; scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
         .glass-nav { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
         .hidden-section { display: none !important; }
-        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
         .loader { width: 48px; height: 48px; border: 5px solid #FFF; border-bottom-color: #3b82f6; border-radius: 50%; display: inline-block; animation: rotation 1s linear infinite; }
         @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .toast { visibility: hidden; min-width: 250px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 9999; left: 50%; transform: translateX(-50%); bottom: 30px; font-weight: 600; }
+        .toast { visibility: hidden; min-width: 250px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 9999; left: 50%; transform: translateX(-50%); bottom: 30px; }
         .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
-<body class="flex flex-col min-h-screen text-gray-800 antialiased selection:bg-blue-100 selection:text-blue-900">
+<body class="flex flex-col min-h-screen">
 
-    <!-- KONFIGURASI API (WAJIB GANTI) -->
     <script>
-        const API_URL = "PASTE_LINK_API_BARU_DISINI"; 
+        // PASTIKAN LINK API INI SUDAH DI-DEPLOY ULANG (NEW VERSION)
+        const API_URL = "https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec";
     </script>
 
     <!-- NAVBAR -->
-    <nav class="glass-nav fixed w-full z-50 transition-all duration-300">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
-                    <img id="header-logo" src="" class="h-10 w-10 hidden object-contain">
-                    <div>
-                        <h1 class="text-white font-bold text-lg leading-tight" id="header-nama">LOADING...</h1>
-                        <p class="text-blue-400 text-[10px] font-bold tracking-widest uppercase">Portal Digital</p>
-                    </div>
+    <nav class="glass-nav fixed w-full z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center h-16">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
+                <img id="header-logo" src="" class="h-10 w-10 hidden rounded-full bg-white p-1">
+                <div>
+                    <h1 class="text-white font-bold text-lg leading-tight" id="header-nama">SISTEM SEKOLAH</h1>
+                    <p class="text-blue-400 text-[10px] font-bold uppercase tracking-widest">Portal Digital</p>
                 </div>
-                <div class="hidden md:flex items-center space-x-1">
-                    <button onclick="navigate('home')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg">Beranda</button>
-                    <button onclick="navigate('profil')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg">Profil</button>
-                    <button onclick="navigate('guru')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg">Guru</button>
-                    <button onclick="navigate('galeri')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg">Galeri</button>
-                    <button onclick="navigate('download')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg">Unduhan</button>
-                    <button onclick="navigate('spmb')" class="ml-2 px-4 py-2 text-sm font-bold bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full shadow-lg hover:scale-105 transition">PPDB</button>
-                    <button onclick="navigate('login')" class="ml-2 px-3 py-2 text-sm font-bold text-yellow-400 border border-yellow-400/30 rounded-lg hover:bg-yellow-400/10 flex items-center gap-2"><i class="fas fa-lock"></i> Login</button>
-                </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-1 text-gray-300 text-sm font-medium">
+                <button onclick="navigate('home')" class="px-3 py-2 hover:text-white transition">Beranda</button>
+                <button onclick="navigate('profil')" class="px-3 py-2 hover:text-white transition">Profil</button>
+                <button onclick="navigate('guru')" class="px-3 py-2 hover:text-white transition">Guru</button>
+                <button onclick="navigate('galeri')" class="px-3 py-2 hover:text-white transition">Galeri</button>
+                <button onclick="navigate('spmb')" class="bg-blue-600 text-white px-4 py-2 rounded-full font-bold shadow-lg hover:bg-blue-500 transition ml-2">PPDB</button>
+                <button onclick="navigate('login')" class="text-yellow-400 px-3 py-2 font-bold hover:underline"><i class="fas fa-lock"></i> Login</button>
             </div>
         </div>
     </nav>
 
     <!-- LOADING -->
-    <div id="loading-overlay" class="fixed inset-0 bg-primary z-[60] flex flex-col items-center justify-center transition-opacity duration-500">
+    <div id="loading-overlay" class="fixed inset-0 bg-slate-900 z-[60] flex flex-col items-center justify-center">
         <span class="loader mb-4"></span>
-        <p class="text-white font-medium animate-pulse">Menghubungkan ke Server Sekolah...</p>
+        <p class="text-white font-medium animate-pulse">Menghubungkan Data Spreadsheet...</p>
     </div>
 
-    <!-- MAIN -->
-    <main class="flex-grow pt-20 pb-10">
+    <!-- CONTENT -->
+    <main class="flex-grow pt-24 pb-10 container mx-auto px-4">
         
         <!-- HOME -->
-        <section id="home" class="page-section container mx-auto px-4">
-            <div class="relative h-[300px] md:h-[500px] rounded-3xl overflow-hidden shadow-2xl mb-12 bg-gray-200">
-                <img id="home-banner" src="" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
-                <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 z-20">
-                    <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4" id="banner-title">Selamat Datang</h2>
-                    <div class="bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-xl max-w-2xl"><p class="text-gray-100 font-medium text-sm md:text-base" id="running-text">...</p></div>
+        <section id="home" class="page-section">
+            <div class="relative h-64 md:h-[450px] rounded-3xl overflow-hidden shadow-2xl mb-10 bg-slate-800">
+                <img id="home-banner" src="" class="w-full h-full object-cover opacity-60">
+                <div class="absolute inset-0 flex flex-col justify-end p-8 md:p-16">
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4" id="banner-title">Memuat...</h2>
+                    <div class="bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-2xl max-w-2xl text-white text-sm md:text-base" id="running-text">
+                        Sedang memuat pengumuman...
+                    </div>
                 </div>
             </div>
+
             <!-- Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 -mt-16 md:-mt-24 relative z-30 px-2 md:px-6">
-                <div class="bg-white p-6 rounded-2xl shadow-xl card-hover border border-gray-100 flex justify-between"><div><p class="text-gray-500 text-xs font-bold uppercase">Siswa</p><h3 class="text-4xl font-extrabold text-gray-800" id="stat-siswa">0</h3></div><i class="fas fa-user-graduate text-3xl text-blue-200"></i></div>
-                <div class="bg-white p-6 rounded-2xl shadow-xl card-hover border border-gray-100 flex justify-between"><div><p class="text-gray-500 text-xs font-bold uppercase">Guru</p><h3 class="text-4xl font-extrabold text-gray-800" id="stat-guru">0</h3></div><i class="fas fa-chalkboard-teacher text-3xl text-green-200"></i></div>
-                <div class="bg-white p-6 rounded-2xl shadow-xl card-hover border border-gray-100 flex justify-between"><div><p class="text-gray-500 text-xs font-bold uppercase">Kelas</p><h3 class="text-4xl font-extrabold text-gray-800" id="stat-kelas">0</h3></div><i class="fas fa-school text-3xl text-purple-200"></i></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <div><p class="text-slate-400 text-xs font-bold uppercase">Total Siswa</p><h3 class="text-4xl font-black text-slate-800" id="stat-siswa">0</h3></div>
+                    <i class="fas fa-user-graduate text-3xl text-blue-100"></i>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <div><p class="text-slate-400 text-xs font-bold uppercase">Guru & Staf</p><h3 class="text-4xl font-black text-slate-800" id="stat-guru">0</h3></div>
+                    <i class="fas fa-chalkboard-teacher text-3xl text-green-100"></i>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <div><p class="text-slate-400 text-xs font-bold uppercase">Rombel Kelas</p><h3 class="text-4xl font-black text-slate-800" id="stat-kelas">0</h3></div>
+                    <i class="fas fa-school text-3xl text-purple-100"></i>
+                </div>
             </div>
-            <!-- Content -->
+
+            <!-- Music -->
+            <div id="music-section" class="hidden bg-white p-4 rounded-2xl shadow-sm mb-10 flex items-center gap-4 border border-slate-100">
+                <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white"><i class="fas fa-music"></i></div>
+                <div class="flex-grow"><h4 class="font-bold text-slate-800 text-sm" id="music-title">Lagu Mars</h4><audio id="audio-player" controls class="h-8 w-full mt-1"></audio></div>
+            </div>
+
+            <!-- Berita & Poster -->
             <div class="grid md:grid-cols-12 gap-8">
-                <div class="md:col-span-8 space-y-6">
-                    <h3 class="text-2xl font-bold text-gray-800 border-b pb-2">Berita Terbaru</h3>
+                <div class="md:col-span-8">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><span class="w-1.5 h-6 bg-blue-600 rounded-full"></span> Berita Terbaru</h3>
                     <div id="list-berita" class="space-y-4"></div>
                 </div>
                 <div class="md:col-span-4 space-y-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                        <h4 class="font-bold text-gray-800 mb-4">Poster Edukasi</h4>
-                        <div class="space-y-4">
-                            <img id="img-7kebiasaan" src="" class="w-full rounded-lg shadow-md cursor-pointer hover:opacity-90" onclick="window.open(this.src)">
-                            <img id="img-8dimensi" src="" class="w-full rounded-lg shadow-md cursor-pointer hover:opacity-90" onclick="window.open(this.src)">
-                        </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                        <h4 class="font-bold text-slate-800 mb-4">Poster Edukasi</h4>
+                        <img id="img-7kebiasaan" src="" class="w-full rounded-xl shadow-sm mb-4">
+                        <img id="img-8dimensi" src="" class="w-full rounded-xl shadow-sm">
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- PROFIL -->
-        <section id="profil" class="hidden-section page-section container mx-auto px-4 max-w-5xl">
-            <div class="text-center mb-10"><h2 class="text-3xl font-bold text-gray-800">Profil Sekolah</h2><div class="w-20 h-1 bg-blue-500 mx-auto mt-4 rounded-full"></div></div>
-            <div class="bg-white rounded-3xl shadow-xl overflow-hidden mb-10 p-8 text-center">
-                <h3 class="text-2xl font-bold text-gray-800 mb-4">VISI</h3><p id="view-visi" class="text-xl italic text-gray-600 whitespace-pre-line">...</p>
-                <hr class="my-8">
-                <h3 class="text-lg font-bold text-gray-400 uppercase tracking-widest mb-6">MISI KAMI</h3><div id="view-misi" class="text-gray-700 text-lg whitespace-pre-line">...</div>
+        <section id="profil" class="hidden-section page-section max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-10">Profil Sekolah</h2>
+            <div class="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 text-center mb-10">
+                <h3 class="text-blue-600 font-bold tracking-widest mb-2 uppercase text-sm">Visi</h3>
+                <p id="view-visi" class="text-2xl font-serif italic text-slate-600 leading-relaxed mb-10">...</p>
+                <h3 class="text-blue-600 font-bold tracking-widest mb-2 uppercase text-sm">Misi</h3>
+                <div id="view-misi" class="text-slate-700 leading-loose text-lg whitespace-pre-line">...</div>
             </div>
-            <div class="bg-white p-6 rounded-3xl shadow-lg text-center"><h3 class="font-bold text-xl text-gray-800 mb-6">Struktur Organisasi</h3><img id="img-sotk" src="" class="max-w-full h-auto mx-auto rounded-xl"></div>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 text-center">
+                <h3 class="font-bold mb-6">Struktur Organisasi</h3>
+                <img id="img-sotk" src="" class="max-w-full h-auto mx-auto rounded-2xl">
+            </div>
         </section>
 
         <!-- GURU -->
-        <section id="guru" class="hidden-section page-section container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">Direktori Guru</h2>
-            <div id="grid-guru" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        <section id="guru" class="hidden-section page-section">
+            <h2 class="text-3xl font-bold text-center mb-10">Dewan Guru</h2>
+            <div id="grid-guru" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
         </section>
 
         <!-- GALERI -->
-        <section id="galeri" class="hidden-section page-section container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">Galeri Sekolah</h2>
-            <div id="galeri-video" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"></div>
-            <div id="galeri-foto" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
-        </section>
-
-        <!-- DOWNLOAD -->
-        <section id="download" class="hidden-section page-section container mx-auto px-4 max-w-4xl">
-            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Dokumen & Unduhan</h2>
-            <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-                <table class="w-full text-sm"><thead class="bg-gray-50 font-bold"><tr><th class="p-4 text-left">Nama Dokumen</th><th class="p-4 text-left">Kategori</th><th class="p-4 text-center">Aksi</th></tr></thead><tbody id="tbl-dl" class="divide-y divide-gray-100"></tbody></table>
-            </div>
+        <section id="galeri" class="hidden-section page-section">
+            <h2 class="text-3xl font-bold text-center mb-10">Galeri & Dokumentasi</h2>
+            <div id="galeri-video" class="grid md:grid-cols-3 gap-6 mb-10"></div>
+            <div id="galeri-foto" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
         </section>
 
         <!-- SPMB -->
-        <section id="spmb" class="hidden-section page-section container mx-auto px-4 max-w-4xl">
-            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
-                <div class="bg-blue-600 p-8 text-center text-white"><h2 class="text-3xl font-bold">PPDB Online</h2></div>
+        <section id="spmb" class="hidden-section page-section max-w-2xl mx-auto">
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+                <div class="bg-blue-600 p-8 text-center text-white"><h2 class="text-2xl font-bold">Pendaftaran Siswa Baru</h2></div>
                 <div class="p-8">
-                    <div id="spmb-status-msg" class="text-center font-bold text-lg mb-6 p-3 rounded-lg"></div>
-                    <div class="bg-blue-50 p-6 rounded-lg mb-8 text-gray-700 text-sm whitespace-pre-line" id="spmb-info-content"></div>
-                    <div id="spmb-tutup" class="hidden text-center py-10 font-bold text-gray-500">Pendaftaran Belum Dibuka</div>
+                    <div id="spmb-status-msg" class="text-center font-bold mb-6"></div>
+                    <div id="spmb-info-content" class="bg-slate-50 p-6 rounded-2xl text-sm text-slate-600 mb-8 whitespace-pre-line"></div>
                     <form id="form-spmb" onsubmit="kirimSPMB(event)" class="hidden space-y-4">
-                        <input type="text" name="nama" placeholder="Nama Lengkap" class="w-full border p-3 rounded-lg" required>
-                        <input type="number" name="nik" placeholder="NIK" class="w-full border p-3 rounded-lg" required>
-                        <input type="text" name="ttl" placeholder="TTL" class="w-full border p-3 rounded-lg" required>
-                        <input type="text" name="asal" placeholder="Asal Sekolah" class="w-full border p-3 rounded-lg" required>
-                        <input type="text" name="ortu" placeholder="Nama Ortu" class="w-full border p-3 rounded-lg" required>
-                        <input type="text" name="hp" placeholder="No WhatsApp" class="w-full border p-3 rounded-lg" required>
-                        <button type="submit" id="btn-spmb" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 shadow-lg">KIRIM</button>
+                        <input type="text" name="nama" placeholder="Nama Lengkap Anak" class="w-full p-4 border rounded-xl bg-slate-50 focus:bg-white outline-none" required>
+                        <input type="number" name="nik" placeholder="NIK (Sesuai KK)" class="w-full p-4 border rounded-xl bg-slate-50 focus:bg-white outline-none" required>
+                        <input type="text" name="hp" placeholder="Nomor WA Orang Tua" class="w-full p-4 border rounded-xl bg-slate-50 focus:bg-white outline-none" required>
+                        <button type="submit" id="btn-spmb" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-700 transition">KIRIM FORMULIR</button>
                     </form>
                 </div>
             </div>
         </section>
 
         <!-- LOGIN -->
-        <section id="login" class="hidden-section page-section flex justify-center items-center py-20">
-            <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center border-t-8 border-blue-600">
-                <h2 class="font-bold text-xl mb-6 text-gray-800">Login Administrator</h2>
+        <section id="login" class="hidden-section page-section flex justify-center py-20">
+            <div class="bg-white p-8 rounded-3xl shadow-xl w-full max-w-sm border border-slate-100">
+                <h2 class="text-xl font-bold text-center mb-8">Login Keamanan</h2>
                 <form onsubmit="doLogin(event)" class="space-y-4">
-                    <input type="text" id="u" class="w-full border p-3 rounded-lg bg-gray-50" placeholder="Username" required>
-                    <input type="password" id="p" class="w-full border p-3 rounded-lg bg-gray-50" placeholder="Password" required>
-                    <button type="submit" id="btn-login" class="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-gray-800 shadow-lg">MASUK</button>
+                    <input type="text" id="u" placeholder="Username" class="w-full p-4 border rounded-xl bg-slate-50 outline-none" required>
+                    <input type="password" id="p" placeholder="Password" class="w-full p-4 border rounded-xl bg-slate-50 outline-none" required>
+                    <button type="submit" id="btn-login" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-black transition">MASUK</button>
                 </form>
             </div>
         </section>
 
-        <!-- ADMIN DASHBOARD -->
-        <section id="admin" class="hidden-section page-section container mx-auto px-4">
-            <div class="flex justify-between items-center mb-8 bg-white p-4 rounded-xl shadow-sm">
-                <h2 class="text-2xl font-bold text-gray-800">Dashboard Admin</h2>
-                <button onclick="location.reload()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm">Keluar</button>
+        <!-- ADMIN -->
+        <section id="admin" class="hidden-section page-section">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold">Dashboard Admin</h2>
+                <button onclick="location.reload()" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold">Keluar</button>
             </div>
-            <div class="flex flex-wrap gap-2 mb-6">
-                <button onclick="showTab('adm-utama')" class="flex-1 bg-white border py-3 rounded-lg font-bold shadow-sm hover:bg-blue-50">⚙️ Utama</button>
-                <button onclick="showTab('adm-sosmed')" class="flex-1 bg-white border py-3 rounded-lg font-bold shadow-sm hover:bg-blue-50">🌐 Sosmed</button>
-                <button onclick="showTab('adm-media')" class="flex-1 bg-white border py-3 rounded-lg font-bold shadow-sm hover:bg-blue-50">📷 Media</button>
-            </div>
-            
-            <div id="adm-utama" class="adm-tab bg-white p-6 rounded-2xl shadow-lg">
-                <form onsubmit="saveConfig(event)" class="grid md:grid-cols-2 gap-6 text-sm">
-                    <input type="text" id="cfg-nama" placeholder="Nama Sekolah" class="w-full border p-2 rounded">
-                    <input type="text" id="cfg-logo" placeholder="URL Logo" class="w-full border p-2 rounded">
-                    <input type="text" id="cfg-banner" placeholder="URL Banner" class="w-full border p-2 rounded">
-                    <input type="text" id="cfg-running" placeholder="Running Text" class="w-full border p-2 rounded">
-                    <div class="col-span-2 font-bold text-blue-600 border-b pb-2 mt-4">SPMB</div>
-                    <select id="cfg-spmb-stat" class="w-full border p-2 rounded bg-gray-50"><option value="Tutup">Tutup</option><option value="Buka">Buka</option></select>
-                    <textarea id="cfg-spmb-info" class="w-full border p-2 rounded h-24 col-span-2" placeholder="Info SPMB"></textarea>
-                    <button type="submit" id="btn-save-cfg" class="col-span-2 bg-blue-600 text-white py-3 rounded-xl font-bold mt-4">SIMPAN</button>
-                </form>
-            </div>
-
-            <div id="adm-sosmed" class="adm-tab hidden bg-white p-6 rounded-2xl shadow-lg">
-                <form onsubmit="saveConfig(event)" class="space-y-4">
-                    <div class="flex gap-2"><i class="fab fa-facebook text-blue-600 w-6 pt-2"></i><input type="text" id="cfg-fb" placeholder="Link Facebook" class="w-full border p-2 rounded"></div>
-                    <div class="flex gap-2"><i class="fab fa-instagram text-pink-600 w-6 pt-2"></i><input type="text" id="cfg-ig" placeholder="Link Instagram" class="w-full border p-2 rounded"></div>
-                    <div class="flex gap-2"><i class="fab fa-tiktok w-6 pt-2"></i><input type="text" id="cfg-tiktok" placeholder="Link TikTok" class="w-full border p-2 rounded"></div>
-                    <div class="flex gap-2"><i class="fab fa-youtube text-red-600 w-6 pt-2"></i><input type="text" id="cfg-yt" placeholder="Link YouTube" class="w-full border p-2 rounded"></div>
-                    <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-xl font-bold mt-4">SIMPAN SOSMED</button>
-                </form>
-            </div>
-
-            <div id="adm-media" class="adm-tab hidden bg-white p-6 rounded-2xl shadow-lg">
-                <form onsubmit="saveGaleri(event)" class="flex flex-col md:flex-row gap-3 bg-gray-50 p-4 rounded-xl mb-4">
-                    <select id="media-tipe" class="border p-2 rounded font-bold"><option value="Foto">Foto</option><option value="Video">Video YT</option><option value="Musik">Musik MP3</option></select>
-                    <input type="text" id="media-judul" placeholder="Judul" required class="border p-2 rounded flex-grow">
-                    <input type="text" id="media-link" placeholder="URL" required class="border p-2 rounded flex-grow">
-                    <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded font-bold">Upload</button>
-                </form>
-                <div id="admin-media-list" class="space-y-2 text-sm max-h-80 overflow-y-auto"></div>
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+                <p class="text-slate-500 mb-6">Halo Admin! Gunakan Google Spreadsheet Bapak untuk mengubah data utama agar lebih cepat dan aman.</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <button onclick="showTabAdmin('adm-media')" class="p-6 border rounded-2xl hover:bg-blue-50 transition text-center font-bold">Tambah Galeri</button>
+                    <button onclick="window.open('https://docs.google.com/spreadsheets/d/1-EnWGBXyeWoVOxRRTSvguzgxdZ-KVCbjL8gitpGglrE')" class="p-6 border rounded-2xl hover:bg-green-50 transition text-center font-bold">Edit Spreadsheet</button>
+                </div>
+                
+                <div id="adm-media" class="mt-10 pt-10 border-t">
+                    <h3 class="font-bold mb-4">Tambah Media (Foto/Video)</h3>
+                    <form onsubmit="saveGaleri(event)" class="space-y-4 max-w-lg">
+                        <select id="media-tipe" class="w-full p-3 border rounded-xl"><option value="Foto">Foto</option><option value="Video">Video YouTube</option><option value="Musik">Musik MP3</option></select>
+                        <input type="text" id="media-judul" placeholder="Judul" class="w-full p-3 border rounded-xl" required>
+                        <input type="text" id="media-link" placeholder="URL/Link" class="w-full p-3 border rounded-xl" required>
+                        <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold">Simpan</button>
+                    </form>
+                </div>
             </div>
         </section>
+
     </main>
 
-    <footer class="bg-primary text-white pt-16 pb-8 mt-auto text-center">
-        <h3 class="font-bold text-2xl mb-2" id="foot-nama">SEKOLAH</h3>
-        <p class="text-blue-300 text-sm mb-8" id="foot-alamat">...</p>
-        <div class="flex justify-center gap-8 mb-10">
-            <a id="link-fb" href="#" target="_blank" class="text-white/50 hover:text-white text-3xl"><i class="fab fa-facebook"></i></a>
-            <a id="link-ig" href="#" target="_blank" class="text-white/50 hover:text-pink-500 text-3xl"><i class="fab fa-instagram"></i></a>
-            <a id="link-tk" href="#" target="_blank" class="text-white/50 hover:text-white text-3xl"><i class="fab fa-tiktok"></i></a>
-            <a id="link-yt" href="#" target="_blank" class="text-white/50 hover:text-red-500 text-3xl"><i class="fab fa-youtube"></i></a>
+    <footer class="bg-slate-900 text-slate-400 py-12 text-center text-sm">
+        <div class="container mx-auto px-4">
+            <h3 class="text-white font-bold text-xl mb-2" id="foot-nama">NAMA SEKOLAH</h3>
+            <p id="foot-alamat" class="mb-8">Memuat alamat...</p>
+            <div class="flex justify-center gap-6 mb-10 text-2xl">
+                <a id="link-fb" href="#" target="_blank" class="hover:text-blue-400"><i class="fab fa-facebook"></i></a>
+                <a id="link-ig" href="#" target="_blank" class="hover:text-pink-400"><i class="fab fa-instagram"></i></a>
+                <a id="link-yt" href="#" target="_blank" class="hover:text-red-500"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>&copy; 2026 Portal Sekolah Digital</p>
         </div>
-        <p class="text-xs text-gray-500">&copy; 2026 Portal Sekolah Digital.</p>
     </footer>
 
-    <div id="toast" class="toast">Notifikasi</div>
+    <div id="toast" class="toast p-4 font-bold shadow-2xl">Pesan...</div>
 
     <script>
-        async function fetchAPI(act, meth='GET', d=null) {
+        async function fetchAPI(act, params={}) {
             try {
                 let url = `${API_URL}?action=${act}`;
-                if(act === 'login') {
-                    // KHUSUS LOGIN: PAKAI GET (SESUAI BACKEND V10)
-                    url += `&user=${d.user}&pass=${d.pass}`;
-                    const res = await fetch(url);
-                    return await res.json();
-                }
+                for (let key in params) { url += `&${key}=${encodeURIComponent(params[key])}`; }
                 
-                let opt = { method: meth };
-                if (meth === 'POST') { 
-                    opt.body=JSON.stringify({action:act, data:d}); 
-                    opt.headers={"Content-Type":"text/plain;charset=utf-8"}; 
-                }
-                const res = await fetch(url, opt);
-                return await res.json();
-            } catch(e) { console.error(e); return null; }
+                const response = await fetch(url);
+                return await response.json();
+            } catch (e) { console.error(e); return null; }
+        }
+
+        async function postAPI(act, data) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: act, data: data }),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                return await response.json();
+            } catch (e) { return null; }
         }
 
         document.addEventListener('DOMContentLoaded', initApp);
 
-        function navigate(id) { document.querySelectorAll('.page-section').forEach(e=>e.classList.add('hidden-section')); document.getElementById(id).classList.remove('hidden-section'); window.scrollTo(0,0); }
-        function showTab(id) { document.querySelectorAll('.adm-tab').forEach(e=>e.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
-        function showToast(m) { const t=document.getElementById('toast'); t.innerText=m; t.className="toast show"; setTimeout(()=>t.className="toast",3000); }
+        function navigate(id) {
+            document.querySelectorAll('.page-section').forEach(s => s.classList.add('hidden-section'));
+            document.getElementById(id).classList.remove('hidden-section');
+            window.scrollTo(0, 0);
+        }
+
+        function showToast(m) {
+            const t = document.getElementById('toast'); t.innerText = m; t.className = "toast show";
+            setTimeout(() => t.className = "toast", 3000);
+        }
 
         async function initApp() {
             const res = await fetchAPI('getPublicData');
-            const loadOverlay = document.getElementById('loading-overlay');
-            if(loadOverlay) { loadOverlay.style.opacity = '0'; setTimeout(() => loadOverlay.remove(), 500); }
-            
-            if(res && res.status==='success') {
+            document.getElementById('loading-overlay').style.opacity = '0';
+            setTimeout(() => document.getElementById('loading-overlay').remove(), 500);
+
+            if (res && res.status === 'success') {
                 const c = res.config;
-                // Render Basic
-                const setT=(i,v)=>{if(document.getElementById(i))document.getElementById(i).innerText=v||'-'};
-                const setS=(i,v)=>{if(document.getElementById(i))document.getElementById(i).src=v||''; if(v)document.getElementById(i).classList.remove('hidden');};
-                const setV=(i,v)=>{if(document.getElementById(i))document.getElementById(i).value=v||''};
+                // Config
+                document.getElementById('header-nama').innerText = c.NamaSekolah || "SEKOLAH";
+                document.getElementById('foot-nama').innerText = c.NamaSekolah || "SEKOLAH";
+                document.getElementById('banner-title').innerText = c.NamaSekolah || "Selamat Datang";
+                document.getElementById('running-text').innerText = c.RunningText || "-";
+                document.getElementById('foot-alamat').innerText = c.Alamat || "-";
+                document.getElementById('view-visi').innerText = c.Visi || "-";
+                document.getElementById('view-misi').innerText = c.Misi || "-";
 
-                setT('header-nama',c.NamaSekolah); setT('foot-nama',c.NamaSekolah); setT('banner-title',c.NamaSekolah);
-                setT('running-text',c.RunningText); setT('foot-alamat',c.Alamat);
-                setS('header-logo',c.LogoURL); setS('home-banner',c.BannerURL);
-                setS('img-7kebiasaan',c.Url_7Kebiasaan); setS('img-8dimensi',c.Url_8Dimensi); setS('img-sotk',c.Url_SOTK);
-                setT('view-visi',c.Visi); setT('view-misi',c.Misi);
+                if (c.LogoURL) { document.getElementById('header-logo').src = c.LogoURL; document.getElementById('header-logo').classList.remove('hidden'); }
+                if (c.BannerURL) document.getElementById('home-banner').src = c.BannerURL;
+                if (c.Url_7Kebiasaan) document.getElementById('img-7kebiasaan').src = c.Url_7Kebiasaan;
+                if (c.Url_8Dimensi) document.getElementById('img-8dimensi').src = c.Url_8Dimensi;
+                if (c.Url_SOTK) document.getElementById('img-sotk').src = c.Url_SOTK;
 
-                document.getElementById('link-fb').href=c.Facebook||'#'; document.getElementById('link-ig').href=c.Instagram||'#';
-                document.getElementById('link-tk').href=c.TikTok||'#'; document.getElementById('link-yt').href=c.YoutubeChannel||'#';
+                // Sosmed
+                document.getElementById('link-fb').href = c.Facebook || "#";
+                document.getElementById('link-ig').href = c.Instagram || "#";
+                document.getElementById('link-yt').href = c.YoutubeChannel || "#";
 
-                // Multimedia
-                const galeri = res.galeri||[];
-                const music = galeri.find(g=>g.tipe==='Musik');
-                if(music && document.getElementById('music-section')){ document.getElementById('music-section').classList.remove('hidden'); document.getElementById('music-title').innerText=music.judul; document.getElementById('audio-player').src=music.link; }
-                
-                const dFoto=document.getElementById('galeri-foto'); if(dFoto) dFoto.innerHTML='';
-                const dVid=document.getElementById('galeri-video'); if(dVid) dVid.innerHTML='';
-                const lAdm=document.getElementById('admin-media-list'); if(lAdm) lAdm.innerHTML='';
+                // Stats
+                document.getElementById('stat-siswa').innerText = res.stats.siswa;
+                document.getElementById('stat-guru').innerText = res.stats.guru;
+                document.getElementById('stat-kelas').innerText = res.stats.kelas;
 
-                galeri.forEach(g=>{
-                    if(lAdm) lAdm.innerHTML+=`<div class="flex justify-between items-center bg-gray-50 p-2 rounded mb-1 border"><div class="truncate text-xs font-bold mr-2">[${g.tipe}] ${g.judul}</div><button onclick="delGaleri('${g.link}')" class="text-red-500"><i class="fas fa-trash"></i></button></div>`;
-                    if(g.tipe==='Foto' && dFoto) dFoto.innerHTML+=`<div class="aspect-square bg-gray-200 rounded-xl overflow-hidden shadow-lg hover-scale cursor-pointer group relative"><img src="${g.link}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" onclick="window.open(this.src)"></div>`;
-                    else if(g.tipe==='Video' && dVid) { let e=g.link.replace('watch?v=','embed/').replace('youtu.be/','youtube.com/embed/'); dVid.innerHTML+=`<div class="bg-white p-2 rounded-xl shadow-lg"><div class="aspect-video rounded-lg overflow-hidden"><iframe src="${e}" class="w-full h-full" frameborder="0" allowfullscreen></iframe></div></div>`; }
+                // Guru
+                const gGrid = document.getElementById('grid-guru');
+                res.guruList.forEach(g => {
+                    gGrid.innerHTML += `<div class="bg-white p-6 rounded-3xl shadow-sm text-center border border-slate-50"><img src="${g.foto || 'https://via.placeholder.com/150'}" class="w-24 h-24 mx-auto rounded-full object-cover mb-4"><h4 class="font-bold text-slate-800">${g.nama}</h4><p class="text-xs text-blue-500 font-bold uppercase">${g.mapel}</p></div>`;
+                });
+
+                // Galeri
+                const music = res.galeri.find(g => g.tipe === 'Musik');
+                if (music) {
+                    document.getElementById('music-section').classList.remove('hidden');
+                    document.getElementById('music-title').innerText = music.judul;
+                    document.getElementById('audio-player').src = music.link;
+                }
+                const vGrid = document.getElementById('galeri-video');
+                const fGrid = document.getElementById('galeri-foto');
+                res.galeri.forEach(g => {
+                    if (g.tipe === 'Foto') fGrid.innerHTML += `<img src="${g.link}" class="rounded-2xl shadow-sm aspect-square object-cover">`;
+                    if (g.tipe === 'Video') {
+                        let embed = g.link.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/');
+                        vGrid.innerHTML += `<div class="rounded-2xl overflow-hidden shadow-sm aspect-video"><iframe src="${embed}" class="w-full h-full" frameborder="0" allowfullscreen></iframe></div>`;
+                    }
+                });
+
+                // Berita
+                const bList = document.getElementById('list-berita');
+                if (res.berita.length === 0) bList.innerHTML = "<p class='text-slate-400'>Belum ada berita terbaru.</p>";
+                res.berita.forEach(b => {
+                    bList.innerHTML += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-50 hover:border-blue-200 transition">
+                        <p class="text-[10px] font-bold text-blue-500 mb-1">${new Date(b[1]).toLocaleDateString()}</p>
+                        <h4 class="font-bold text-slate-800">${b[0]}</h4>
+                    </div>`;
                 });
 
                 // SPMB
-                const info = document.getElementById('spmb-info-content'); if(info) info.innerText = c.SPMB_Info||'-';
-                if(c.SPMB_Status==='Buka') {
-                    if(document.getElementById('spmb-status-msg')) document.getElementById('spmb-status-msg').innerHTML = "<span class='bg-green-100 text-green-700 px-4 py-1 rounded-full'>PENDAFTARAN DIBUKA</span>";
-                    if(document.getElementById('spmb-form-area')) document.getElementById('spmb-form-area').classList.remove('hidden');
-                    if(document.getElementById('spmb-tutup')) document.getElementById('spmb-tutup').classList.add('hidden');
+                document.getElementById('spmb-info-content').innerText = c.SPMB_Info || "Informasi pendaftaran belum tersedia.";
+                if (c.SPMB_Status === 'Buka') {
+                    document.getElementById('spmb-status-msg').innerHTML = "<span class='text-green-600 bg-green-50 px-4 py-1 rounded-full text-xs'>PENDAFTARAN DIBUKA</span>";
+                    document.getElementById('form-spmb').classList.remove('hidden');
                 } else {
-                    if(document.getElementById('spmb-status-msg')) document.getElementById('spmb-status-msg').innerHTML = "<span class='bg-red-100 text-red-700 px-4 py-1 rounded-full'>PENDAFTARAN DITUTUP</span>";
-                    if(document.getElementById('spmb-form-area')) document.getElementById('spmb-form-area').classList.add('hidden');
-                    if(document.getElementById('spmb-tutup')) document.getElementById('spmb-tutup').classList.remove('hidden');
+                    document.getElementById('spmb-status-msg').innerHTML = "<span class='text-red-600 bg-red-50 px-4 py-1 rounded-full text-xs'>PENDAFTARAN DITUTUP</span>";
+                    document.getElementById('spmb-tutup').classList.remove('hidden');
                 }
-
-                // Stats & Tables
-                setT('stat-siswa',res.stats.siswa); setT('stat-guru',res.stats.guru); setT('stat-kelas',res.stats.kelas);
-                
-                const gGrid = document.getElementById('grid-guru'); if(gGrid) { gGrid.innerHTML=''; res.guruList.forEach(g => gGrid.innerHTML+=`<div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:-translate-y-2 transition border border-gray-100"><img src="${g.foto||'https://via.placeholder.com/150'}" class="w-24 h-24 mx-auto rounded-full object-cover mb-4 border-4 border-blue-50 shadow-sm"><h4 class="font-bold text-gray-800">${g.nama}</h4><p class="text-xs text-blue-500 font-bold uppercase mt-1">${g.mapel}</p><p class="text-[10px] text-gray-400 mt-2 font-mono bg-gray-50 inline-block px-2 py-1 rounded">NIP: ${g.nip||'-'}</p></div>`); }
-
-                const lBerita = document.getElementById('list-berita'); if(lBerita) { lBerita.innerHTML=''; if(res.berita.length===0) lBerita.innerHTML='<div class="text-gray-400 text-center py-4 italic">Belum ada berita.</div>'; else res.berita.forEach(b => lBerita.innerHTML+=`<div class="bg-white border-l-4 border-blue-500 pl-4 py-2 hover:bg-gray-50 transition rounded-r-lg"><div class="text-xs text-gray-400 font-bold mb-1">${new Date(b[1]).toLocaleDateString()}</div><div class="font-bold text-gray-800 leading-tight">${b[0]}</div></div>`); }
-
-                const tSiswa = document.getElementById('tbl-siswa'); if(tSiswa) { tSiswa.innerHTML=''; res.siswaDetail.forEach(r => tSiswa.innerHTML+=`<tr class="border-b border-gray-100 hover:bg-blue-50/50"><td class="p-3 font-medium text-gray-700">${r[0]}</td><td class="text-center text-blue-600 font-bold bg-blue-50/30">${r[1]}</td><td class="text-center text-pink-600 font-bold bg-pink-50/30">${r[2]}</td><td class="text-center font-extrabold text-gray-800">${Number(r[1])+Number(r[2])}</td></tr>`); }
-
-                const tDL = document.getElementById('tbl-dl'); if(tDL) { tDL.innerHTML=''; res.downloads.forEach(d => tDL.innerHTML+=`<tr class="border-b border-gray-50 hover:bg-gray-50"><td class="p-4 font-bold text-gray-700">${d[0]}</td><td class="text-xs text-gray-500 uppercase tracking-wide font-bold">${d[2]}</td><td class="text-center"><a href="${d[1]}" target="_blank" class="inline-block bg-blue-100 text-blue-700 font-bold text-xs px-3 py-1.5 rounded-lg hover:bg-blue-600 hover:text-white transition shadow-sm">Unduh</a></td></tr>`); }
-
-                // Prefill Admin
-                const flds=['cfg-nama','cfg-logo','cfg-banner','cfg-alamat','cfg-running','cfg-spmb-stat','cfg-spmb-info','cfg-fb','cfg-ig','cfg-tiktok','cfg-yt'];
-                const keys=['NamaSekolah','LogoURL','BannerURL','Alamat','RunningText','SPMB_Status','SPMB_Info','Facebook','Instagram','TikTok','YoutubeChannel'];
-                flds.forEach((id,i)=>setV(id, c[keys[i]]));
+            } else {
+                showToast("Gagal mengambil data. Cek ID Spreadsheet Anda!");
             }
         }
 
         async function doLogin(e) {
             e.preventDefault();
-            const u=document.getElementById('u').value, p=document.getElementById('p').value;
-            const b=document.getElementById('btn-login'); b.innerText='...';
-            // LOGIN USE GET METHOD (V10 BACKEND)
-            const res = await fetchAPI('login', 'GET', {user:u, pass:p});
-            b.innerText='MASUK';
-            if(res && res.status==='success') { showToast('Login Berhasil'); navigate('admin'); }
-            else showToast('Login Gagal');
-        }
-
-        async function saveConfig(e) {
-            e.preventDefault();
-            const d = {
-                NamaSekolah: document.getElementById('cfg-nama').value, LogoURL: document.getElementById('cfg-logo').value, BannerURL: document.getElementById('cfg-banner').value,
-                Alamat: document.getElementById('cfg-alamat').value, RunningText: document.getElementById('cfg-running').value,
-                SPMB_Status: document.getElementById('cfg-spmb-stat').value, SPMB_Info: document.getElementById('cfg-spmb-info').value,
-                Facebook: document.getElementById('cfg-fb').value, Instagram: document.getElementById('cfg-ig').value, TikTok: document.getElementById('cfg-tiktok').value, YoutubeChannel: document.getElementById('cfg-yt').value
-            };
-            const res = await fetchAPI('saveConfig', 'POST', {data:d});
-            if(res && res.status==='success') { showToast('Tersimpan!'); setTimeout(()=>location.reload(), 1000); }
+            const res = await fetchAPI('login', { user: document.getElementById('u').value, pass: document.getElementById('p').value });
+            if (res && res.status === 'success') navigate('admin');
+            else showToast("Username atau Password Salah");
         }
 
         async function saveGaleri(e) {
             e.preventDefault();
-            const d = { tipe: document.getElementById('media-tipe').value, judul: document.getElementById('media-judul').value, link: document.getElementById('media-link').value };
-            const res = await fetchAPI('saveGaleri', 'POST', {data:d});
-            if(res && res.status==='success') { showToast('Media Ditambahkan!'); setTimeout(()=>location.reload(), 1000); }
+            const data = { tipe: document.getElementById('media-tipe').value, judul: document.getElementById('media-judul').value, link: document.getElementById('media-link').value };
+            const res = await postAPI('saveGaleri', data);
+            if (res && res.status === 'success') { showToast("Berhasil Disimpan!"); location.reload(); }
         }
-
-        async function delGaleri(l) { if(confirm('Hapus?')) { const r = await fetchAPI('deleteGaleri', 'POST', {link:l}); if(r&&r.status==='success') location.reload(); } }
 
         async function kirimSPMB(e) {
             e.preventDefault();
-            const f=e.target, b=document.getElementById('btn-spmb'); b.innerText='Mengirim...'; b.disabled=true;
-            const d = { nama: f.nama.value, nik: f.nik.value, asal: f.asal.value, ttl: f.ttl.value, ortu: f.ortu.value, hp: f.hp.value };
-            const res = await fetchAPI('submitSPMB', 'POST', { data:d });
-            b.innerText='KIRIM PENDAFTARAN'; b.disabled=false;
-            if(res && res.status==='success') { showToast('Terkirim!'); f.reset(); } else showToast('Gagal');
+            const f = e.target;
+            const data = { nama: f.nama.value, nik: f.nik.value, hp: f.hp.value };
+            const res = await postAPI('submitSPMB', data);
+            if (res && res.status === 'success') { showToast("Pendaftaran Berhasil Terkirim!"); f.reset(); }
         }
     </script>
 </body>
