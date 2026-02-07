@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Informasi Sekolah</title>
+    <!-- Library CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -22,13 +23,29 @@
 
     <style>
         body { background-color: #f8fafc; scroll-behavior: smooth; }
-        .glass-nav { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        
+        /* Glassmorphism Header */
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .hidden-section { display: none !important; }
+        
+        /* Effects */
         .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
         .poster-card:hover { transform: scale(1.02); transition: transform 0.3s; }
+
+        /* Loader & Scrollbar */
         .loader { width: 48px; height: 48px; border: 5px solid #FFF; border-bottom-color: #3b82f6; border-radius: 50%; display: inline-block; animation: rotation 1s linear infinite; }
         @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+
+        /* Toast & Audio */
         .toast { visibility: hidden; min-width: 250px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 9999; left: 50%; transform: translateX(-50%); bottom: 30px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); font-weight: 600; }
         .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
@@ -38,9 +55,8 @@
 </head>
 <body class="flex flex-col min-h-screen text-gray-800 antialiased selection:bg-blue-100 selection:text-blue-900">
 
-    <!-- KONFIGURASI API -->
+    <!-- KONFIGURASI API (SUDAH DIPASANG) -->
     <script>
-        // Link API Anda yang sudah benar
         const API_URL = "https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec";
     </script>
 
@@ -62,15 +78,15 @@
 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-1">
-                    <button onclick="navigate('home')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Beranda</button>
-                    <button onclick="navigate('profil')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Profil</button>
-                    <button onclick="navigate('galeri')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Galeri</button>
-                    <button onclick="navigate('guru')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Guru</button>
-                    <button onclick="navigate('download')" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Unduhan</button>
-                    <button onclick="navigate('spmb')" class="px-4 py-2 text-sm font-bold bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full shadow-lg hover:shadow-blue-500/30 hover:scale-105 transition transform">PPDB</button>
+                    <button onclick="navigate('home')" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Beranda</button>
+                    <button onclick="navigate('profil')" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Profil</button>
+                    <button onclick="navigate('galeri')" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Galeri</button>
+                    <button onclick="navigate('guru')" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Guru</button>
+                    <button onclick="navigate('download')" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Unduhan</button>
+                    <button onclick="navigate('spmb')" class="ml-2 px-5 py-2 text-sm font-bold bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full shadow-lg hover:shadow-blue-500/30 hover:scale-105 transition transform">PPDB Online</button>
                     
-                    <!-- TOMBOL LOGIN (BARU & JELAS) -->
-                    <button onclick="navigate('login')" class="ml-2 px-3 py-2 text-sm font-bold text-yellow-400 border border-yellow-400/30 rounded-lg hover:bg-yellow-400/10 transition flex items-center gap-2">
+                    <!-- TOMBOL LOGIN MENU -->
+                    <button onclick="navigate('login')" class="ml-2 px-4 py-2 text-sm font-bold text-yellow-400 border border-yellow-400/30 rounded-lg hover:bg-yellow-400/10 transition flex items-center gap-2">
                         <i class="fas fa-lock"></i> Login
                     </button>
                 </div>
@@ -81,7 +97,6 @@
                 </button>
             </div>
         </div>
-        
         <!-- Mobile Dropdown -->
         <div id="mobile-menu" class="hidden md:hidden bg-primary border-t border-gray-800">
             <div class="px-2 pt-2 pb-3 space-y-1">
@@ -89,7 +104,6 @@
                 <button onclick="navigate('profil')" class="block w-full text-left px-3 py-2 text-gray-300 hover:bg-white/10 rounded-md">Profil</button>
                 <button onclick="navigate('guru')" class="block w-full text-left px-3 py-2 text-gray-300 hover:bg-white/10 rounded-md">Guru</button>
                 <button onclick="navigate('galeri')" class="block w-full text-left px-3 py-2 text-gray-300 hover:bg-white/10 rounded-md">Galeri</button>
-                <button onclick="navigate('download')" class="block w-full text-left px-3 py-2 text-gray-300 hover:bg-white/10 rounded-md">Download</button>
                 <button onclick="navigate('spmb')" class="block w-full text-left px-3 py-2 text-yellow-400 font-bold bg-white/5 rounded-md">PPDB Online</button>
                 <button onclick="navigate('login')" class="block w-full text-left px-3 py-2 text-white font-bold bg-blue-600 rounded-md mt-2">LOGIN ADMIN</button>
             </div>
@@ -105,12 +119,14 @@
     <!-- MAIN CONTENT -->
     <main class="flex-grow pt-20 pb-10">
         
-        <!-- HOME SECTION -->
+        <!-- SECTION: HOME -->
         <section id="home" class="page-section container mx-auto px-4">
+            
             <!-- Hero Banner -->
             <div class="relative h-[300px] md:h-[500px] rounded-3xl overflow-hidden shadow-2xl mb-12 group bg-gray-200">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
                 <img id="home-banner" src="" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105" alt="Banner Sekolah">
+                
                 <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 z-20">
                     <span class="inline-block px-3 py-1 bg-blue-600/90 backdrop-blur text-white text-xs font-bold rounded-full mb-3 shadow-lg">RESMI</span>
                     <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg" id="banner-title">Selamat Datang</h2>
@@ -120,7 +136,7 @@
                 </div>
             </div>
 
-            <!-- Stats -->
+            <!-- Stats Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 -mt-16 md:-mt-24 relative z-30 px-2 md:px-6">
                 <div class="bg-white p-6 rounded-2xl shadow-xl card-hover border border-gray-100 flex items-center justify-between">
                     <div><p class="text-gray-500 text-xs font-bold uppercase tracking-wider">Total Siswa</p><h3 class="text-4xl font-extrabold text-gray-800 mt-1" id="stat-siswa">0</h3></div>
@@ -145,12 +161,15 @@
 
             <!-- Content Grid -->
             <div class="grid md:grid-cols-12 gap-8">
+                <!-- Berita -->
                 <div class="md:col-span-8 space-y-6">
                     <div class="flex items-center justify-between mb-2">
                         <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2"><span class="w-2 h-8 bg-blue-600 rounded-full"></span> Berita Terbaru</h3>
                     </div>
                     <div id="list-berita" class="space-y-4"></div>
                 </div>
+
+                <!-- Sidebar -->
                 <div class="md:col-span-4 space-y-6">
                     <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                         <h4 class="font-bold text-gray-800 mb-4 border-b pb-2">Poster Edukasi</h4>
@@ -159,11 +178,16 @@
                             <img id="img-8dimensi" src="" class="w-full rounded-lg shadow-md cursor-pointer hover:opacity-90 transition poster-card" onclick="window.open(this.src)">
                         </div>
                     </div>
+                    <div class="bg-gradient-to-br from-blue-600 to-blue-800 p-6 rounded-2xl shadow-lg text-white text-center">
+                        <i class="fas fa-file-signature text-4xl mb-3 opacity-80"></i>
+                        <h4 class="font-bold text-xl mb-1">SPMB 2026</h4>
+                        <button onclick="navigate('spmb')" class="w-full bg-white text-blue-700 font-bold py-2 mt-4 rounded-lg hover:bg-gray-100 transition shadow">Cek Informasi</button>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- PROFIL -->
+        <!-- SECTION: PROFIL -->
         <section id="profil" class="hidden-section page-section container mx-auto px-4 max-w-5xl">
             <div class="text-center mb-10"><h2 class="text-3xl font-bold text-gray-800">Profil Sekolah</h2><div class="w-20 h-1 bg-blue-500 mx-auto mt-4 rounded-full"></div></div>
             <div class="bg-white rounded-3xl shadow-xl overflow-hidden mb-10">
@@ -176,13 +200,14 @@
                     <div id="view-misi" class="text-gray-700 leading-loose text-lg max-w-3xl mx-auto whitespace-pre-line text-center">...</div>
                 </div>
             </div>
+            <!-- SOTK -->
             <div class="bg-white p-6 rounded-3xl shadow-lg text-center">
                 <h3 class="font-bold text-xl text-gray-800 mb-6">Struktur Organisasi</h3>
                 <img id="img-sotk" src="" class="max-w-full h-auto mx-auto rounded-xl shadow-inner bg-gray-50 p-2" onerror="this.style.display='none'">
             </div>
         </section>
 
-        <!-- GALERI -->
+        <!-- SECTION: GALERI -->
         <section id="galeri" class="hidden-section page-section container mx-auto px-4">
             <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Galeri Kegiatan</h2>
             <div class="mb-12">
@@ -195,21 +220,24 @@
             </div>
         </section>
 
-        <!-- GURU -->
+        <!-- SECTION: GURU -->
         <section id="guru" class="hidden-section page-section container mx-auto px-4">
             <div class="text-center mb-10"><h2 class="text-3xl font-bold text-gray-800">Direktori Guru</h2><p class="text-gray-500 mt-2">Pendidik profesional yang siap membimbing siswa.</p></div>
             <div id="grid-guru" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
         </section>
 
-        <!-- DOWNLOAD -->
+        <!-- SECTION: DOWNLOAD -->
         <section id="download" class="hidden-section page-section container mx-auto px-4 max-w-4xl">
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Dokumen & Unduhan</h2>
             <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-                <table class="w-full text-sm"><thead class="bg-gray-50 text-gray-500 uppercase font-bold text-xs"><tr><th class="p-4 text-left">Nama Dokumen</th><th class="p-4 text-left">Kategori</th><th class="p-4 text-center">Aksi</th></tr></thead><tbody id="tbl-dl" class="divide-y divide-gray-100"></tbody></table>
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50 text-gray-500 uppercase font-bold text-xs"><tr><th class="p-4 text-left">Nama Dokumen</th><th class="p-4 text-left">Kategori</th><th class="p-4 text-center">Aksi</th></tr></thead>
+                    <tbody id="tbl-dl" class="divide-y divide-gray-100"></tbody>
+                </table>
             </div>
         </section>
 
-        <!-- SPMB -->
+        <!-- SECTION: SPMB -->
         <section id="spmb" class="hidden-section page-section container mx-auto px-4 max-w-4xl">
             <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
                 <div class="bg-blue-600 p-8 text-center text-white relative overflow-hidden">
@@ -219,26 +247,29 @@
                 </div>
                 <div class="p-8 md:p-10">
                     <div id="spmb-status-msg" class="text-center font-bold text-lg mb-6 p-3 rounded-lg"></div>
-                    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg mb-8"><h4 class="font-bold text-blue-800 mb-2">Informasi & Syarat</h4><div id="spmb-info-content" class="text-gray-700 text-sm leading-relaxed whitespace-pre-line"></div></div>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg mb-8">
+                        <h4 class="font-bold text-blue-800 mb-2">Informasi & Syarat</h4>
+                        <div id="spmb-info-content" class="text-gray-700 text-sm leading-relaxed whitespace-pre-line"></div>
+                    </div>
                     <div id="spmb-tutup" class="hidden text-center py-10"><i class="fas fa-lock text-6xl text-gray-200 mb-4 block"></i><span class="text-gray-500 font-bold">Formulir Pendaftaran Belum Tersedia</span></div>
                     <form id="form-spmb" onsubmit="kirimSPMB(event)" class="hidden space-y-6">
                         <div class="grid md:grid-cols-2 gap-6">
-                            <div><label class="block text-sm font-bold text-gray-700 mb-1">Nama Lengkap</label><input type="text" name="nama" class="w-full border border-gray-300 p-3 rounded-lg" required></div>
-                            <div><label class="block text-sm font-bold text-gray-700 mb-1">NIK</label><input type="number" name="nik" class="w-full border border-gray-300 p-3 rounded-lg" required></div>
+                            <div><label class="block text-sm font-bold text-gray-700 mb-1">Nama Lengkap</label><input type="text" name="nama" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required></div>
+                            <div><label class="block text-sm font-bold text-gray-700 mb-1">NIK</label><input type="number" name="nik" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required></div>
                         </div>
                         <input type="text" name="ttl" placeholder="TTL" class="w-full border border-gray-300 p-3 rounded-lg" required>
                         <input type="text" name="asal" placeholder="Asal Sekolah" class="w-full border border-gray-300 p-3 rounded-lg" required>
                         <input type="text" name="ortu" placeholder="Nama Ortu" class="w-full border border-gray-300 p-3 rounded-lg" required>
                         <input type="text" name="hp" placeholder="No WhatsApp" class="w-full border border-gray-300 p-3 rounded-lg" required>
-                        <button type="submit" id="btn-spmb" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 shadow-lg">KIRIM PENDAFTARAN</button>
+                        <button type="submit" id="btn-spmb" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 shadow-lg transform active:scale-95 transition">KIRIM PENDAFTARAN</button>
                     </form>
                 </div>
             </div>
         </section>
 
-        <!-- LOGIN FORM -->
+        <!-- ADMIN LOGIN -->
         <section id="login" class="hidden-section page-section flex justify-center items-center py-20">
-            <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center border-t-8 border-blue-600">
+            <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center">
                 <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600 text-2xl"><i class="fas fa-user-shield"></i></div>
                 <h2 class="font-bold text-xl mb-6 text-gray-800">Login Administrator</h2>
                 <form onsubmit="doLogin(event)" class="space-y-4">
@@ -393,14 +424,13 @@
                 const tDL = document.getElementById('tbl-dl'); tDL.innerHTML='';
                 res.downloads.forEach(d => tDL.innerHTML+=`<tr class="border-b border-gray-50 hover:bg-gray-50"><td class="p-4 font-bold text-gray-700">${d[0]}</td><td class="text-xs text-gray-500 uppercase tracking-wide font-bold">${d[2]}</td><td class="text-center"><a href="${d[1]}" target="_blank" class="inline-block bg-blue-100 text-blue-700 font-bold text-xs px-3 py-1.5 rounded-lg hover:bg-blue-600 hover:text-white transition shadow-sm">Unduh</a></td></tr>`);
 
-                // Form Pre-fill
-                const flds = ['cfg-nama','cfg-logo','cfg-banner','cfg-alamat','cfg-running','cfg-spmb-stat','cfg-spmb-info','cfg-fb','cfg-ig','cfg-tiktok','cfg-yt'];
-                const keys = ['NamaSekolah','LogoURL','BannerURL','Alamat','RunningText','SPMB_Status','SPMB_Info','Facebook','Instagram','TikTok','YoutubeChannel'];
-                flds.forEach((id,i) => setV(id, c[keys[i]]));
+                // Admin Prefill
+                const flds=['cfg-nama','cfg-logo','cfg-banner','cfg-alamat','cfg-running','cfg-spmb-stat','cfg-spmb-info','cfg-fb','cfg-ig','cfg-tiktok','cfg-yt'];
+                const keys=['NamaSekolah','LogoURL','BannerURL','Alamat','RunningText','SPMB_Status','SPMB_Info','Facebook','Instagram','TikTok','YoutubeChannel'];
+                flds.forEach((id,i)=>setV(id, c[keys[i]]));
             }
         }
 
-        // ACTIONS
         async function doLogin(e) {
             e.preventDefault();
             const u=document.getElementById('u').value, p=document.getElementById('p').value;
