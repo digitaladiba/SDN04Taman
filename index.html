@@ -34,9 +34,8 @@
         .animate-fade-in { animation: fadeIn 0.6s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Premium Card Effects */
         .card-premium { background: white; border: 1px solid #f1f5f9; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .card-premium:hover { transform: translateY(-10px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); }
+        .card-premium:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); }
         
         .loader { width: 48px; height: 48px; border: 5px solid #e2e8f0; border-bottom-color: #2563eb; border-radius: 50%; display: inline-block; animation: rotation 1s linear infinite; }
         @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -168,7 +167,7 @@
                     <div id="list-berita" class="grid sm:grid-cols-2 gap-8"></div>
                 </div>
                 <div class="lg:col-span-4">
-                    <div class="bg-white p-6 rounded-[3.5rem] shadow-xl border border-slate-100 sticky top-28 card-premium">
+                    <div class="bg-white p-6 rounded-3.5rem shadow-xl border border-slate-100 sticky top-28 card-premium">
                         <h4 class="font-black text-slate-800 mb-6 flex items-center gap-3 px-4 uppercase text-xs tracking-widest">
                             <i class="fas fa-map-pin text-rose-500"></i> Lokasi Kampus
                         </h4>
@@ -195,41 +194,61 @@
                         <h4 class="font-black text-blue-600 text-xs uppercase tracking-widest mb-6 flex items-center gap-3"><span class="w-8 h-1 bg-blue-600 rounded-full"></span> Misi Kami</h4>
                         <div id="view-misi" class="text-slate-500 text-lg leading-loose font-medium">...</div>
                     </div>
-                    <div class="bg-slate-50 p-10 rounded-[3rem] border border-white">
+                    <div class="bg-slate-50 p-10 rounded-[3rem] border border-white text-center">
                         <h4 class="font-black text-emerald-600 text-xs uppercase tracking-widest mb-6">Struktur Organisasi</h4>
-                        <img id="img-sotk" src="" class="w-full h-auto rounded-3xl shadow-xl hover:scale-105 transition duration-700 cursor-zoom-in">
+                        <img id="img-sotk" src="" class="w-full h-auto rounded-3xl shadow-xl hover:scale-105 transition duration-700 cursor-zoom-in mx-auto">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION: AKADEMIK & LMS -->
+        <!-- SECTION: AKADEMIK & LMS (VERSI UI SEBELUMNYA YANG BAGUS) -->
         <section id="akademik" class="hidden-section page-section container mx-auto px-4 max-w-6xl">
-            <div class="grid lg:grid-cols-2 gap-12 items-center mb-20">
-                <div class="order-2 lg:order-1">
-                    <span class="text-blue-600 font-black uppercase text-[10px] tracking-[0.4em] mb-6 block">Teknologi Pembelajaran</span>
-                    <h2 class="text-5xl md:text-7xl font-black text-slate-900 mb-8 leading-none tracking-tighter uppercase">Portal <br> Akademik</h2>
-                    <p class="text-slate-500 text-lg leading-relaxed mb-12 font-medium">SDN 4 Taman menghadirkan ekosistem digital terpadu untuk memudahkan Bapak/Ibu Guru dan para Siswa dalam proses belajar mengajar yang modern dan efisien.</p>
-                    <div class="flex flex-wrap gap-4">
-                        <a id="lms-btn" href="#" target="_blank" class="bg-blue-600 text-white font-black py-6 px-12 rounded-[2rem] shadow-2xl shadow-blue-500/40 hover:bg-blue-700 transition active:scale-95 uppercase text-xs tracking-widest">Masuk E-Learning <i class="fas fa-arrow-right-long ml-3"></i></a>
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-4 uppercase tracking-tighter">Layanan Akademik</h2>
+                <p class="text-slate-500 max-w-2xl mx-auto font-medium">Mewujudkan ekosistem digital Merdeka Belajar di SDN 4 Taman melalui portal terintegrasi.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-10 items-stretch">
+                <!-- MAIN LMS CARD (THE ONE YOU LIKED) -->
+                <div class="bg-gradient-to-br from-blue-700 via-indigo-800 to-blue-950 p-12 rounded-[4rem] text-white shadow-2xl relative overflow-hidden group">
+                    <div class="absolute -top-10 -right-10 text-[16rem] text-white opacity-5 group-hover:scale-110 transition duration-1000 rotate-12"><i class="fas fa-laptop-code"></i></div>
+                    <div class="relative z-10 h-full flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-5 py-2 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-widest mb-8">Pusat Belajar Online</span>
+                            <h3 class="text-4xl md:text-5xl font-black mb-6 leading-tight tracking-tight">Sistem LMS <br> SDN 4 Taman</h3>
+                            <p class="text-blue-100 mb-12 text-base md:text-lg leading-relaxed max-w-sm opacity-80">Portal terpadu untuk materi pembelajaran, tugas harian, dan evaluasi hasil belajar secara mandiri.</p>
+                        </div>
+                        <a id="lms-btn" href="#" target="_blank" class="inline-flex items-center justify-center gap-4 bg-white text-blue-900 font-black py-6 px-10 rounded-[2rem] shadow-2xl hover:bg-slate-50 active:scale-95 transition-all w-full md:w-fit uppercase tracking-widest text-[11px]">
+                            Buka Pembelajaran <i class="fas fa-arrow-right-long text-sm"></i>
+                        </a>
                     </div>
                 </div>
-                <div class="order-1 lg:order-2 bg-white p-4 rounded-[4rem] shadow-2xl border border-slate-100 rotate-2">
-                    <div class="bg-slate-900 rounded-[3.5rem] aspect-video flex items-center justify-center relative overflow-hidden group">
-                        <i class="fas fa-play-circle text-8xl text-white/20 group-hover:text-blue-500 transition duration-500"></i>
-                        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1000" class="absolute inset-0 w-full h-full object-cover opacity-40">
+                <!-- Support Apps Grid -->
+                <div class="grid gap-6">
+                    <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm flex items-center gap-8 card-premium group">
+                        <div class="w-20 h-20 bg-purple-50 rounded-[2rem] flex items-center justify-center text-purple-600 text-3xl shadow-inner group-hover:bg-purple-600 group-hover:text-white transition-colors duration-500"><i class="fas fa-book-open-reader"></i></div>
+                        <div><h4 class="text-xl font-black text-slate-800">E-Library</h4><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">Literasi Digital Siswa</p></div>
+                    </div>
+                    <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm flex items-center gap-8 card-premium group">
+                        <div class="w-20 h-20 bg-amber-50 rounded-[2rem] flex items-center justify-center text-amber-600 text-3xl shadow-inner group-hover:bg-amber-600 group-hover:text-white transition-colors duration-500"><i class="fas fa-calendar-day"></i></div>
+                        <div><h4 class="text-xl font-black text-slate-800">Kalender Akademik</h4><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">Jadwal Agenda Sekolah</p></div>
+                    </div>
+                    <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm flex items-center gap-8 card-premium group">
+                        <div class="w-20 h-20 bg-rose-50 rounded-[2rem] flex items-center justify-center text-rose-600 text-3xl shadow-inner group-hover:bg-rose-600 group-hover:text-white transition-colors duration-500"><i class="fas fa-trophy"></i></div>
+                        <div><h4 class="text-xl font-black text-slate-800">Bank Prestasi</h4><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">Galeri Kejuaraan</p></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION: FASILITAS & EKSKUL -->
+        <!-- SECTION: FASILITAS -->
         <section id="fasilitas" class="hidden-section page-section container mx-auto px-4">
-            <div class="text-center mb-20">
+            <div class="text-center mb-16">
                 <h2 class="text-5xl font-black text-slate-900 mb-6 uppercase tracking-tighter">Fasilitas & Bakat</h2>
                 <div class="flex justify-center flex-wrap gap-4 mt-10">
-                    <button onclick="filterFasilitas('all')" class="fas-tab px-10 py-4 rounded-full font-black text-[10px] uppercase tracking-widest bg-slate-900 text-white shadow-2xl transition" id="btn-fas-all">Lihat Semua</button>
-                    <button onclick="filterFasilitas('Sapras')" class="fas-tab px-10 py-4 rounded-full font-black text-[10px] uppercase tracking-widest bg-white text-slate-400 border border-slate-100 hover:text-slate-900 transition">Sarana Prasarana</button>
+                    <button onclick="filterFasilitas('all')" class="fas-tab px-10 py-4 rounded-full font-black text-[10px] uppercase tracking-widest bg-slate-900 text-white shadow-2xl transition" id="btn-fas-all">Semua</button>
+                    <button onclick="filterFasilitas('Sapras')" class="fas-tab px-10 py-4 rounded-full font-black text-[10px] uppercase tracking-widest bg-white text-slate-400 border border-slate-100 hover:text-slate-900 transition">Sapras</button>
                     <button onclick="filterFasilitas('Ekskul')" class="fas-tab px-10 py-4 rounded-full font-black text-[10px] uppercase tracking-widest bg-white text-slate-400 border border-slate-100 hover:text-slate-900 transition">Ekstrakurikuler</button>
                 </div>
             </div>
@@ -242,7 +261,7 @@
                 <div class="p-12 md:p-16 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-8">
                     <div>
                         <h2 class="text-4xl font-black text-slate-900 mb-2 uppercase tracking-tighter">Statistik Mutasi</h2>
-                        <p class="text-slate-400 font-bold text-[10px] uppercase tracking-[0.3em]">Laporan Perpindahan Siswa Real-Time</p>
+                        <p class="text-slate-400 font-bold text-[10px] uppercase tracking-[0.3em]">Perpindahan Siswa Real-Time</p>
                     </div>
                     <div class="flex gap-4">
                         <div class="bg-emerald-50 px-8 py-4 rounded-[1.5rem] border border-emerald-100 text-center">
@@ -321,7 +340,7 @@
                     <button onclick="showTabAdmin('adm-media')" class="px-8 py-6 bg-white border border-slate-100 text-slate-400 rounded-[2rem] font-black text-[11px] uppercase tracking-widest hover:bg-blue-50 transition w-full text-left" id="tab-btn-media">Galeri Multimedia</button>
                 </div>
 
-                <!-- Editor -->
+                <!-- Editor Area -->
                 <div class="lg:col-span-9 bg-white p-12 md:p-20 rounded-[4rem] shadow-sm border border-slate-50 card-premium">
                     <!-- Tab: Mutasi -->
                     <div id="adm-mutasi" class="adm-content animate-fade-in">
@@ -349,45 +368,45 @@
 
                     <!-- Tab: Config -->
                     <div id="adm-config" class="adm-content hidden animate-fade-in text-left">
-                        <h3 class="font-black text-3xl uppercase tracking-tighter mb-12">Pengaturan Website</h3>
+                        <h3 class="font-black text-3xl uppercase tracking-tighter mb-12">Pengaturan Identitas</h3>
                         <form onsubmit="saveWebConfig(event)" class="space-y-8">
-                            <div class="grid md:grid-cols-2 gap-8">
+                            <div class="grid md:grid-cols-2 gap-8 text-left">
                                 <div class="space-y-2">
-                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Nama Sekolah</label>
-                                    <input type="text" id="adm-nama" class="w-full p-6 bg-slate-50 rounded-3xl border-0 font-bold outline-none focus:ring-4 focus:ring-blue-100">
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Nama Sekolah Resmi</label>
+                                    <input type="text" id="adm-nama" class="w-full p-6 bg-slate-50 rounded-3xl border-0 font-bold outline-none focus:ring-4 focus:ring-blue-100 shadow-inner">
                                 </div>
-                                <div class="space-y-2">
-                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Link LMS / E-Learning</label>
-                                    <input type="text" id="adm-lms" class="w-full p-6 bg-slate-50 rounded-3xl border-0 font-bold outline-none focus:ring-4 focus:ring-blue-100">
+                                <div class="space-y-2 text-left">
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Alamat URL LMS Sekolah</label>
+                                    <input type="text" id="adm-lms" class="w-full p-6 bg-slate-50 rounded-3xl border-0 font-bold outline-none focus:ring-4 focus:ring-blue-100 shadow-inner">
                                 </div>
                             </div>
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Running Text (Pengumuman)</label>
-                                <textarea id="adm-running" rows="3" class="w-full p-8 bg-slate-50 rounded-[2.5rem] border-0 font-bold outline-none focus:ring-4 focus:ring-blue-100"></textarea>
+                            <div class="space-y-2 text-left">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Warta/Pengumuman Berjalan</label>
+                                <textarea id="adm-running" rows="3" class="w-full p-8 bg-slate-50 rounded-[2.5rem] border-0 font-bold outline-none focus:ring-4 focus:ring-blue-100 shadow-inner"></textarea>
                             </div>
-                            <button type="submit" class="w-full bg-slate-900 text-white font-black py-8 rounded-[2.5rem] shadow-2xl hover:bg-black transition uppercase tracking-[0.3em] text-[11px]">Simpan Pengaturan Utama</button>
+                            <button type="submit" class="w-full bg-slate-900 text-white font-black py-8 rounded-[2.5rem] shadow-2xl hover:bg-black transition uppercase tracking-[0.3em] text-[11px]">Update Konfigurasi</button>
                         </form>
                     </div>
 
                     <!-- Tab: Media -->
                     <div id="adm-media" class="adm-content hidden animate-fade-in text-left">
-                        <h3 class="font-black text-3xl uppercase tracking-tighter mb-12 text-center">Update Galeri</h3>
+                        <h3 class="font-black text-3xl uppercase tracking-tighter mb-12">Update Galeri</h3>
                         <form onsubmit="saveGaleri(event)" class="space-y-8">
                             <div class="grid md:grid-cols-2 gap-8 text-left">
                                 <div class="space-y-2">
                                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Kategori Media</label>
-                                    <select id="media-tipe" class="w-full p-6 bg-slate-50 rounded-3xl border-0 font-black outline-none"><option value="Foto">Foto Dokumentasi</option><option value="Video">Video YouTube</option><option value="Musik">Mars / Lagu</option></select>
+                                    <select id="media-tipe" class="w-full p-6 bg-slate-50 rounded-3xl border-0 font-black outline-none shadow-inner"><option value="Foto">Foto Dokumentasi</option><option value="Video">Video YouTube</option><option value="Musik">Mars / Lagu Sekolah</option></select>
                                 </div>
-                                <div class="space-y-2">
+                                <div class="space-y-2 text-left">
                                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Nama Media</label>
-                                    <input type="text" id="media-judul" placeholder="Judul File" required class="w-full p-6 bg-slate-50 rounded-3xl border-0 font-bold outline-none">
+                                    <input type="text" id="media-judul" placeholder="Contoh: Kegiatan Pramuka" required class="w-full p-6 bg-slate-50 rounded-3xl border-0 font-bold outline-none shadow-inner">
                                 </div>
                             </div>
-                            <div class="space-y-2">
+                            <div class="space-y-2 text-left">
                                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Link URL / Direct Link</label>
-                                <input type="text" id="media-link" placeholder="Paste link di sini" required class="w-full p-6 bg-slate-50 rounded-3xl border-0 font-bold outline-none">
+                                <input type="text" id="media-link" placeholder="Paste link di sini" required class="w-full p-6 bg-slate-50 rounded-3xl border-0 font-bold outline-none shadow-inner">
                             </div>
-                            <button type="submit" class="w-full bg-indigo-600 text-white font-black py-8 rounded-[2.5rem] shadow-2xl hover:bg-indigo-700 transition uppercase tracking-[0.3em] text-[11px]">Tambah ke Galeri Sekolah</button>
+                            <button type="submit" class="w-full bg-indigo-600 text-white font-black py-8 rounded-[2.5rem] shadow-2xl hover:bg-indigo-700 transition uppercase tracking-[0.3em] text-[11px]">Simpan ke Galeri</button>
                         </form>
                     </div>
                 </div>
@@ -407,7 +426,7 @@
                 <a id="link-yt" href="#" target="_blank" class="text-slate-600 hover:text-red-600 text-4xl transition transform hover:scale-125"><i class="fab fa-youtube"></i></a>
             </div>
             <div class="h-px bg-white/5 w-full mb-12"></div>
-            <p class="text-[10px] font-black tracking-[0.5em] uppercase opacity-40">&copy; 2026 SDN 4 TAMAN • THE FUTURE OF EDUCATION</p>
+            <p class="text-[10px] font-black tracking-[0.5em] uppercase opacity-40">&copy; 2026 SDN 4 TAMAN • DIGITAL REVOLUTION</p>
         </div>
     </footer>
 
@@ -466,6 +485,13 @@
         function showTabAdmin(id) {
             document.querySelectorAll('.adm-content').forEach(c => c.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
+            document.querySelectorAll('[id^="tab-btn-"]').forEach(b => {
+                b.classList.replace('bg-slate-900', 'bg-white');
+                b.classList.replace('text-white', 'text-slate-400');
+            });
+            const activeTab = document.getElementById('tab-btn-' + id.split('-')[1]);
+            activeTab.classList.replace('bg-white', 'bg-slate-900');
+            activeTab.classList.replace('text-slate-400', 'text-white');
         }
 
         function showToast(m) {
@@ -483,12 +509,10 @@
                 DATA_GLOBAL = res;
                 const c = res.config;
                 
-                // HEADER & CONFIG
                 document.getElementById('header-nama').innerText = c.NamaSekolah || "SDN 4 TAMAN";
                 document.getElementById('foot-nama').innerText = c.NamaSekolah || "SDN 4 TAMAN";
                 document.getElementById('banner-title').innerText = c.NamaSekolah || "Unggul Digital";
-                document.getElementById('running-text').innerText = c.RunningText || "Mewujudkan sekolah berkualitas dengan teknologi.";
-                document.getElementById('foot-alamat').innerText = c.Alamat || "Kecamatan Taman, Pemalang.";
+                document.getElementById('running-text').innerText = c.RunningText || "-";
                 document.getElementById('txt-alamat').innerText = c.Alamat || "-";
                 document.getElementById('view-visi').innerText = c.Visi || "-";
                 document.getElementById('view-misi').innerHTML = (c.Misi || "").replace(/\n/g, "<br>");
@@ -503,31 +527,27 @@
                 if (c.BannerURL) document.getElementById('home-banner').src = c.BannerURL;
                 if (c.Url_SOTK) document.getElementById('img-sotk').src = c.Url_SOTK;
 
-                // MAPS
                 if (c.GoogleMapsEmbed) {
                     document.getElementById('map-container').innerHTML = `<iframe src="${c.GoogleMapsEmbed}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`;
                 }
 
-                // STATS
                 let tL = 0, tP = 0;
                 res.siswaDetail.forEach(r => { tL += Number(r[1]); tP += Number(r[2]); });
                 document.getElementById('stat-siswa').innerText = tL + tP;
                 document.getElementById('stat-guru').innerText = res.guruList.length;
                 renderChart(res.siswaDetail);
 
-                // GURU
                 const gGrid = document.getElementById('grid-guru');
                 res.guruList.forEach(g => {
-                    gGrid.innerHTML += `<div class="bg-white p-10 rounded-[3rem] shadow-sm text-center border border-slate-50 card-premium">
+                    gGrid.innerHTML += `<div class="bg-white p-10 rounded-[3rem] shadow-sm text-center border border-slate-50 card-premium group">
                         <div class="w-24 h-24 mx-auto mb-6"><img src="${g.foto || 'https://via.placeholder.com/200'}" class="w-full h-full rounded-full object-cover border-4 border-white shadow-xl"></div>
                         <h4 class="font-black text-slate-800 text-[10px] leading-tight uppercase">${g.nama}</h4>
                         <p class="text-[8px] text-blue-500 font-black uppercase mt-3 tracking-widest">${g.mapel}</p>
                     </div>`;
                 });
 
-                // MUTASI
                 let totM = 0, totK = 0;
-                const mTbl = document.getElementById('tbl-mutasi');
+                const mTbl = document.getElementById('tbl-mutasi'); mTbl.innerHTML = '';
                 res.mutasi.forEach(m => {
                     totM += (Number(m[1]) + Number(m[2]));
                     totK += (Number(m[3]) + Number(m[4]));
@@ -542,8 +562,7 @@
                 document.getElementById('total-mut-masuk').innerText = totM;
                 document.getElementById('total-mut-keluar').innerText = totK;
 
-                // BERITA
-                const bList = document.getElementById('list-berita');
+                const bList = document.getElementById('list-berita'); bList.innerHTML = '';
                 res.berita.forEach(b => {
                     bList.innerHTML += `<div class="bg-white p-10 rounded-[3.5rem] shadow-sm border border-slate-50 hover:border-blue-200 transition card-premium group">
                         <div class="flex items-center gap-4 mb-6">
@@ -554,10 +573,8 @@
                     </div>`;
                 });
 
-                // FASILITAS
                 renderFasilitas('all');
 
-                // SPMB
                 document.getElementById('spmb-info-content').innerText = c.SPMB_Info || "Segera daftarkan diri di SDN 4 Taman.";
                 if (c.SPMB_Status === 'Buka') {
                     document.getElementById('spmb-status-msg').innerHTML = "<span class='bg-emerald-100 text-emerald-700 px-10 py-3 rounded-full font-black text-[10px] tracking-widest'>PPDB SEDANG DIBUKA</span>";
@@ -566,7 +583,6 @@
                     document.getElementById('spmb-status-msg').innerHTML = "<span class='bg-rose-100 text-rose-700 px-10 py-3 rounded-full font-black text-[10px] tracking-widest'>PPDB SEDANG DITUTUP</span>";
                 }
 
-                // SOSIAL MEDIA
                 const sl = (id, link) => { if(link) document.getElementById(id).href = link; };
                 sl('link-fb', c.Facebook); sl('link-ig', c.Instagram); sl('link-yt', c.YoutubeChannel);
             }
@@ -597,10 +613,7 @@
             const filtered = filter === 'all' ? DATA_GLOBAL.fasilitas : DATA_GLOBAL.fasilitas.filter(f => f.kategori === filter);
             filtered.forEach(f => {
                 fGrid.innerHTML += `<div class="bg-white rounded-[3.5rem] shadow-sm border border-slate-50 overflow-hidden card-premium group">
-                    <div class="h-64 overflow-hidden relative">
-                        <img src="${f.foto || 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=800'}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
-                        <div class="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition duration-700"></div>
-                    </div>
+                    <div class="h-64 overflow-hidden relative"><img src="${f.foto || 'https://via.placeholder.com/800x600'}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000"><div class="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition duration-700"></div></div>
                     <div class="p-10">
                         <span class="text-[9px] font-black text-blue-500 uppercase tracking-[0.3em] bg-blue-50 px-5 py-2 rounded-full">${f.kategori}</span>
                         <h4 class="font-black text-slate-800 text-2xl mt-8 mb-4 tracking-tighter leading-none">${f.nama}</h4>
@@ -612,7 +625,6 @@
 
         function filterFasilitas(type) { renderFasilitas(type); }
 
-        // ADMIN FUNCTIONS
         function renderEditorMutasi() {
             const body = document.getElementById('editor-mutasi-body'); body.innerHTML = '';
             DATA_GLOBAL.mutasi.forEach(m => {
@@ -630,7 +642,7 @@
         function addRowMutasi() {
             const body = document.getElementById('editor-mutasi-body');
             body.insertAdjacentHTML('beforeend', `<tr>
-                <td class="p-4"><input type="text" placeholder="Nama Kelas" class="w-full p-4 bg-slate-50 rounded-2xl mut-kelas border-0 font-bold shadow-inner"></td>
+                <td class="p-4"><input type="text" placeholder="Kelas Baru" class="w-full p-4 bg-slate-50 rounded-2xl mut-kelas border-0 font-bold shadow-inner"></td>
                 <td class="p-4"><input type="number" value="0" class="w-20 p-4 bg-slate-50 rounded-2xl mut-lm border-0 text-center font-bold shadow-inner"></td>
                 <td class="p-4"><input type="number" value="0" class="w-20 p-4 bg-slate-50 rounded-2xl mut-pm border-0 text-center font-bold shadow-inner"></td>
                 <td class="p-4"><input type="number" value="0" class="w-20 p-4 bg-slate-50 rounded-2xl mut-lk border-0 text-center font-bold shadow-inner"></td>
@@ -647,9 +659,9 @@
                 const lk = r.querySelector('.mut-lk').value, pk = r.querySelector('.mut-pk').value;
                 if(k) data.push([k, lm, pm, lk, pk]);
             });
-            showToast("Menyimpan data...");
+            showToast("Menyimpan perubahan...");
             const res = await postAPI('saveMutasi', data);
-            if(res && res.status === 'success') { showToast("Data Mutasi Terupdate!"); setTimeout(() => location.reload(), 1500); }
+            if(res && res.status === 'success') { showToast("Mutasi Berhasil Diupdate!"); setTimeout(() => location.reload(), 1500); }
         }
 
         async function saveWebConfig(e) {
@@ -659,16 +671,16 @@
                 LMS_Link: document.getElementById('adm-lms').value,
                 RunningText: document.getElementById('adm-running').value
             };
-            showToast("Memperbarui website...");
+            showToast("Memperbarui konfigurasi...");
             const res = await postAPI('saveConfig', d);
-            if(res && res.status === 'success') { showToast("Konfigurasi Tersimpan!"); setTimeout(() => location.reload(), 1500); }
+            if(res && res.status === 'success') { showToast("Sistem Berhasil Diupdate!"); setTimeout(() => location.reload(), 1500); }
         }
 
         async function doLogin(e) {
             e.preventDefault();
-            const btn = document.getElementById('btn-login'); btn.innerText = "VERIFIKASI...";
+            const btn = document.getElementById('btn-login'); btn.innerText = "AUTHENTICATING...";
             const res = await fetchAPI('login', { user: document.getElementById('u').value, pass: document.getElementById('p').value });
-            if (res && res.status === 'success') { showToast("Login Berhasil!"); navigate('admin'); }
+            if (res && res.status === 'success') { showToast("Akses Diterima!"); navigate('admin'); }
             else { showToast("Akses Ditolak!"); btn.innerText = "Otorisasi Masuk"; }
         }
 
@@ -676,14 +688,7 @@
             e.preventDefault();
             const data = { tipe: document.getElementById('media-tipe').value, judul: document.getElementById('media-judul').value, link: document.getElementById('media-link').value };
             const res = await postAPI('saveGaleri', data);
-            if (res && res.status === 'success') { showToast("Media Ditambahkan!"); location.reload(); }
-        }
-
-        async function kirimSPMB(e) {
-            e.preventDefault();
-            showToast("Mengirim formulir...");
-            const res = await postAPI('submitSPMB', { nama: e.target.nama.value, nik: e.target.nik.value, hp: e.target.hp.value });
-            if (res && res.status === 'success') { showToast("Data Terkirim!"); e.target.reset(); }
+            if (res && res.status === 'success') { showToast("Galeri Berhasil Ditambah!"); location.reload(); }
         }
     </script>
 </body>
