@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Portal SDN 4 Taman</title>
-    <!-- Library Eksternal -->
+    <title>Sistem Informasi SDN 4 Taman</title>
+    <!-- Library -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -50,11 +50,14 @@
         .toast.show { visibility: visible; animation: in 0.5s, out 0.5s 2.5s; }
         @keyframes in { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes out { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-slate-800">
 
     <script>
+        // API URL SDN 4 Taman
         const API_URL = "https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec";
     </script>
 
@@ -62,17 +65,18 @@
     <div id="loading-overlay">
         <h1 class="sd-glow">SDN 4 TAMAN</h1>
         <div class="loader-bar"><div class="loader-progress"></div></div>
-        <p class="text-blue-400 text-[10px] font-bold tracking-widest mt-6 opacity-60 uppercase">Menyinkronkan Data...</p>
+        <p class="text-blue-400 text-[10px] font-bold tracking-widest mt-6 opacity-60 uppercase">Mempersiapkan Data...</p>
     </div>
 
     <!-- NAVBAR -->
     <nav class="glass-nav fixed top-0 w-full">
         <div class="container mx-auto px-4 flex justify-between items-center h-16 md:h-20">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
-                <img id="header-logo" src="" class="w-9 h-9 md:w-11 md:h-11 hidden object-contain bg-white rounded-lg p-1">
+            <!-- Branding -->
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
+                <img id="header-logo" src="" class="w-9 h-9 md:w-11 md:h-11 hidden object-contain bg-white rounded-xl p-1 shadow-sm">
                 <div>
-                    <h1 class="text-white font-black text-sm md:text-lg leading-tight uppercase" id="header-nama">SDN 4 TAMAN</h1>
-                    <p class="text-blue-500 text-[7px] md:text-[9px] font-bold tracking-widest uppercase">Portal Digital</p>
+                    <h1 class="text-white font-black text-sm md:text-lg leading-tight uppercase tracking-tight" id="header-nama">SDN 4 TAMAN</h1>
+                    <p class="text-blue-500 text-[7px] md:text-[9px] font-extrabold tracking-widest uppercase">Portal Digital</p>
                 </div>
             </div>
 
@@ -94,17 +98,17 @@
             </button>
         </div>
         
-        <!-- Mobile Drawer Menu (FIXED GURU MENU) -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-slate-900 border-t border-slate-800 p-6 space-y-4 text-white text-[10px] font-black tracking-widest uppercase">
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="navigate('home')" class="p-4 bg-white/5 rounded-xl text-left border border-white/5">Home</button>
-                <button onclick="navigate('profil')" class="p-4 bg-white/5 rounded-xl text-left border border-white/5">Profil</button>
-                <button onclick="navigate('akademik')" class="p-4 bg-blue-600/20 rounded-xl text-left border border-blue-500/30 text-blue-400 font-black">Akademik</button>
-                <button onclick="navigate('fasilitas')" class="p-4 bg-white/5 rounded-xl text-left border border-white/5">Fasilitas</button>
-                <button onclick="navigate('mutasi')" class="p-4 bg-white/5 rounded-xl text-left border border-white/5">Mutasi</button>
-                <button onclick="navigate('guru')" class="p-4 bg-white/5 rounded-xl text-left border border-white/5">Guru</button>
+        <!-- Mobile Sidebar Menu (FIXED LAYOUT: Satu Kolom) -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-slate-900 border-t border-slate-800 p-6 space-y-2 text-white text-[11px] font-black uppercase tracking-widest">
+            <button onclick="navigate('home')" class="block w-full text-left p-4 hover:bg-white/5 rounded-xl">Beranda</button>
+            <button onclick="navigate('profil')" class="block w-full text-left p-4 hover:bg-white/5 rounded-xl">Profil Sekolah</button>
+            <button onclick="navigate('akademik')" class="block w-full text-left p-4 bg-blue-600/20 text-blue-400 rounded-xl">Layanan Akademik</button>
+            <button onclick="navigate('fasilitas')" class="block w-full text-left p-4 hover:bg-white/5 rounded-xl">Fasilitas & Ekskul</button>
+            <button onclick="navigate('mutasi')" class="block w-full text-left p-4 hover:bg-white/5 rounded-xl">Data Mutasi Siswa</button>
+            <button onclick="navigate('guru')" class="block w-full text-left p-4 hover:bg-white/5 rounded-xl">Direktori Guru</button>
+            <div class="pt-4">
+                <button onclick="navigate('spmb')" class="block w-full text-center p-4 bg-blue-600 rounded-xl shadow-xl font-black text-xs">PPDB ONLINE</button>
             </div>
-            <button onclick="navigate('spmb')" class="block w-full text-center p-4 bg-blue-600 rounded-xl shadow-xl font-black">PPDB ONLINE</button>
         </div>
     </nav>
 
@@ -112,15 +116,15 @@
         
         <!-- SECTION: HOME -->
         <section id="home" class="page-section">
-            <!-- Hero -->
-            <div class="relative h-[450px] md:h-[600px] overflow-hidden bg-slate-900">
+            <!-- Hero Banner -->
+            <div class="relative h-[450px] md:h-[650px] overflow-hidden bg-slate-900">
                 <img id="home-banner" src="" class="w-full h-full object-cover opacity-50">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/10 to-transparent z-10"></div>
                 <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-24 z-20 container mx-auto">
                     <p class="text-emerald-400 font-black text-[10px] uppercase tracking-[0.3em] mb-4" id="txt-greeting">Selamat Datang</p>
-                    <h2 class="text-3xl md:text-7xl font-black text-white mb-6 leading-tight uppercase tracking-tighter" id="banner-title">...</h2>
+                    <h2 class="text-3xl md:text-7xl font-black text-white mb-6 leading-tight uppercase tracking-tighter" id="banner-title">SDN 4 TAMAN</h2>
                     <div class="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-2xl max-w-4xl shadow-2xl">
-                        <p class="text-slate-200 font-medium text-xs md:text-lg leading-relaxed italic" id="running-text">Memuat...</p>
+                        <p class="text-slate-200 font-medium text-xs md:text-lg leading-relaxed italic" id="running-text">Menghubungkan data...</p>
                     </div>
                 </div>
             </div>
@@ -128,24 +132,24 @@
             <div class="container mx-auto px-4 -mt-10 relative z-30">
                 <!-- Stats Grid -->
                 <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center card-premium">
-                        <div><p class="text-slate-400 text-[8px] font-bold uppercase tracking-widest">Pendidik</p><h3 class="text-2xl md:text-4xl font-black text-slate-800" id="stat-guru">0</h3></div>
+                    <div class="bg-white p-5 md:p-8 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center card-premium">
+                        <div><p class="text-slate-400 text-[8px] font-bold uppercase tracking-widest">Guru</p><h3 class="text-2xl md:text-4xl font-black text-slate-800" id="stat-guru">0</h3></div>
                         <i class="fas fa-user-tie text-xl text-blue-100"></i>
                     </div>
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center card-premium">
+                    <div class="bg-white p-5 md:p-8 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center card-premium">
                         <div><p class="text-slate-400 text-[8px] font-bold uppercase tracking-widest">Siswa</p><h3 class="text-2xl md:text-4xl font-black text-slate-800" id="stat-siswa">0</h3></div>
                         <i class="fas fa-graduation-cap text-xl text-emerald-100"></i>
                     </div>
-                    <div class="col-span-2 lg:col-span-1 bg-slate-900 p-6 rounded-3xl shadow-xl text-white flex justify-between items-center">
-                         <div><p class="text-blue-400 text-[8px] font-bold uppercase tracking-widest">PPDB</p><h3 class="text-sm md:text-lg font-black uppercase" id="txt-ppdb-status">...</h3></div>
+                    <div class="col-span-2 lg:col-span-1 bg-slate-900 p-5 md:p-8 rounded-3xl shadow-xl text-white flex justify-between items-center">
+                         <div><p class="text-blue-400 text-[8px] font-bold uppercase tracking-widest">Pendaftaran</p><h3 class="text-sm md:text-lg font-black uppercase" id="txt-ppdb-status">...</h3></div>
                          <button onclick="navigate('spmb')" class="bg-white text-slate-900 text-[9px] font-black px-4 py-2 rounded-full uppercase">Cek Info</button>
                     </div>
                 </div>
 
-                <!-- Grafik L/P -->
+                <!-- Grafik Statistik L/P -->
                 <div class="bg-white p-6 md:p-10 rounded-[2.5rem] shadow-sm border border-slate-100 mb-12 card-premium overflow-hidden">
                     <h3 class="font-black text-slate-800 text-sm md:text-xl mb-8 flex items-center gap-3"><i class="fas fa-chart-column text-blue-500"></i> Statistik Peserta Didik L/P</h3>
-                    <div class="h-[250px] md:h-[350px] w-full">
+                    <div class="h-[250px] md:h-[400px] w-full">
                         <canvas id="chartSiswa"></canvas>
                     </div>
                 </div>
@@ -159,7 +163,9 @@
                     <div class="lg:col-span-4">
                         <div class="bg-white p-5 rounded-[2rem] shadow-xl border border-slate-100 sticky top-24 card-premium">
                             <h4 class="font-black text-slate-800 mb-4 px-2 uppercase text-[10px] tracking-widest flex items-center gap-2"><i class="fas fa-location-dot text-rose-500"></i> Lokasi Kampus</h4>
-                            <div id="map-container" class="rounded-[1.5rem] overflow-hidden aspect-video md:aspect-square bg-slate-50 border flex items-center justify-center text-[10px] italic text-slate-400">Memuat Peta...</div>
+                            <div id="map-container" class="rounded-[1.5rem] overflow-hidden aspect-video md:aspect-square bg-slate-50 border flex items-center justify-center text-[10px] italic text-slate-400">
+                                <!-- Iframe Google Maps masuk ke sini via JS -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -169,7 +175,7 @@
         <!-- SECTION: PROFIL -->
         <section id="profil" class="hidden-section page-section container mx-auto px-4 max-w-5xl">
             <div class="bg-white p-8 md:p-16 rounded-[2.5rem] shadow-sm border border-slate-100 mb-12 text-center card-premium">
-                <span class="text-blue-600 font-black uppercase text-[9px] tracking-[0.4em] mb-6 block">Visi & Misi Kami</span>
+                <h3 class="text-blue-600 font-bold uppercase text-[9px] tracking-[0.4em] mb-6">Visi & Misi Kami</h3>
                 <p id="view-visi" class="text-xl md:text-4xl font-serif italic text-slate-600 leading-snug mb-10">...</p>
                 <div class="h-px bg-slate-100 w-24 mx-auto mb-10"></div>
                 <div id="view-misi" class="text-slate-500 text-sm md:text-lg leading-loose whitespace-pre-line text-center max-w-2xl mx-auto font-medium">...</div>
@@ -180,35 +186,32 @@
             </div>
         </section>
 
-        <!-- SECTION: AKADEMIK (LMS STYLE) -->
+        <!-- SECTION: AKADEMIK (LMS) -->
         <section id="akademik" class="hidden-section page-section container mx-auto px-4 max-w-6xl">
             <div class="text-center mb-10 md:mb-16">
-                <h2 class="text-3xl md:text-5xl font-black text-slate-900 mb-4 uppercase tracking-tighter uppercase">Layanan Akademik</h2>
-                <p class="text-slate-500 text-xs md:text-sm font-bold uppercase tracking-[0.2em]">Pusat Belajar Digital SDN 4 Taman</p>
+                <h2 class="text-3xl md:text-5xl font-black text-slate-900 mb-4 uppercase tracking-tighter">Layanan Akademik</h2>
+                <p class="text-slate-500 text-xs md:text-sm font-bold uppercase tracking-[0.2em]">Portal Digital SDN 4 Taman</p>
             </div>
-            
             <div class="grid md:grid-cols-2 gap-6 md:gap-10 items-stretch">
-                <!-- LMS Card -->
                 <div class="bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-950 p-8 md:p-12 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden group">
                     <div class="absolute -top-10 -right-10 text-9xl opacity-5 rotate-12"><i class="fas fa-laptop-code"></i></div>
                     <div class="relative z-10 h-full flex flex-col justify-between text-left">
                         <div>
-                            <span class="inline-block px-4 py-1.5 bg-white/10 rounded-full text-[9px] font-black uppercase tracking-widest mb-6">Portal Pembelajaran</span>
-                            <h3 class="text-3xl md:text-5xl font-black mb-6 leading-tight tracking-tight uppercase">Sistem <br> LMS</h3>
+                            <span class="inline-block px-4 py-1.5 bg-white/10 rounded-full text-[9px] font-black uppercase tracking-widest mb-6">Sistem LMS</span>
+                            <h3 class="text-3xl md:text-5xl font-black mb-6 leading-tight tracking-tight uppercase">Sistem <br> Belajar</h3>
                             <p class="text-blue-100 mb-10 text-xs md:text-base leading-relaxed opacity-80">Akses materi, video pembelajaran, dan tugas daring dalam satu genggaman jari.</p>
                         </div>
                         <a id="lms-btn" href="#" target="_blank" class="inline-flex items-center justify-center gap-3 bg-white text-blue-900 font-black py-4 px-8 rounded-2xl shadow-xl hover:bg-slate-50 transition-all uppercase text-[10px] tracking-widest">Masuk LMS <i class="fas fa-arrow-right text-xs"></i></a>
                     </div>
                 </div>
-                <!-- Support Apps -->
-                <div class="grid gap-4 md:gap-6">
+                <div class="grid gap-4 md:gap-6 text-left">
                     <div class="bg-white p-6 md:p-8 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4 md:gap-8 group card-premium">
                         <div class="w-14 h-14 md:w-20 md:h-20 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 text-2xl"><i class="fas fa-book-reader"></i></div>
-                        <div class="text-left"><h4 class="text-sm md:text-xl font-black text-slate-800 uppercase tracking-tighter">E-Library</h4><p class="text-slate-400 text-[8px] md:text-[10px] font-bold uppercase tracking-widest mt-1">Literasi Digital</p></div>
+                        <div><h4 class="text-sm md:text-xl font-black text-slate-800 uppercase tracking-tighter">E-Library</h4><p class="text-slate-400 text-[8px] md:text-[10px] font-bold uppercase tracking-widest mt-1">Literasi Digital</p></div>
                     </div>
                     <div class="bg-white p-6 md:p-8 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4 md:gap-8 group card-premium">
                         <div class="w-14 h-14 md:w-20 md:h-20 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-600 text-2xl"><i class="fas fa-medal"></i></div>
-                        <div class="text-left"><h4 class="text-sm md:text-xl font-black text-slate-800 uppercase tracking-tighter">Prestasi</h4><p class="text-slate-400 text-[8px] md:text-[10px] font-bold uppercase tracking-widest mt-1">Galeri Juara</p></div>
+                        <div><h4 class="text-sm md:text-xl font-black text-slate-800 uppercase tracking-tighter">Prestasi</h4><p class="text-slate-400 text-[8px] md:text-[10px] font-bold uppercase tracking-widest mt-1">Galeri Juara</p></div>
                     </div>
                 </div>
             </div>
@@ -241,63 +244,77 @@
             </div>
         </section>
 
-        <!-- (Fasilitas, Guru, Login, AdminSections) -->
-        <section id="fasilitas" class="hidden-section page-section container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-black text-center text-slate-900 mb-10 uppercase">Fasilitas & Ekskul</h2>
-            <div id="grid-fasilitas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10"></div>
-        </section>
-
+        <!-- SECTION: GURU -->
         <section id="guru" class="hidden-section page-section container mx-auto px-4">
             <h2 class="text-2xl md:text-4xl font-black text-center text-slate-900 mb-10 uppercase tracking-tighter">Dewan Pendidik</h2>
             <div id="grid-guru" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8"></div>
         </section>
 
+        <!-- SECTION: FASILITAS -->
+        <section id="fasilitas" class="hidden-section page-section container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-black text-center text-slate-900 mb-10 uppercase">Fasilitas & Ekskul</h2>
+            <div id="grid-fasilitas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10"></div>
+        </section>
+
+        <!-- LOGIN & SPMB -->
         <section id="login" class="hidden-section page-section flex justify-center py-20 px-4">
             <div class="bg-white p-10 rounded-[3rem] shadow-2xl w-full max-w-sm border border-slate-100 text-center card-premium">
                 <div class="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white text-2xl mx-auto mb-8 shadow-xl"><i class="fas fa-fingerprint"></i></div>
                 <h2 class="text-xl font-black text-slate-800 mb-8 uppercase tracking-widest text-center">Admin Login</h2>
                 <form onsubmit="doLogin(event)" class="space-y-4">
                     <input type="text" id="u" placeholder="Admin ID" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold outline-none text-center shadow-inner" required>
-                    <input type="password" id="p" placeholder="Security Password" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold outline-none text-center shadow-inner" required>
-                    <button type="submit" id="btn-login" class="w-full bg-slate-900 text-white font-black py-4 rounded-2xl hover:bg-black shadow-xl active:scale-95 transition uppercase text-[10px] tracking-widest">Verify Access</button>
+                    <input type="password" id="p" placeholder="Security Token" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold outline-none text-center shadow-inner" required>
+                    <button type="submit" id="btn-login" class="w-full bg-slate-900 text-white font-black py-4 rounded-2xl shadow-xl active:scale-95 transition uppercase text-[10px] tracking-widest">Verify Login</button>
                 </form>
             </div>
         </section>
 
-        <!-- ADMIN DASHBOARD -->
+        <section id="spmb" class="hidden-section page-section container mx-auto px-4 max-w-xl">
+            <div class="bg-white p-10 rounded-[3rem] shadow-2xl border-t-[10px] border-blue-600 card-premium">
+                <h2 class="text-2xl font-black text-slate-800 mb-6 uppercase tracking-tight">Pendaftaran PPDB</h2>
+                <div id="spmb-info-content" class="bg-slate-50 p-6 rounded-2xl text-xs text-slate-500 mb-8 italic"></div>
+                <form id="form-spmb" onsubmit="kirimSPMB(event)" class="hidden space-y-4">
+                    <input type="text" name="nama" placeholder="Nama Lengkap" class="w-full p-4 bg-slate-100 rounded-2xl border-0 font-bold outline-none" required>
+                    <input type="number" name="nik" placeholder="NIK" class="w-full p-4 bg-slate-100 rounded-2xl border-0 font-bold outline-none" required>
+                    <input type="text" name="hp" placeholder="No WhatsApp" class="w-full p-4 bg-slate-100 rounded-2xl border-0 font-bold outline-none" required>
+                    <button type="submit" class="w-full bg-blue-600 text-white font-black py-4 rounded-2xl shadow-xl active:scale-95 transition">SUBMIT PENDAFTARAN</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ADMIN PANEL -->
         <section id="admin" class="hidden-section page-section container mx-auto px-4 max-w-7xl">
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 text-center md:text-left">
-                <div><h2 class="text-3xl font-black text-slate-900 uppercase tracking-tighter">Dashboard</h2><p class="text-slate-400 text-[8px] font-black uppercase tracking-widest">Panel Kendali SDN 4 Taman</p></div>
+                <div><h2 class="text-3xl font-black text-slate-900 uppercase tracking-tighter">Control Panel</h2><p class="text-slate-400 text-[8px] font-black uppercase tracking-widest">Pusat Data SDN 4 Taman</p></div>
                 <button onclick="location.reload()" class="bg-rose-50 text-rose-600 px-8 py-3 rounded-2xl font-black text-[9px] uppercase border border-rose-100 shadow-sm">Logout</button>
             </div>
-            
             <div class="grid lg:grid-cols-12 gap-6">
                 <div class="lg:col-span-3 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0">
                     <button onclick="showTabAdmin('adm-mutasi')" class="whitespace-nowrap px-6 py-4 bg-slate-900 text-white rounded-2xl font-black text-[9px] uppercase tracking-widest shadow-xl flex-shrink-0" id="tab-btn-mutasi">Edit Mutasi</button>
-                    <button onclick="showTabAdmin('adm-config')" class="whitespace-nowrap px-6 py-4 bg-white border border-slate-100 rounded-2xl font-black text-[9px] uppercase tracking-widest text-slate-400 flex-shrink-0 hover:bg-blue-50 transition" id="tab-btn-config">Config</button>
-                    <button onclick="showTabAdmin('adm-media')" class="whitespace-nowrap px-6 py-4 bg-white border border-slate-100 rounded-2xl font-black text-[9px] uppercase tracking-widest text-slate-400 flex-shrink-0 hover:bg-blue-50 transition" id="tab-btn-media">Multimedia</button>
+                    <button onclick="showTabAdmin('adm-config')" class="whitespace-nowrap px-6 py-4 bg-white border rounded-2xl font-black text-[9px] uppercase tracking-widest text-slate-400 flex-shrink-0 hover:bg-blue-50 transition" id="tab-btn-config">Config</button>
+                    <button onclick="showTabAdmin('adm-media')" class="whitespace-nowrap px-6 py-4 bg-white border rounded-2xl font-black text-[9px] uppercase tracking-widest text-slate-400 flex-shrink-0 hover:bg-blue-50 transition" id="tab-btn-media">Multimedia</button>
                 </div>
                 <div class="lg:col-span-9 bg-white p-6 md:p-12 rounded-[2.5rem] shadow-sm border border-slate-50 card-premium">
                     <div id="adm-mutasi" class="adm-content">
                         <div class="flex justify-between items-center mb-8"><h3 class="font-black text-xl uppercase">Editor Mutasi</h3><button onclick="addRowMutasi()" class="bg-blue-50 text-blue-600 font-black text-[8px] px-4 py-2 rounded-xl uppercase shadow-sm"><i class="fas fa-plus"></i></button></div>
                         <div class="table-container mb-10 rounded-2xl border border-slate-100"><table class="w-full text-[10px] min-w-[500px]"><thead class="bg-slate-50 text-slate-400 uppercase font-black tracking-widest border-b"><tr><th class="p-4 text-left">Rombel</th><th class="p-4 text-center">In(L)</th><th class="p-4 text-center">In(P)</th><th class="p-4 text-center">Out(L)</th><th class="p-4 text-center">Out(P)</th><th class="p-4"></th></tr></thead><tbody id="editor-mutasi-body" class="divide-y divide-slate-50 font-bold"></tbody></table></div>
-                        <button onclick="saveMutasiData()" id="btn-save-mutasi" class="w-full bg-blue-600 text-white font-black py-5 rounded-3xl shadow-xl uppercase tracking-widest text-[10px]">Perbarui Website</button>
+                        <button onclick="saveMutasiData()" id="btn-save-mutasi" class="w-full bg-blue-600 text-white font-black py-5 rounded-3xl shadow-xl active:scale-95 transition uppercase text-[10px]">Update Website</button>
                     </div>
                     <div id="adm-config" class="adm-content hidden text-left">
-                        <h3 class="font-black text-xl mb-8 uppercase">Web Config</h3>
+                        <h3 class="font-black text-xl mb-8 uppercase tracking-tighter">Sistem Config</h3>
                         <form onsubmit="saveWebConfig(event)" class="space-y-6">
-                            <input type="text" id="adm-nama" placeholder="Nama Sekolah" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold">
-                            <input type="text" id="adm-lms" placeholder="URL LMS" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold">
-                            <textarea id="adm-running" rows="3" placeholder="Running Text" class="w-full p-6 bg-slate-50 rounded-3xl border-0 font-bold"></textarea>
-                            <button type="submit" class="w-full bg-slate-900 text-white font-black py-5 rounded-3xl shadow-xl uppercase text-[10px]">Simpan Config</button>
+                            <input type="text" id="adm-nama" placeholder="Nama Sekolah" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold shadow-inner">
+                            <input type="text" id="adm-lms" placeholder="URL LMS" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold shadow-inner">
+                            <textarea id="adm-running" rows="3" placeholder="Running Text" class="w-full p-6 bg-slate-50 rounded-3xl border-0 font-bold shadow-inner"></textarea>
+                            <button type="submit" class="w-full bg-slate-900 text-white font-black py-5 rounded-3xl shadow-xl uppercase text-[10px]">Save Config</button>
                         </form>
                     </div>
                     <div id="adm-media" class="adm-content hidden text-left">
-                        <h3 class="font-black text-xl mb-8 uppercase">Tambah Galeri</h3>
+                        <h3 class="font-black text-xl mb-8 uppercase text-left">Tambah Galeri</h3>
                         <form onsubmit="saveGaleri(event)" class="space-y-4">
-                            <select id="media-tipe" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-black"><option value="Foto">Foto</option><option value="Video">YouTube</option><option value="Musik">Audio</option></select>
-                            <input type="text" id="media-judul" placeholder="Judul" required class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold">
-                            <input type="text" id="media-link" placeholder="URL Link" required class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold">
+                            <select id="media-tipe" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-black shadow-inner"><option value="Foto">Foto</option><option value="Video">YouTube</option><option value="Musik">Lagu Mars</option></select>
+                            <input type="text" id="media-judul" placeholder="Judul Media" required class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold shadow-inner">
+                            <input type="text" id="media-link" placeholder="Link Alamat File" required class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold shadow-inner">
                             <button type="submit" class="w-full bg-emerald-600 text-white font-black py-5 rounded-3xl shadow-xl uppercase text-[10px]">Save Media</button>
                         </form>
                     </div>
@@ -305,27 +322,13 @@
             </div>
         </section>
 
-        <!-- SPMB Online Form -->
-        <section id="spmb" class="hidden-section page-section container mx-auto px-4 max-w-xl">
-            <div class="bg-white p-10 rounded-[3rem] shadow-2xl border-t-[10px] border-blue-600 card-premium">
-                <h2 class="text-2xl font-black text-slate-800 mb-6 uppercase">Pendaftaran PPDB</h2>
-                <div id="spmb-info-content" class="bg-slate-50 p-6 rounded-2xl text-xs text-slate-500 mb-8 italic"></div>
-                <form id="form-spmb" onsubmit="kirimSPMB(event)" class="hidden space-y-4">
-                    <input type="text" name="nama" placeholder="Nama Lengkap" class="w-full p-4 bg-slate-100 rounded-2xl border-0 font-bold outline-none" required>
-                    <input type="number" name="nik" placeholder="NIK" class="w-full p-4 bg-slate-100 rounded-2xl border-0 font-bold outline-none" required>
-                    <input type="text" name="hp" placeholder="No WhatsApp" class="w-full p-4 bg-slate-100 rounded-2xl border-0 font-bold outline-none" required>
-                    <button type="submit" class="w-full bg-blue-600 text-white font-black py-4 rounded-2xl shadow-xl">DAFTAR SEKARANG</button>
-                </form>
-            </div>
-        </section>
-
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-slate-950 text-slate-600 py-16 md:py-24 text-center">
+    <footer class="bg-slate-950 text-slate-600 py-16 text-center">
         <div class="container mx-auto px-4">
             <h3 class="text-white font-black text-3xl md:text-5xl mb-4 tracking-tighter uppercase leading-none" id="foot-nama">SDN 4 TAMAN</h3>
-            <p id="foot-alamat" class="mb-10 max-w-2xl mx-auto italic font-medium leading-relaxed opacity-50 uppercase tracking-widest text-[8px] md:text-[10px]">Taman, Pemalang, Jawa Tengah.</p>
+            <p id="foot-alamat" class="mb-10 max-w-2xl mx-auto italic font-medium leading-relaxed opacity-50 uppercase tracking-widest text-[8px] md:text-[10px]">Kabupaten Pemalang, Jawa Tengah.</p>
             <div class="flex justify-center gap-10 mb-12">
                 <a id="link-fb" href="#" target="_blank" class="text-slate-600 hover:text-blue-500 text-3xl transition transform hover:scale-125"><i class="fab fa-facebook-f"></i></a>
                 <a id="link-ig" href="#" target="_blank" class="text-slate-600 hover:text-pink-500 text-3xl transition transform hover:scale-125"><i class="fab fa-instagram"></i></a>
@@ -336,18 +339,22 @@
     </footer>
 
     <!-- TOAST -->
-    <div id="toast" class="toast">Pesan...</div>
+    <div id="toast" class="toast">Pesan Sistem...</div>
 
     <script>
         let DATA_GLOBAL = null;
 
+        // FETCH LOGIC UTAMA (Verified Stable)
         async function fetchAPI(act, params={}) {
             try {
                 let url = `${API_URL}?action=${act}`;
                 for (let key in params) { url += `&${key}=${encodeURIComponent(params[key])}`; }
                 const response = await fetch(url);
                 return await response.json();
-            } catch (e) { return null; }
+            } catch (e) { 
+                console.error("Fetch Error:", e);
+                return null; 
+            }
         }
 
         async function postAPI(act, data) {
@@ -361,19 +368,7 @@
             } catch (e) { return null; }
         }
 
-        function toggleMobileMenu() { 
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
-
-        function setGreeting() {
-            const hr = new Date().getHours();
-            let msg = "Selamat Malam";
-            if(hr < 11) msg = "Selamat Pagi";
-            else if(hr < 15) msg = "Selamat Siang";
-            else if(hr < 19) msg = "Selamat Sore";
-            document.getElementById('txt-greeting').innerText = `${msg} • SDN 4 Taman`;
-        }
+        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
 
         function navigate(id) {
             document.querySelectorAll('.page-section').forEach(s => s.classList.add('hidden-section'));
@@ -383,6 +378,15 @@
             document.getElementById('mobile-menu').classList.add('hidden');
             if(id === 'home' && DATA_GLOBAL) setTimeout(() => renderChart(DATA_GLOBAL.siswaDetail), 300);
             if(id === 'admin') renderEditorMutasi();
+        }
+
+        function setGreeting() {
+            const hr = new Date().getHours();
+            let msg = "Selamat Malam";
+            if(hr < 11) msg = "Selamat Pagi";
+            else if(hr < 15) msg = "Selamat Siang";
+            else if(hr < 19) msg = "Selamat Sore";
+            document.getElementById('txt-greeting').innerText = `${msg} • SDN 4 Taman`;
         }
 
         async function initApp() {
@@ -398,44 +402,54 @@
                 DATA_GLOBAL = res;
                 const c = res.config;
                 
+                // HEADER & CONFIG
                 document.getElementById('header-nama').innerText = c.NamaSekolah || "SDN 4 TAMAN";
                 document.getElementById('foot-nama').innerText = c.NamaSekolah || "SDN 4 TAMAN";
-                document.getElementById('banner-title').innerText = c.NamaSekolah || "SDN 4 Taman";
+                document.getElementById('banner-title').innerText = c.NamaSekolah || "Unggul Digital";
                 document.getElementById('running-text').innerText = c.RunningText || "-";
-                document.getElementById('txt-alamat').innerText = c.Alamat || "-";
+                document.getElementById('foot-alamat').innerText = c.Alamat || "-";
                 document.getElementById('view-visi').innerText = c.Visi || "-";
                 document.getElementById('view-misi').innerHTML = (c.Misi || "").replace(/\n/g, "<br>");
                 document.getElementById('lms-btn').href = c.LMS_Link || "#";
+
+                // Admin Prefill
+                document.getElementById('adm-nama').value = c.NamaSekolah || "";
+                document.getElementById('adm-lms').value = c.LMS_Link || "";
+                document.getElementById('adm-running').value = c.RunningText || "";
 
                 if (c.LogoURL) { document.getElementById('header-logo').src = c.LogoURL; document.getElementById('header-logo').classList.remove('hidden'); }
                 if (c.BannerURL) document.getElementById('home-banner').src = c.BannerURL;
                 if (c.Url_SOTK) document.getElementById('img-sotk').src = c.Url_SOTK;
 
+                // MAPS FIX
                 if (c.GoogleMapsEmbed) {
                     document.getElementById('map-container').innerHTML = `<iframe src="${c.GoogleMapsEmbed}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`;
                 }
 
+                // STATS & CHART
                 let tSiswa = 0;
                 res.siswaDetail.forEach(r => tSiswa += (Number(r[1]) + Number(r[2])));
                 document.getElementById('stat-siswa').innerText = tSiswa;
                 document.getElementById('stat-guru').innerText = res.guruList.length;
                 renderChart(res.siswaDetail);
 
+                // GURU (MUNYELURUH DI DESKTOP & MOBILE)
                 const gGrid = document.getElementById('grid-guru'); gGrid.innerHTML = '';
                 res.guruList.forEach(g => {
-                    gGrid.innerHTML += `<div class="bg-white p-5 md:p-10 rounded-[2rem] shadow-sm text-center border border-slate-50 card-premium group">
-                        <div class="w-16 h-16 md:w-24 md:h-24 mx-auto mb-4 md:mb-6"><img src="${g.foto || 'https://via.placeholder.com/200'}" class="w-full h-full rounded-full object-cover border-4 border-white shadow-xl"></div>
-                        <h4 class="font-black text-slate-800 text-[9px] md:text-[11px] leading-tight uppercase text-center">${g.nama}</h4>
+                    gGrid.innerHTML += `<div class="bg-white p-6 rounded-[2.5rem] shadow-sm text-center border border-slate-50 card-premium group">
+                        <img src="${g.foto || 'https://via.placeholder.com/200'}" class="w-16 h-16 md:w-24 md:h-24 mx-auto rounded-full object-cover border-4 border-white shadow-xl mb-4">
+                        <h4 class="font-black text-slate-800 text-[9px] md:text-[11px] leading-tight uppercase">${g.nama}</h4>
                         <p class="text-[7px] md:text-[8px] text-blue-500 font-black uppercase mt-2 tracking-widest">${g.mapel}</p>
                     </div>`;
                 });
 
+                // MUTASI
                 let totM = 0, totK = 0;
                 const mTbl = document.getElementById('tbl-mutasi'); mTbl.innerHTML = '';
                 res.mutasi.forEach(m => {
                     totM += (Number(m[1]) + Number(m[2]));
                     totK += (Number(m[3]) + Number(m[4]));
-                    mTbl.innerHTML += `<tr class="hover:bg-slate-50 transition border-b border-slate-50">
+                    mTbl.innerHTML += `<tr class="hover:bg-slate-50 border-b border-slate-50">
                         <td class="p-6 md:p-8 uppercase tracking-widest text-[11px] font-black">${m[0]}</td>
                         <td class="p-6 md:p-8 text-center text-emerald-600 font-black">${m[1]}</td>
                         <td class="p-6 md:p-8 text-center text-emerald-700 font-black bg-emerald-50/10">${m[2]}</td>
@@ -446,19 +460,21 @@
                 document.getElementById('total-mut-masuk').innerText = totM;
                 document.getElementById('total-mut-keluar').innerText = totK;
 
+                // BERITA
                 const bList = document.getElementById('list-berita'); bList.innerHTML = '';
                 res.berita.forEach(b => {
-                    bList.innerHTML += `<div class="bg-white p-6 md:p-10 rounded-[2.5rem] shadow-sm border border-slate-50 hover:border-blue-200 transition card-premium group">
+                    bList.innerHTML += `<div class="bg-white p-6 md:p-10 rounded-[2.5rem] shadow-sm border border-slate-50 hover:border-blue-200 transition card-premium group text-left">
                         <p class="text-[8px] md:text-[9px] font-black text-blue-500 uppercase tracking-widest mb-4">📢 ${new Date(b[1]).toLocaleDateString('id-ID', {day:'numeric', month:'long'})}</p>
-                        <h4 class="font-black text-slate-800 text-sm md:text-xl leading-snug tracking-tighter uppercase text-left">${b[0]}</h4>
+                        <h4 class="font-black text-slate-800 text-sm md:text-xl leading-snug tracking-tighter uppercase">${b[0]}</h4>
                     </div>`;
                 });
 
+                // FASILITAS
                 const fGrid = document.getElementById('grid-fasilitas'); fGrid.innerHTML = '';
                 res.fasilitas.forEach(f => {
                     fGrid.innerHTML += `<div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-50 overflow-hidden card-premium group text-left">
-                        <div class="h-44 md:h-64 overflow-hidden relative"><img src="${f.foto || 'https://via.placeholder.com/800x600'}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700"></div>
-                        <div class="p-6 md:p-10 text-left">
+                        <div class="h-48 md:h-64 overflow-hidden relative"><img src="${f.foto || 'https://via.placeholder.com/800x600'}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700"></div>
+                        <div class="p-8">
                             <span class="text-[7px] md:text-[9px] font-black text-blue-500 uppercase tracking-[0.3em] bg-blue-50 px-5 py-2 rounded-full font-black">${f.kategori}</span>
                             <h4 class="font-black text-slate-800 text-lg md:text-2xl mt-6 mb-3 tracking-tighter">${f.nama}</h4>
                             <p class="text-[10px] md:text-xs text-slate-500 leading-relaxed font-medium">${f.ket}</p>
@@ -467,13 +483,12 @@
                 });
 
                 document.getElementById('txt-ppdb-status').innerText = c.SPMB_Status === 'Buka' ? 'DIBUKA' : 'TUTUP';
-                document.getElementById('spmb-info-content').innerText = c.SPMB_Info || "Info belum diatur.";
                 if (c.SPMB_Status === 'Buka') document.getElementById('form-spmb').classList.remove('hidden');
 
                 const sl = (id, link) => { if(link) document.getElementById(id).href = link; };
                 sl('link-fb', c.Facebook); sl('link-ig', c.Instagram); sl('link-yt', c.YoutubeChannel);
             } else {
-                showToast("Data Gagal Ditarik!");
+                showToast("Database Bermasalah!");
             }
         }
 
@@ -491,7 +506,7 @@
                 },
                 options: { 
                     responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: true, position: 'bottom' } },
+                    plugins: { legend: { display: true, position: 'bottom', labels: { font: { weight: 'bold' } } } },
                     scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { color: '#f1f5f9' } } }
                 }
             });
@@ -507,23 +522,15 @@
             setTimeout(() => t.className = "toast", 3000);
         }
 
-        async function doLogin(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-login'); btn.innerText = "VERIFYING...";
-            const res = await fetchAPI('login', { user: document.getElementById('u').value, pass: document.getElementById('p').value });
-            if (res && res.status === 'success') { showToast("Login Sukses!"); navigate('admin'); }
-            else { showToast("Gagal Login!"); btn.innerText = "Verify Access"; }
-        }
-
         function renderEditorMutasi() {
             const body = document.getElementById('editor-mutasi-body'); body.innerHTML = '';
             DATA_GLOBAL.mutasi.forEach(m => {
                 body.innerHTML += `<tr>
-                    <td class="p-4"><input type="text" value="${m[0]}" class="w-full p-3 bg-slate-50 rounded-xl mut-kelas border-0 font-bold outline-none shadow-inner"></td>
-                    <td class="p-4"><input type="number" value="${m[1]}" class="w-14 md:w-20 p-3 bg-slate-50 rounded-xl mut-lm border-0 text-center font-bold shadow-inner"></td>
-                    <td class="p-4"><input type="number" value="${m[2]}" class="w-14 md:w-20 p-3 bg-slate-50 rounded-xl mut-pm border-0 text-center font-bold shadow-inner"></td>
-                    <td class="p-4"><input type="number" value="${m[3]}" class="w-14 md:w-20 p-3 bg-slate-50 rounded-xl mut-lk border-0 text-center font-bold shadow-inner"></td>
-                    <td class="p-4"><input type="number" value="${m[4]}" class="w-14 md:w-20 p-3 bg-slate-50 rounded-xl mut-pk border-0 text-center font-bold shadow-inner"></td>
+                    <td class="p-4"><input type="text" value="${m[0]}" class="w-full p-3 bg-slate-50 rounded-xl mut-kelas border-0 font-bold outline-none shadow-inner text-xs"></td>
+                    <td class="p-4"><input type="number" value="${m[1]}" class="w-12 md:w-16 p-3 bg-slate-50 rounded-xl mut-lm border-0 text-center font-bold text-xs shadow-inner"></td>
+                    <td class="p-4"><input type="number" value="${m[2]}" class="w-12 md:w-16 p-3 bg-slate-50 rounded-xl mut-pm border-0 text-center font-bold text-xs shadow-inner"></td>
+                    <td class="p-4"><input type="number" value="${m[3]}" class="w-12 md:w-16 p-3 bg-slate-50 rounded-xl mut-lk border-0 text-center font-bold text-xs shadow-inner"></td>
+                    <td class="p-4"><input type="number" value="${m[4]}" class="w-12 md:w-16 p-3 bg-slate-50 rounded-xl mut-pk border-0 text-center font-bold text-xs shadow-inner"></td>
                     <td class="p-4 text-center"><button onclick="this.parentElement.parentElement.remove()" class="text-rose-400"><i class="fas fa-trash"></i></button></td>
                 </tr>`;
             });
@@ -531,7 +538,7 @@
 
         function addRowMutasi() {
             const body = document.getElementById('editor-mutasi-body');
-            body.insertAdjacentHTML('beforeend', `<tr><td class="p-4"><input type="text" placeholder="Rombel" class="w-full p-4 bg-slate-50 rounded-2xl mut-kelas border-0 font-bold"></td><td class="p-4"><input type="number" value="0" class="w-14 md:w-20 p-4 bg-slate-50 rounded-2xl mut-lm border-0 text-center font-bold"></td><td class="p-4"><input type="number" value="0" class="w-14 md:w-20 p-4 bg-slate-50 rounded-2xl mut-pm border-0 text-center font-bold"></td><td class="p-4"><input type="number" value="0" class="w-14 md:w-20 p-4 bg-slate-50 rounded-2xl mut-lk border-0 text-center font-bold"></td><td class="p-4"><input type="number" value="0" class="w-14 md:w-20 p-4 bg-slate-50 rounded-2xl mut-pk border-0 text-center font-bold"></td><td class="p-4 text-center"><button onclick="this.parentElement.parentElement.remove()" class="text-rose-400"><i class="fas fa-trash"></i></button></td></tr>`);
+            body.insertAdjacentHTML('beforeend', `<tr><td class="p-4"><input type="text" placeholder="Rombel" class="w-full p-4 bg-slate-50 rounded-2xl mut-kelas border-0 font-bold text-xs"></td><td class="p-4"><input type="number" value="0" class="w-12 md:w-16 p-4 bg-slate-50 rounded-2xl mut-lm border-0 text-center font-bold text-xs"></td><td class="p-4"><input type="number" value="0" class="w-12 md:w-16 p-4 bg-slate-50 rounded-2xl mut-pm border-0 text-center font-bold text-xs"></td><td class="p-4"><input type="number" value="0" class="w-12 md:w-16 p-4 bg-slate-50 rounded-2xl mut-lk border-0 text-center font-bold text-xs"></td><td class="p-4"><input type="number" value="0" class="w-12 md:w-16 p-4 bg-slate-50 rounded-2xl mut-pk border-0 text-center font-bold text-xs"></td><td class="p-4 text-center"><button onclick="this.parentElement.parentElement.remove()" class="text-rose-400"><i class="fas fa-trash"></i></button></td></tr>`);
         }
 
         async function saveMutasiData() {
@@ -542,31 +549,39 @@
                 const lk = r.querySelector('.mut-lk').value, pk = r.querySelector('.mut-pk').value;
                 if(k) data.push([k, lm, pm, lk, pk]);
             });
-            showToast("Mensinkronkan...");
+            showToast("Updating database...");
             const res = await postAPI('saveMutasi', data);
-            if(res && res.status === 'success') { showToast("Mutasi Terupdate!"); setTimeout(() => location.reload(), 1000); }
+            if(res && res.status === 'success') { showToast("Selesai!"); setTimeout(() => location.reload(), 1000); }
         }
 
         async function saveWebConfig(e) {
             e.preventDefault();
             const d = { NamaSekolah: document.getElementById('adm-nama').value, LMS_Link: document.getElementById('adm-lms').value, RunningText: document.getElementById('adm-running').value };
-            showToast("Updating...");
+            showToast("Simpan Config...");
             const res = await postAPI('saveConfig', d);
-            if(res && res.status === 'success') { showToast("Config Selesai!"); setTimeout(() => location.reload(), 1000); }
+            if(res && res.status === 'success') { showToast("Terupdate!"); setTimeout(() => location.reload(), 1000); }
+        }
+
+        async function doLogin(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-login'); btn.innerText = "AUTHENTICATING...";
+            const res = await fetchAPI('login', { user: document.getElementById('u').value, pass: document.getElementById('p').value });
+            if (res && res.status === 'success') { showToast("Welcome Admin!"); navigate('admin'); }
+            else { showToast("Gagal Login!"); btn.innerText = "AUTHENTICATE"; }
         }
 
         async function saveGaleri(e) {
             e.preventDefault();
             const data = { tipe: document.getElementById('media-tipe').value, judul: document.getElementById('media-judul').value, link: document.getElementById('media-link').value };
             const res = await postAPI('saveGaleri', data);
-            if (res && res.status === 'success') { showToast("Galeri Terupdate!"); location.reload(); }
+            if (res && res.status === 'success') { showToast("Media Tersimpan!"); location.reload(); }
         }
 
         async function kirimSPMB(e) {
             e.preventDefault();
             showToast("Mengirim...");
             const res = await postAPI('submitSPMB', { nama: e.target.nama.value, nik: e.target.nik.value, hp: e.target.hp.value });
-            if (res && res.status === 'success') { showToast("Terkirim!"); e.target.reset(); }
+            if (res && res.status === 'success') { showToast("Data PPDB Terkirim!"); e.target.reset(); }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
