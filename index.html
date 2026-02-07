@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Portal Resmi SDN 4 Taman</title>
+    <title>Sistem Informasi SDN 4 Taman</title>
     
-    <!-- Libraries -->
+    <!-- Core Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,49 +16,74 @@
             theme: {
                 extend: {
                     fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
-                    colors: { primary: '#0f172a', accent: '#2563eb', gold: '#fbbf24', emerald: '#10b981', rose: '#f43f5e' }
+                    colors: { primary: '#0f172a', accent: '#3b82f6', gold: '#fbbf24', emerald: '#10b981' }
                 }
             }
         }
     </script>
 
     <style>
-        body { background-color: #f8fafc; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
-        .glass-nav { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 1000; }
-        .hidden-section { display: none !important; }
+        body { background-color: #f1f5f9; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+        
+        /* Glass Header Professional */
+        .glass-header {
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+        }
+        
+        /* Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .card-pro { background: white; border: 1px solid #f1f5f9; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        @media (min-width: 768px) { .card-pro:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: #e2e8f0; } }
-        .pulse-logo { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.6; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.6; transform: scale(0.98); } }
-        .loader-bar { width: 160px; height: 2px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-top: 20px; overflow: hidden; position: relative; }
-        .loader-fill { position: absolute; height: 100%; width: 30%; background: #3b82f6; animation: loading 1.5s infinite ease-in-out; }
-        @keyframes loading { 0% { left: -30%; } 100% { left: 100%; } }
-        .toast { visibility: hidden; min-width: 250px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 8px; padding: 12px 24px; position: fixed; z-index: 10000; left: 50%; transform: translateX(-50%); bottom: 30px; font-size: 0.875rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .toast.show { visibility: visible; animation: slideUp 0.3s, fadeOut 0.5s 2.5s; }
-        @keyframes slideUp { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-        @keyframes fadeOut { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-        .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .hidden-section { display: none !important; }
+        
+        /* Card Pro */
+        .card-pro {
+            background: white; border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        @media (min-width: 768px) {
+            .card-pro:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: #cbd5e1; }
+        }
+
+        /* Loading Animation */
+        .loader { width: 32px; height: 32px; border: 3px solid #fff; border-bottom-color: #3b82f6; border-radius: 50%; display: inline-block; animation: rotation 1s linear infinite; }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Toast */
+        .toast { visibility: hidden; min-width: 250px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 8px; padding: 12px 24px; position: fixed; z-index: 10001; left: 50%; transform: translateX(-50%); bottom: 30px; font-size: 0.85rem; font-weight: 600; box-shadow: 0 10px 15px rgba(0,0,0,0.2); }
+        .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        /* Input Custom */
+        .input-admin { width: 100%; padding: 0.75rem; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-weight: 600; font-size: 0.8rem; outline: none; transition: all 0.2s; }
+        .input-admin:focus { background-color: #fff; border-color: #3b82f6; ring: 2px solid rgba(59, 130, 246, 0.1); }
+        .btn-admin-tab { padding: 0.75rem 1.5rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 0.5rem; transition: all 0.2s; text-align: left; }
+        .btn-admin-tab.active { background-color: #0f172a; color: white; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .btn-admin-tab.inactive { background-color: white; color: #64748b; border: 1px solid #e2e8f0; }
+        .btn-admin-tab.inactive:hover { background-color: #f1f5f9; color: #0f172a; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-slate-800 antialiased selection:bg-blue-100 selection:text-blue-900">
 
     <script>
+        // API URL (Pastikan ini sesuai dengan deployment terbaru)
         const API_URL = "https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec";
     </script>
 
     <!-- LOADING SCREEN -->
-    <div id="loading-overlay">
-        <div class="text-center">
-            <h1 class="text-2xl md:text-3xl font-black text-white tracking-[0.2em] uppercase pulse-logo">SDN 4 TAMAN</h1>
-            <div class="loader-bar mx-auto"><div class="loader-fill"></div></div>
-            <p class="text-blue-400 text-[10px] font-bold tracking-widest mt-4 uppercase opacity-75">Memuat Sumber Data...</p>
-        </div>
+    <div id="loading-overlay" class="fixed inset-0 bg-slate-900 z-[9999] flex flex-col items-center justify-center transition-opacity duration-700">
+        <h1 class="text-3xl text-white font-black tracking-[0.3em] mb-4 animate-pulse">SDN 4 TAMAN</h1>
+        <span class="loader"></span>
+        <p class="text-slate-400 text-[10px] font-bold tracking-widest mt-4 uppercase">Sinkronisasi Database...</p>
     </div>
 
-    <!-- NAVBAR -->
-    <header class="fixed top-0 w-full z-50 glass-nav">
+    <!-- NAVBAR PRO -->
+    <header class="fixed top-0 w-full z-50 glass-header">
+        <!-- Top Bar -->
         <div class="container mx-auto px-4 h-16 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
                 <img id="header-logo" src="" class="w-10 h-10 hidden object-contain bg-white rounded-lg p-1 border border-slate-600">
@@ -67,11 +92,17 @@
                     <p class="text-blue-400 text-[10px] font-bold tracking-widest uppercase">Professional Portal</p>
                 </div>
             </div>
-            <button class="lg:hidden text-white p-2" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"><i class="fas fa-bars text-xl"></i></button>
+            
+            <!-- Mobile Toggle -->
+            <button class="lg:hidden text-white p-2" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
         </div>
+
+        <!-- Secondary Bar (Menu Bawah) -->
         <div class="border-t border-slate-700 bg-slate-900/50">
-            <div class="container mx-auto px-4 h-10 flex items-center justify-between overflow-x-auto no-scrollbar">
-                <div class="flex items-center gap-6 text-[11px] font-bold text-slate-400 uppercase tracking-wide h-full whitespace-nowrap pr-4">
+            <div class="container mx-auto px-4 h-10 flex items-center justify-between">
+                <div class="flex items-center gap-6 overflow-x-auto no-scrollbar text-[11px] font-bold text-slate-400 uppercase tracking-wide h-full whitespace-nowrap pr-4">
                     <button onclick="navigate('home')" class="hover:text-white transition">Beranda</button>
                     <button onclick="navigate('profil')" class="hover:text-white transition">Profil</button>
                     <button onclick="navigate('akademik')" class="hover:text-blue-400 transition text-blue-500">Akademik</button>
@@ -79,15 +110,24 @@
                     <button onclick="navigate('fasilitas')" class="hover:text-white transition">Fasilitas</button>
                     <button onclick="navigate('mutasi')" class="hover:text-white transition">Mutasi</button>
                     <button onclick="navigate('download')" class="hover:text-white transition">Unduhan</button>
-                    <button onclick="navigate('spmb')" class="hover:text-yellow-400 text-yellow-500 transition">SPMB</button>
-                    <button onclick="navigate('login')" class="hover:text-red-400 transition ml-2 border-l border-slate-700 pl-4">Admin</button>
+                    <button onclick="navigate('spmb')" class="hover:text-yellow-400 text-yellow-500 transition">SPMB Online</button>
+                    <button onclick="navigate('login')" class="hover:text-red-400 transition ml-2 border-l border-slate-700 pl-4">Admin Area</button>
+                </div>
+                
+                <!-- Social Icons (Desktop) -->
+                <div class="hidden md:flex items-center gap-4 pl-4 border-l border-slate-700 text-slate-400">
+                    <a id="nav-fb" href="#" target="_blank" class="hover:text-blue-500 transition"><i class="fab fa-facebook text-sm"></i></a>
+                    <a id="nav-ig" href="#" target="_blank" class="hover:text-pink-500 transition"><i class="fab fa-instagram text-sm"></i></a>
+                    <a id="nav-yt" href="#" target="_blank" class="hover:text-red-500 transition"><i class="fab fa-youtube text-sm"></i></a>
                 </div>
             </div>
         </div>
+
+        <!-- Mobile Drawer -->
         <div id="mobile-menu" class="hidden lg:hidden bg-slate-900 border-t border-slate-800 p-4 absolute w-full shadow-2xl">
             <div class="grid grid-cols-2 gap-2 text-white text-[10px] font-bold uppercase tracking-wider">
                 <button onclick="navigate('home')" class="p-3 bg-white/5 rounded-lg text-left">Beranda</button>
-                <button onclick="navigate('guru')" class="p-3 bg-white/5 rounded-lg text-left border-l-2 border-blue-500">Guru</button>
+                <button onclick="navigate('guru')" class="p-3 bg-white/5 rounded-lg text-left border-l-2 border-blue-500">Direktori Guru</button>
                 <button onclick="navigate('profil')" class="p-3 bg-white/5 rounded-lg text-left">Profil</button>
                 <button onclick="navigate('akademik')" class="p-3 bg-white/5 rounded-lg text-left">Akademik</button>
                 <button onclick="navigate('fasilitas')" class="p-3 bg-white/5 rounded-lg text-left">Fasilitas</button>
@@ -98,10 +138,12 @@
         </div>
     </header>
 
+    <!-- MAIN CONTENT -->
     <main class="flex-grow pt-[110px] pb-10 container mx-auto px-4 max-w-7xl">
         
-        <!-- HOME -->
+        <!-- HOME SECTION -->
         <section id="home" class="page-section animate-fade-in">
+            <!-- Hero -->
             <div class="relative h-[300px] md:h-[450px] rounded-2xl overflow-hidden shadow-lg mb-8 bg-slate-800">
                 <img id="home-banner" src="" class="w-full h-full object-cover opacity-60">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
@@ -112,13 +154,30 @@
             </div>
 
             <div class="grid lg:grid-cols-12 gap-6">
+                <!-- Main Content Left -->
                 <div class="lg:col-span-8 space-y-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 card-pro">
-                        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                    <!-- Stats Cards Row -->
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase">Siswa</p><h3 class="text-2xl font-black text-slate-800" id="stat-siswa">0</h3>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase">Guru</p><h3 class="text-2xl font-black text-slate-800" id="stat-guru">0</h3>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase">Rombel</p><h3 class="text-2xl font-black text-slate-800" id="stat-kelas">0</h3>
+                        </div>
+                    </div>
+
+                    <!-- Chart & Table Area -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                        <div class="flex justify-between items-center mb-6">
                             <h3 class="font-bold text-slate-800 flex items-center gap-2"><i class="fas fa-chart-pie text-blue-600"></i> Statistik Peserta Didik</h3>
                         </div>
                         <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Grafik -->
                             <div class="h-60 w-full"><canvas id="chartSiswa"></canvas></div>
+                            <!-- Tabel Data Siswa -->
                             <div class="overflow-hidden border border-slate-100 rounded-lg">
                                 <div class="bg-slate-50 p-2 text-xs font-bold text-center border-b border-slate-100 uppercase text-slate-500">Detail Per Rombel</div>
                                 <div class="overflow-y-auto max-h-52">
@@ -130,28 +189,33 @@
                             </div>
                         </div>
                     </div>
-                    <div><h3 class="font-bold text-slate-800 text-lg border-l-4 border-blue-600 pl-3 mb-4">Berita Terbaru</h3><div id="list-berita" class="grid gap-3"></div></div>
+
+                    <!-- Berita -->
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-slate-800 text-lg border-l-4 border-blue-600 pl-3">Berita Terbaru</h3>
+                        <div id="list-berita" class="grid gap-3"></div>
+                    </div>
                 </div>
 
+                <!-- Sidebar Right -->
                 <div class="lg:col-span-4 space-y-6">
-                    <div class="grid grid-cols-2 gap-4">
-                         <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center card-pro">
-                            <p class="text-[9px] font-bold text-slate-400 uppercase">Siswa</p><h3 class="text-2xl font-black text-slate-800" id="stat-siswa">0</h3>
-                        </div>
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center card-pro">
-                            <p class="text-[9px] font-bold text-slate-400 uppercase">Guru</p><h3 class="text-2xl font-black text-slate-800" id="stat-guru">0</h3>
-                        </div>
-                    </div>
                     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 card-pro">
                         <h4 class="font-bold text-slate-800 mb-3 text-xs uppercase tracking-widest flex items-center gap-2"><i class="fas fa-map-marked-alt text-red-500"></i> Lokasi Sekolah</h4>
                         <div id="map-container" class="rounded-xl overflow-hidden aspect-square bg-slate-100 flex items-center justify-center text-xs text-slate-400"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat Peta...</div>
                         <p class="text-[10px] text-slate-500 mt-3 leading-relaxed font-medium text-center" id="txt-alamat">...</p>
                     </div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                        <h4 class="font-bold text-slate-800 mb-3 text-xs uppercase tracking-widest">Poster Edukasi</h4>
+                        <div class="space-y-3">
+                            <img id="img-7kebiasaan" src="" class="w-full rounded-lg shadow-sm hover:opacity-90 cursor-pointer" onclick="window.open(this.src)">
+                            <img id="img-8dimensi" src="" class="w-full rounded-lg shadow-sm hover:opacity-90 cursor-pointer" onclick="window.open(this.src)">
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- ADMIN DASHBOARD -->
+        <!-- ADMIN DASHBOARD (FITUR BARU: EDIT ROMBEL) -->
         <section id="admin" class="hidden-section page-section container mx-auto px-4 max-w-6xl">
             <div class="flex justify-between items-center mb-8 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
                 <div><h2 class="text-2xl font-bold text-slate-800">Admin Panel</h2><p class="text-xs text-slate-500">Kelola data website</p></div>
@@ -161,24 +225,22 @@
             <div class="grid lg:grid-cols-12 gap-6">
                 <!-- Sidebar Admin -->
                 <div class="lg:col-span-3 flex lg:flex-col gap-2 overflow-x-auto pb-4 lg:pb-0">
-                    <button onclick="showTabAdmin('adm-siswa')" class="p-3 bg-slate-900 text-white rounded-lg font-bold text-xs text-left shadow-lg" id="tab-btn-siswa">1. Data Kelas (Rombel)</button>
-                    <button onclick="showTabAdmin('adm-mutasi')" class="p-3 bg-white border rounded-lg font-bold text-xs text-left text-slate-500 hover:bg-slate-50 transition" id="tab-btn-mutasi">2. Data Mutasi</button>
-                    <button onclick="showTabAdmin('adm-config')" class="p-3 bg-white border rounded-lg font-bold text-xs text-left text-slate-500 hover:bg-slate-50 transition" id="tab-btn-config">3. Config Web</button>
-                    <button onclick="showTabAdmin('adm-media')" class="p-3 bg-white border rounded-lg font-bold text-xs text-left text-slate-500 hover:bg-slate-50 transition" id="tab-btn-media">4. Multimedia</button>
+                    <button onclick="showTabAdmin('adm-siswa')" class="btn-admin-tab active" id="tab-btn-siswa">1. Data Kelas (Rombel)</button>
+                    <button onclick="showTabAdmin('adm-mutasi')" class="btn-admin-tab inactive" id="tab-btn-mutasi">2. Data Mutasi</button>
+                    <button onclick="showTabAdmin('adm-config')" class="btn-admin-tab inactive" id="tab-btn-config">3. Config & Sosmed</button>
+                    <button onclick="showTabAdmin('adm-media')" class="btn-admin-tab inactive" id="tab-btn-media">4. Multimedia</button>
                 </div>
                 
-                <!-- Content Admin -->
                 <div class="lg:col-span-9 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 min-h-[400px]">
-                    
-                    <!-- TAB 1: DATA SISWA / ROMBEL -->
+                    <!-- TAB 1: DATA SISWA (BARU) -->
                     <div id="adm-siswa" class="adm-content">
                         <div class="flex justify-between mb-4 items-center">
-                            <h3 class="font-bold text-slate-800">Kelola 12 Rombel</h3>
+                            <h3 class="font-bold text-slate-800">Kelola Data Rombel (12 Kelas)</h3>
                             <button onclick="addRowSiswa()" class="text-blue-600 font-bold text-xs bg-blue-50 px-3 py-1 rounded-lg">+ Tambah Kelas</button>
                         </div>
                         <div class="table-responsive mb-4 border rounded-lg h-80 overflow-y-auto">
                             <table class="w-full text-xs text-left whitespace-nowrap">
-                                <thead class="bg-slate-50 text-slate-500 sticky top-0"><tr><th class="p-3">Nama Kelas</th><th class="p-3 w-20 text-center">Laki-Laki</th><th class="p-3 w-20 text-center">Perempuan</th><th class="p-3 w-10"></th></tr></thead>
+                                <thead class="bg-slate-50 text-slate-500 sticky top-0"><tr><th class="p-3">Nama Kelas</th><th class="p-3 w-20 text-center">L</th><th class="p-3 w-20 text-center">P</th><th class="p-3 w-10"></th></tr></thead>
                                 <tbody id="editor-siswa-body"></tbody>
                             </table>
                         </div>
@@ -188,59 +250,69 @@
                     <!-- TAB 2: MUTASI -->
                     <div id="adm-mutasi" class="adm-content hidden">
                         <div class="flex justify-between mb-4"><h3 class="font-bold text-slate-800">Data Mutasi</h3><button onclick="addRowMutasi()" class="text-blue-500 font-bold text-xs">+ Baris</button></div>
-                        <div class="table-responsive mb-4 border rounded-lg h-80 overflow-y-auto">
-                            <table class="w-full text-xs text-left whitespace-nowrap">
-                                <thead class="bg-slate-50 sticky top-0"><tr><th class="p-3">Kelas</th><th class="p-3">In(L)</th><th class="p-3">In(P)</th><th class="p-3">Out(L)</th><th class="p-3">Out(P)</th><th class="p-3"></th></tr></thead>
-                                <tbody id="editor-mutasi-body"></tbody>
-                            </table>
-                        </div>
+                        <div class="table-responsive mb-4 border rounded-lg h-80 overflow-y-auto"><table class="w-full text-xs text-left whitespace-nowrap"><thead class="bg-slate-50 sticky top-0"><tr><th class="p-3">Kelas</th><th class="p-3">In(L)</th><th class="p-3">In(P)</th><th class="p-3">Out(L)</th><th class="p-3">Out(P)</th><th class="p-3"></th></tr></thead><tbody id="editor-mutasi-body"></tbody></table></div>
                         <button onclick="saveMutasiData()" class="w-full bg-slate-900 text-white py-3 rounded-lg font-bold text-xs shadow-md">SIMPAN MUTASI</button>
                     </div>
 
                     <!-- TAB 3: CONFIG -->
                     <div id="adm-config" class="adm-content hidden space-y-4">
-                        <h3 class="font-bold text-slate-800 border-b pb-2">Identitas Sekolah</h3>
-                        <input type="text" id="adm-nama" placeholder="Nama Sekolah" class="w-full p-3 border rounded-lg font-bold text-xs">
-                        <input type="text" id="adm-lms" placeholder="Link LMS" class="w-full p-3 border rounded-lg font-bold text-xs">
-                        <textarea id="adm-running" placeholder="Running Text" class="w-full p-3 border rounded-lg text-xs h-20"></textarea>
-                        <button onclick="saveWebConfig(event)" class="bg-slate-900 text-white px-6 py-2 rounded-lg font-bold text-xs">Update</button>
+                        <h3 class="font-bold text-slate-800 border-b pb-2">Identitas & Sosmed</h3>
+                        <input type="text" id="adm-nama" placeholder="Nama Sekolah" class="input-admin">
+                        <input type="text" id="adm-lms" placeholder="Link LMS" class="input-admin">
+                        <textarea id="adm-running" placeholder="Running Text" class="input-admin h-20"></textarea>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" id="adm-fb" placeholder="Facebook URL" class="input-admin">
+                            <input type="text" id="adm-ig" placeholder="Instagram URL" class="input-admin">
+                            <input type="text" id="adm-yt" placeholder="YouTube URL" class="input-admin">
+                        </div>
+                        <button onclick="saveWebConfig(event)" class="bg-slate-900 text-white px-6 py-2 rounded-lg font-bold text-xs w-full">Update Data</button>
                     </div>
 
                     <!-- TAB 4: MEDIA -->
                     <div id="adm-media" class="adm-content hidden space-y-4">
                         <h3 class="font-bold text-slate-800 border-b pb-2">Upload Galeri</h3>
-                        <select id="media-tipe" class="w-full p-3 border rounded-lg text-xs"><option value="Foto">Foto</option><option value="Video">Video</option></select>
-                        <input type="text" id="media-judul" placeholder="Judul" class="w-full p-3 border rounded-lg text-xs">
-                        <input type="text" id="media-link" placeholder="Link URL" class="w-full p-3 border rounded-lg text-xs">
+                        <select id="media-tipe" class="input-admin"><option value="Foto">Foto</option><option value="Video">Video</option></select>
+                        <input type="text" id="media-judul" placeholder="Judul" class="input-admin">
+                        <input type="text" id="media-link" placeholder="Link URL" class="input-admin">
                         <button onclick="saveGaleri(event)" class="bg-emerald-600 text-white px-6 py-2 rounded-lg font-bold text-xs">Simpan</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTIONS LAIN (Guru, Profil, dll - Tetap ada tapi dihidden) -->
+        <!-- SECTIONS LAIN (Guru, Profil, dll - Tetap ada) -->
         <section id="guru" class="hidden-section page-section container mx-auto px-4"><h2 class="text-2xl font-bold mb-6 text-center">Direktori Guru</h2><div id="grid-guru" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"></div></section>
         <section id="profil" class="hidden-section page-section container mx-auto px-4 max-w-4xl"><div class="bg-white p-8 rounded-2xl shadow-sm mb-8 text-center"><h3 class="text-blue-600 font-bold text-xs mb-4">VISI</h3><p id="view-visi" class="text-xl font-serif italic mb-8">...</p><h3 class="text-blue-600 font-bold text-xs mb-4">MISI</h3><div id="view-misi" class="text-sm whitespace-pre-line">...</div></div></section>
         <section id="akademik" class="hidden-section page-section container mx-auto px-4"><div class="bg-blue-900 p-8 rounded-3xl text-white text-center shadow-xl"><h3 class="text-3xl font-bold mb-4">Portal LMS</h3><a id="lms-btn" href="#" target="_blank" class="inline-block bg-white text-blue-900 font-bold py-3 px-6 rounded-xl text-xs">Buka Aplikasi</a></div></section>
         <section id="fasilitas" class="hidden-section page-section container mx-auto px-4"><h2 class="text-2xl font-bold text-center mb-6">Fasilitas</h2><div id="grid-fasilitas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div></section>
-        <section id="mutasi" class="hidden-section page-section container mx-auto px-4"><h2 class="text-2xl font-bold text-center mb-6">Laporan Mutasi</h2><div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden"><table class="w-full text-xs text-left"><thead class="bg-slate-50"><tr><th class="p-3">Kelas</th><th class="p-3 text-center">In(L)</th><th class="p-3 text-center">In(P)</th><th class="p-3 text-center">Out(L)</th><th class="p-3 text-center">Out(P)</th></tr></thead><tbody id="tbl-mutasi"></tbody></table></div></section>
         <section id="download" class="hidden-section page-section container mx-auto px-4"><h2 class="text-2xl font-bold text-center mb-6">Download</h2><div class="bg-white rounded-2xl shadow-sm p-4"><table class="w-full text-xs"><tbody id="tbl-dl"></tbody></table></div></section>
-        <section id="spmb" class="hidden-section page-section container mx-auto px-4 max-w-xl"><div class="bg-white p-8 rounded-3xl shadow-xl border-t-8 border-blue-600"><h2 class="text-2xl font-bold text-center mb-6">PPDB Online</h2><div id="spmb-info-content" class="bg-slate-50 p-4 rounded-xl text-xs text-slate-500 mb-6 italic text-center"></div><form id="form-spmb" onsubmit="kirimSPMB(event)" class="hidden space-y-4"><input type="text" name="nama" placeholder="Nama Lengkap" class="w-full p-3 bg-slate-100 rounded-xl font-bold text-sm" required><input type="number" name="nik" placeholder="NIK" class="w-full p-3 bg-slate-100 rounded-xl font-bold text-sm" required><input type="text" name="hp" placeholder="No WhatsApp" class="w-full p-3 bg-slate-100 rounded-xl font-bold text-sm" required><button type="submit" class="w-full bg-blue-600 text-white font-black py-4 rounded-xl shadow-lg">Kirim</button></form></div></section>
-        
-        <section id="login" class="hidden-section page-section flex justify-center py-20"><div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-xs text-center border border-slate-200"><h2 class="text-lg font-bold mb-6">Admin Login</h2><form onsubmit="doLogin(event)" class="space-y-3"><input type="text" id="u" placeholder="Admin ID" class="w-full p-3 border rounded-lg text-center" required><input type="password" id="p" placeholder="Password" class="w-full p-3 border rounded-lg text-center" required><button type="submit" id="btn-login" class="w-full bg-slate-900 text-white font-bold py-3 rounded-lg">MASUK</button></form></div></section>
+        <section id="spmb" class="hidden-section page-section container mx-auto px-4 max-w-xl"><div class="bg-white p-8 rounded-3xl shadow-xl border-t-8 border-blue-600"><h2 class="text-2xl font-bold text-center mb-6">PPDB Online</h2><div id="spmb-info-content" class="bg-slate-50 p-4 rounded-xl text-xs text-slate-500 mb-6 italic text-center"></div><form id="form-spmb" onsubmit="kirimSPMB(event)" class="hidden space-y-4"><input type="text" name="nama" placeholder="Nama Lengkap" class="input-admin" required><input type="number" name="nik" placeholder="NIK" class="input-admin" required><input type="text" name="hp" placeholder="No WhatsApp" class="input-admin" required><button type="submit" class="w-full bg-blue-600 text-white font-black py-4 rounded-xl shadow-lg">Kirim</button></form></div></section>
+        <section id="login" class="hidden-section page-section flex justify-center py-20"><div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-xs text-center border border-slate-200"><h2 class="text-lg font-bold mb-6">Admin Login</h2><form onsubmit="doLogin(event)" class="space-y-3"><input type="text" id="u" placeholder="Admin ID" class="input-admin text-center" required><input type="password" id="p" placeholder="Password" class="input-admin text-center" required><button type="submit" id="btn-login" class="w-full bg-slate-900 text-white font-bold py-3 rounded-lg">MASUK</button></form></div></section>
     
     </main>
 
+    <!-- FOOTER -->
     <footer class="bg-slate-900 text-slate-500 py-12 text-center text-xs mt-auto">
         <h3 class="text-white font-bold text-lg mb-2" id="foot-nama">SDN 4 TAMAN</h3>
         <p id="foot-alamat">...</p>
-        <p class="mt-6 opacity-40">&copy; 2026 Portal Sekolah Digital</p>
+        <div class="flex justify-center gap-6 mt-4 text-lg">
+            <a id="link-fb" href="#" target="_blank" class="hover:text-white"><i class="fab fa-facebook"></i></a>
+            <a id="link-ig" href="#" target="_blank" class="hover:text-white"><i class="fab fa-instagram"></i></a>
+            <a id="link-yt" href="#" target="_blank" class="hover:text-white"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p class="mt-6 opacity-40">&copy; 2026 Professional School System</p>
     </footer>
 
-    <div id="toast" class="toast">Pesan...</div>
+    <div id="toast" class="toast">Notifikasi</div>
 
     <script>
         let DATA_GLOBAL = null;
+
+        // Emergency timeout
+        setTimeout(() => {
+            const overlay = document.getElementById('loading-overlay');
+            if(overlay) { overlay.style.opacity = '0'; setTimeout(() => overlay.remove(), 800); }
+        }, 5000);
 
         async function fetchAPI(act, params={}) {
             try {
@@ -269,19 +341,23 @@
             window.scrollTo(0, 0);
             document.getElementById('mobile-menu').classList.add('hidden');
             if(id === 'home' && DATA_GLOBAL) setTimeout(() => renderChart(DATA_GLOBAL.siswaDetail), 200);
-            if(id === 'admin') {
-                renderEditorSiswa(); // Default open Data Siswa when admin opens
-            }
+            if(id === 'admin') renderEditorSiswa();
         }
 
         function showTabAdmin(id) {
             document.querySelectorAll('.adm-content').forEach(c => c.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
             
-            // Highlight Tab Button
+            // Tab styling
             const buttons = ['btn-siswa', 'btn-mutasi', 'btn-config', 'btn-media'];
-            const targetBtn = 'btn-' + id.replace('adm-', '');
-            // Simple logic for styling (optional enhancement)
+            buttons.forEach(btnId => {
+                 const btn = document.getElementById('tab-' + btnId);
+                 if(btnId === 'btn-' + id.replace('adm-', '')) {
+                     btn.classList.add('active'); btn.classList.remove('inactive');
+                 } else {
+                     btn.classList.remove('active'); btn.classList.add('inactive');
+                 }
+            });
         }
 
         function showToast(m) {
@@ -298,6 +374,7 @@
                 const c = res.config;
                 const safeTxt = (id,v) => { if(document.getElementById(id)) document.getElementById(id).innerText=v||'-'; }
                 const safeSrc = (id,v) => { if(document.getElementById(id)&&v) { document.getElementById(id).src=v; document.getElementById(id).classList.remove('hidden'); } }
+                const safeVal = (id,v) => { if(document.getElementById(id)) document.getElementById(id).value=v||''; }
 
                 safeTxt('header-nama', c.NamaSekolah); safeTxt('foot-nama', c.NamaSekolah);
                 safeTxt('banner-title', c.NamaSekolah); safeTxt('running-text', c.RunningText);
@@ -305,16 +382,18 @@
                 safeTxt('view-visi', c.Visi); document.getElementById('view-misi').innerHTML = (c.Misi||"").replace(/\n/g, "<br>");
                 document.getElementById('lms-btn').href = c.LMS_Link || "#";
 
-                if(document.getElementById('adm-nama')) {
-                    document.getElementById('adm-nama').value = c.NamaSekolah||"";
-                    document.getElementById('adm-lms').value = c.LMS_Link||"";
-                    document.getElementById('adm-running').value = c.RunningText||"";
-                }
+                // Admin Prefill
+                safeVal('adm-nama', c.NamaSekolah); safeVal('adm-lms', c.LMS_Link); safeVal('adm-running', c.RunningText);
+                safeVal('adm-fb', c.Facebook); safeVal('adm-ig', c.Instagram); safeVal('adm-yt', c.YoutubeChannel);
 
                 safeSrc('header-logo', c.LogoURL); safeSrc('home-banner', c.BannerURL);
                 safeSrc('img-sotk', c.Url_SOTK); safeSrc('img-7kebiasaan', c.Url_7Kebiasaan); safeSrc('img-8dimensi', c.Url_8Dimensi);
 
-                if (c.GoogleMapsEmbed) document.getElementById('map-container').innerHTML = `<iframe src="${c.GoogleMapsEmbed}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`;
+                if (c.GoogleMapsEmbed) {
+                    let mapSrc = c.GoogleMapsEmbed;
+                    if(mapSrc.includes('<iframe')) { const m = mapSrc.match(/src="([^"]+)"/); if(m) mapSrc = m[1]; }
+                    document.getElementById('map-container').innerHTML = `<iframe src="${mapSrc}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`;
+                }
 
                 let tSiswa = 0;
                 res.siswaDetail.forEach(r => tSiswa += (Number(r[1]) + Number(r[2])));
@@ -329,7 +408,7 @@
                     });
                 }
 
-                // Render other sections (Guru, Mutasi, Berita, Fasilitas) - Simplified for brevity but functional
+                // Render other sections
                 const gGrid = document.getElementById('grid-guru'); gGrid.innerHTML=''; res.guruList.forEach(g => gGrid.innerHTML += `<div class="bg-white p-4 rounded-xl shadow-sm text-center border border-slate-50 card-pro"><img src="${g.foto||'https://via.placeholder.com/150'}" class="w-16 h-16 mx-auto rounded-full object-cover mb-2"><h4 class="font-bold text-xs uppercase">${g.nama}</h4><p class="text-[9px] text-blue-500 font-bold uppercase mt-1">${g.mapel}</p></div>`);
                 const mTbl = document.getElementById('tbl-mutasi'); mTbl.innerHTML=''; res.mutasi.forEach(m => mTbl.innerHTML+=`<tr class="border-b"><td class="p-3">${m[0]}</td><td class="text-center text-emerald-600">${m[1]}</td><td class="text-center text-emerald-700">${m[2]}</td><td class="text-center text-rose-500">${m[3]}</td><td class="text-center text-rose-700">${m[4]}</td></tr>`);
                 const bList = document.getElementById('list-berita'); bList.innerHTML=''; res.berita.forEach(b => bList.innerHTML+=`<div class="bg-white p-4 rounded-xl shadow-sm border border-slate-50"><p class="text-[9px] font-bold text-blue-500 mb-1">${new Date(b[1]).toLocaleDateString()}</p><h4 class="font-bold text-sm">${b[0]}</h4></div>`);
@@ -373,9 +452,9 @@
             if(DATA_GLOBAL && DATA_GLOBAL.siswaDetail) {
                 DATA_GLOBAL.siswaDetail.forEach(s => {
                     body.innerHTML += `<tr>
-                        <td class="p-2"><input type="text" value="${s[0]}" class="sis-kelas w-full border p-2 rounded text-xs font-bold shadow-sm"></td>
-                        <td class="p-2"><input type="number" value="${s[1]}" class="sis-l w-16 border p-2 rounded text-center text-xs font-bold text-blue-600"></td>
-                        <td class="p-2"><input type="number" value="${s[2]}" class="sis-p w-16 border p-2 rounded text-center text-xs font-bold text-rose-600"></td>
+                        <td class="p-2"><input type="text" value="${s[0]}" class="sis-kelas input-admin"></td>
+                        <td class="p-2"><input type="number" value="${s[1]}" class="sis-l input-admin text-center"></td>
+                        <td class="p-2"><input type="number" value="${s[2]}" class="sis-p input-admin text-center"></td>
                         <td class="p-2 text-center"><button onclick="this.closest('tr').remove()" class="text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button></td>
                     </tr>`;
                 });
@@ -383,7 +462,7 @@
         }
 
         function addRowSiswa() {
-            document.getElementById('editor-siswa-body').insertAdjacentHTML('beforeend', `<tr><td class="p-2"><input type="text" placeholder="Nama Kelas" class="sis-kelas w-full border p-2 rounded text-xs font-bold shadow-sm"></td><td class="p-2"><input type="number" value="0" class="sis-l w-16 border p-2 rounded text-center text-xs font-bold text-blue-600"></td><td class="p-2"><input type="number" value="0" class="sis-p w-16 border p-2 rounded text-center text-xs font-bold text-rose-600"></td><td class="p-2 text-center"><button onclick="this.closest('tr').remove()" class="text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button></td></tr>`);
+            document.getElementById('editor-siswa-body').insertAdjacentHTML('beforeend', `<tr><td class="p-2"><input type="text" placeholder="Kelas" class="sis-kelas input-admin"></td><td class="p-2"><input type="number" value="0" class="sis-l input-admin text-center"></td><td class="p-2"><input type="number" value="0" class="sis-p input-admin text-center"></td><td class="p-2 text-center"><button onclick="this.closest('tr').remove()" class="text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button></td></tr>`);
         }
 
         async function saveSiswaData() {
@@ -394,28 +473,20 @@
                 const p = r.querySelector('.sis-p').value;
                 if(k) data.push([k, l, p]);
             });
-            showToast("Menyimpan Data Rombel...");
-            const res = await postAPI('saveSiswa', data); // Make sure backend supports saveSiswa or we use saveMutasi trick if needed, but best is separate
-            // NOTE: If backend V10 doesn't have saveSiswa, we need to add it. But for now assuming V11 or similar logic structure.
-            // Check backend response
-            if(res && res.status==='success') { showToast("Rombel Tersimpan!"); setTimeout(() => location.reload(), 1000); }
-            else { 
-                // Fallback attempt: maybe backend expects different format?
-                // Actually, if you used Backend V11 Multimedia Plus, it didn't explicitly have saveSiswa.
-                // WE MUST ENSURE BACKEND HAS THIS. 
-                // If this fails, user needs to update Backend to support 'saveSiswa' op.
-                showToast("Gagal! Cek Backend."); 
-            }
+            showToast("Menyimpan Rombel...");
+            const res = await postAPI('saveSiswa', data);
+            if(res && res.status==='success') { showToast("Berhasil!"); setTimeout(() => location.reload(), 1000); }
+            else { showToast("Gagal/API belum update"); }
         }
 
         function renderEditorMutasi() {
             const b = document.getElementById('editor-mutasi-body'); b.innerHTML='';
             DATA_GLOBAL.mutasi.forEach(m => {
-                b.innerHTML += `<tr><td class="p-2"><input type="text" value="${m[0]}" class="mut-kelas w-20 border p-1 rounded"></td><td class="p-2"><input type="number" value="${m[1]}" class="mut-lm w-12 border p-1 rounded"></td><td class="p-2"><input type="number" value="${m[2]}" class="mut-pm w-12 border p-1 rounded"></td><td class="p-2"><input type="number" value="${m[3]}" class="mut-lk w-12 border p-1 rounded"></td><td class="p-2"><input type="number" value="${m[4]}" class="mut-pk w-12 border p-1 rounded"></td><td class="p-2"><button onclick="this.closest('tr').remove()" class="text-red-500">x</button></td></tr>`;
+                b.innerHTML += `<tr><td class="p-2"><input type="text" value="${m[0]}" class="mut-kelas input-admin"></td><td class="p-2"><input type="number" value="${m[1]}" class="mut-lm input-admin text-center"></td><td class="p-2"><input type="number" value="${m[2]}" class="mut-pm input-admin text-center"></td><td class="p-2"><input type="number" value="${m[3]}" class="mut-lk input-admin text-center"></td><td class="p-2"><input type="number" value="${m[4]}" class="mut-pk input-admin text-center"></td><td class="p-2"><button onclick="this.closest('tr').remove()" class="text-red-500">x</button></td></tr>`;
             });
         }
         function addRowMutasi() {
-            document.getElementById('editor-mutasi-body').insertAdjacentHTML('beforeend', `<tr><td class="p-2"><input type="text" class="mut-kelas w-20 border p-1 rounded"></td><td class="p-2"><input type="number" value="0" class="mut-lm w-12 border p-1 rounded"></td><td class="p-2"><input type="number" value="0" class="mut-pm w-12 border p-1 rounded"></td><td class="p-2"><input type="number" value="0" class="mut-lk w-12 border p-1 rounded"></td><td class="p-2"><input type="number" value="0" class="mut-pk w-12 border p-1 rounded"></td><td class="p-2"><button onclick="this.closest('tr').remove()" class="text-red-500">x</button></td></tr>`);
+            document.getElementById('editor-mutasi-body').insertAdjacentHTML('beforeend', `<tr><td class="p-2"><input type="text" class="mut-kelas input-admin"></td><td class="p-2"><input type="number" value="0" class="mut-lm input-admin text-center"></td><td class="p-2"><input type="number" value="0" class="mut-pm input-admin text-center"></td><td class="p-2"><input type="number" value="0" class="mut-lk input-admin text-center"></td><td class="p-2"><input type="number" value="0" class="mut-pk input-admin text-center"></td><td class="p-2"><button onclick="this.closest('tr').remove()" class="text-red-500">x</button></td></tr>`);
         }
 
         async function saveMutasiData() {
@@ -431,9 +502,16 @@
 
         async function saveWebConfig(e) {
             e.preventDefault();
-            const d = { NamaSekolah: document.getElementById('adm-nama').value, LMS_Link: document.getElementById('adm-lms').value, RunningText: document.getElementById('adm-running').value };
+            const d = { 
+                NamaSekolah: document.getElementById('adm-nama').value, 
+                LMS_Link: document.getElementById('adm-lms').value, 
+                RunningText: document.getElementById('adm-running').value,
+                Facebook: document.getElementById('adm-fb').value,
+                Instagram: document.getElementById('adm-ig').value,
+                YoutubeChannel: document.getElementById('adm-yt').value
+            };
             const res = await postAPI('saveConfig', d);
-            if(res && res.status==='success') { showToast("Disimpan!"); location.reload(); }
+            if(res && res.status==='success') { showToast("Config Update!"); location.reload(); }
         }
 
         async function saveGaleri(e) {
@@ -450,648 +528,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', initApp);
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Portal Resmi SDN 4 Taman</title>
-    <!-- Library Eksternal -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
-                    colors: { 
-                        primary: '#0f172a', 
-                        accent: '#2563eb', 
-                        gold: '#fbbf24',
-                        emerald: '#10b981',
-                        rose: '#f43f5e'
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body { background-color: #f8fafc; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
-        
-        .glass-nav { 
-            background: rgba(15, 23, 42, 0.95); 
-            backdrop-filter: blur(12px); 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-            z-index: 1000;
-        }
-
-        .hidden-section { display: none !important; }
-        
-        /* Premium Loading Screen SDN 4 TAMAN */
-        #loading-overlay {
-            position: fixed; inset: 0; background: #0f172a; z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.8s ease-out;
-        }
-
-        .sd-glow-text {
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: white;
-            letter-spacing: 0.2em;
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
-            animation: glow-pulse 2s infinite ease-in-out;
-            text-align: center;
-            padding: 0 20px;
-        }
-
-        @keyframes glow-pulse {
-            0%, 100% { opacity: 0.8; transform: scale(0.95); }
-            50% { opacity: 1; transform: scale(1); text-shadow: 0 0 40px rgba(59, 130, 246, 0.9); }
-        }
-
-        .loader-bar {
-            width: 200px;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin-top: 25px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .loader-progress {
-            position: absolute;
-            height: 100%;
-            width: 40%;
-            background: #3b82f6;
-            animation: progress-move 1.5s infinite ease-in-out;
-        }
-
-        @keyframes progress-move {
-            0% { left: -40%; }
-            100% { left: 100%; }
-        }
-
-        /* Card & UI Effects */
-        .card-premium { background: white; border: 1px solid #f1f5f9; transition: all 0.3s ease; }
-        @media (min-width: 768px) {
-            .card-premium:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); }
-        }
-
-        .active-nav { color: white !important; font-weight: 800; border-bottom: 2px solid #3b82f6; }
-        .toast { visibility: hidden; min-width: 280px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 16px; padding: 16px; position: fixed; z-index: 10000; left: 50%; transform: translateX(-50%); bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .toast.show { visibility: visible; animation: slideIn 0.5s, slideOut 0.5s 2.5s; }
-        @keyframes slideIn { from {bottom: 0; opacity: 0;} to {bottom: 20px; opacity: 1;} }
-        @keyframes slideOut { from {bottom: 20px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-
-        .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    </style>
-</head>
-<body class="flex flex-col min-h-screen text-slate-800">
-
-    <script>
-        // API URL SDN 4 Taman
-        const API_URL = "https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec";
-    </script>
-
-    <!-- LOADING SCREEN -->
-    <div id="loading-overlay">
-        <h1 class="sd-glow-text uppercase">SDN 4 TAMAN</h1>
-        <div class="loader-bar">
-            <div class="loader-progress"></div>
-        </div>
-        <p class="text-blue-400 text-[10px] font-black tracking-[0.4em] uppercase mt-6 opacity-60">Sinkronisasi Database...</p>
-    </div>
-
-    <!-- NAVIGATION BAR -->
-    <nav class="glass-nav fixed top-0 w-full">
-        <div class="container mx-auto px-4 flex justify-between items-center h-16 md:h-20">
-            <!-- Branding -->
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
-                <img id="header-logo" src="" class="w-9 h-9 md:w-11 md:h-11 hidden object-contain bg-white rounded-xl p-1 shadow-sm">
-                <div>
-                    <h1 class="text-white font-black text-sm md:text-xl leading-tight uppercase tracking-tight" id="header-nama">SDN 4 TAMAN</h1>
-                    <p class="text-blue-500 text-[7px] md:text-[9px] font-extrabold tracking-widest uppercase">Portal Digital</p>
-                </div>
-            </div>
-
-            <!-- Desktop Menu -->
-            <div class="hidden lg:flex items-center space-x-2 text-gray-400 text-[10px] font-black uppercase tracking-widest">
-                <button onclick="navigate('home')" class="nav-btn px-3 py-2 hover:text-white transition">Home</button>
-                <button onclick="navigate('profil')" class="nav-btn px-3 py-2 hover:text-white transition">Profil</button>
-                <button onclick="navigate('akademik')" class="nav-btn px-3 py-2 text-blue-400 hover:text-blue-300 transition">Akademik</button>
-                <button onclick="navigate('fasilitas')" class="nav-btn px-3 py-2 hover:text-white transition">Fasilitas</button>
-                <button onclick="navigate('mutasi')" class="nav-btn px-3 py-2 hover:text-white transition">Mutasi</button>
-                <button onclick="navigate('guru')" class="nav-btn px-3 py-2 hover:text-white transition">Guru</button>
-                <button onclick="navigate('spmb')" class="ml-4 bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-500 transition shadow-lg font-bold">PPDB</button>
-                <button onclick="navigate('login')" class="text-white/20 hover:text-white transition ml-3"><i class="fas fa-lock text-sm"></i></button>
-            </div>
-
-            <!-- Mobile Toggle -->
-            <button class="lg:hidden text-white p-2" onclick="toggleMobileMenu()">
-                <i class="fas fa-bars-staggered text-2xl"></i>
-            </button>
-        </div>
-        
-        <!-- Mobile Sidebar Menu (Satu Kolom Rapi) -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-slate-900 border-t border-slate-800 p-6 space-y-3 text-white text-[11px] font-black uppercase tracking-widest">
-            <button onclick="navigate('home')" class="block w-full text-left p-4 hover:bg-white/5 rounded-xl border border-white/5 uppercase">Beranda</button>
-            <button onclick="navigate('profil')" class="block w-full text-left p-4 hover:bg-white/5 rounded-xl border border-white/5 uppercase">Profil Sekolah</button>
-            <button onclick="navigate('akademik')" class="block w-full text-left p-4 bg-blue-600/20 text-blue-400 rounded-xl font-black uppercase tracking-tight">Akademik/LMS</button>
-            <button onclick="navigate('fasilitas')" class="block w-full text-left p-4 hover:bg-white/5 rounded-xl border border-white/5 uppercase">Fasilitas & Ekskul</button>
-            <button onclick="navigate('mutasi')" class="block w-full text-left p-4 hover:bg-white/5 rounded-xl border border-white/5 uppercase">Mutasi Siswa</button>
-            <button onclick="navigate('guru')" class="block w-full text-left p-4 hover:bg-white/5 rounded-xl border border-white/5 uppercase">Direktori Guru</button>
-            <div class="pt-4">
-                <button onclick="navigate('spmb')" class="block w-full text-center p-5 bg-blue-600 rounded-2xl shadow-xl font-black text-xs">PPDB ONLINE</button>
-            </div>
-        </div>
-    </nav>
-
-    <main class="flex-grow pt-16 md:pt-20">
-        
-        <!-- SECTION: HOME -->
-        <section id="home" class="page-section">
-            <div class="relative h-[450px] md:h-[650px] overflow-hidden bg-slate-900 text-left">
-                <img id="home-banner" src="" class="w-full h-full object-cover opacity-50">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent z-10"></div>
-                <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-24 z-20 container mx-auto">
-                    <p class="text-emerald-400 font-black text-[10px] uppercase tracking-[0.3em] mb-4" id="txt-greeting">Selamat Datang</p>
-                    <h2 class="text-3xl md:text-7xl font-black text-white mb-6 leading-tight uppercase tracking-tighter" id="banner-title">SDN 4 TAMAN</h2>
-                    <div class="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-2xl max-w-4xl shadow-2xl">
-                        <p class="text-slate-200 font-medium text-xs md:text-lg leading-relaxed italic" id="running-text">Sinkronisasi data sekolah...</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container mx-auto px-4 -mt-10 relative z-30">
-                <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
-                    <div class="bg-white p-5 md:p-8 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center card-premium">
-                        <div class="text-left"><p class="text-slate-400 text-[8px] font-bold uppercase tracking-widest">Pendidik</p><h3 class="text-2xl md:text-4xl font-black text-slate-800" id="stat-guru">0</h3></div>
-                        <i class="fas fa-user-tie text-xl md:text-2xl text-blue-100"></i>
-                    </div>
-                    <div class="bg-white p-5 md:p-8 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center card-premium">
-                        <div class="text-left"><p class="text-slate-400 text-[8px] font-bold uppercase tracking-widest">Siswa</p><h3 class="text-2xl md:text-4xl font-black text-slate-800" id="stat-siswa">0</h3></div>
-                        <i class="fas fa-graduation-cap text-xl md:text-2xl text-emerald-100"></i>
-                    </div>
-                    <div class="col-span-2 lg:col-span-1 bg-slate-900 p-5 md:p-8 rounded-3xl shadow-xl text-white flex justify-between items-center">
-                         <div class="text-left"><p class="text-blue-400 text-[8px] font-bold uppercase tracking-widest">PPDB</p><h3 class="text-sm md:text-lg font-black uppercase" id="txt-ppdb-status">...</h3></div>
-                         <button onclick="navigate('spmb')" class="bg-white text-slate-900 text-[9px] font-black px-4 py-2 rounded-full uppercase font-black">Daftar</button>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 md:p-10 rounded-[2.5rem] shadow-sm border border-slate-100 mb-12 card-premium overflow-hidden">
-                    <h3 class="font-black text-slate-800 text-sm md:text-xl mb-8 flex items-center gap-3"><i class="fas fa-chart-column text-blue-500"></i> Statistik Peserta Didik L/P</h3>
-                    <div class="h-[250px] md:h-[400px] w-full">
-                        <canvas id="chartSiswa"></canvas>
-                    </div>
-                </div>
-
-                <div class="grid lg:grid-cols-12 gap-10">
-                    <div class="lg:col-span-8 space-y-8">
-                        <h3 class="text-xl md:text-2xl font-black text-slate-900 flex items-center gap-3 uppercase"><span class="w-1 h-6 bg-blue-600 rounded-full"></span> Berita Terkini</h3>
-                        <div id="list-berita" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"></div>
-                    </div>
-                    <div class="lg:col-span-4">
-                        <div class="bg-white p-5 rounded-[2rem] shadow-xl border border-slate-100 sticky top-24 card-premium">
-                            <h4 class="font-black text-slate-800 mb-4 px-2 uppercase text-[10px] tracking-widest flex items-center gap-2 text-left"><i class="fas fa-location-dot text-rose-500"></i> Lokasi Kampus</h4>
-                            <div id="map-container" class="rounded-[1.5rem] overflow-hidden aspect-video md:aspect-square bg-slate-50 border flex items-center justify-center text-[10px] italic text-slate-400 min-h-[250px]">
-                                <!-- Maps logic -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION: PROFIL -->
-        <section id="profil" class="hidden-section page-section container mx-auto px-4 max-w-5xl">
-            <div class="bg-white p-8 md:p-16 rounded-[2.5rem] shadow-sm border border-slate-100 mb-12 text-center card-premium">
-                <span class="text-blue-600 font-black uppercase text-[9px] tracking-[0.4em] mb-6 block uppercase">Visi & Misi Kami</span>
-                <p id="view-visi" class="text-xl md:text-4xl font-serif italic text-slate-600 leading-snug mb-10">...</p>
-                <div class="h-px bg-slate-100 w-24 mx-auto mb-10"></div>
-                <div id="view-misi" class="text-slate-500 text-sm md:text-lg leading-loose whitespace-pre-line text-center max-w-2xl mx-auto font-medium">...</div>
-            </div>
-            <div class="text-center pb-12">
-                <h3 class="font-black text-lg md:text-xl text-slate-800 mb-6 uppercase tracking-widest text-center">Struktur Organisasi (SOTK)</h3>
-                <img id="img-sotk" src="" class="max-w-full h-auto mx-auto rounded-3xl shadow-xl border-4 border-white" alt="SOTK">
-            </div>
-        </section>
-
-        <!-- SECTION: AKADEMIK (GAYA KAD BESAR) -->
-        <section id="akademik" class="hidden-section page-section container mx-auto px-4 max-w-6xl">
-            <div class="text-center mb-10 md:mb-16">
-                <h2 class="text-3xl md:text-5xl font-black text-slate-900 mb-4 uppercase tracking-tighter uppercase">Layanan Akademik</h2>
-                <p class="text-slate-500 text-xs md:text-sm font-bold uppercase tracking-[0.2em]">Pusat Belajar Digital SDN 4 Taman</p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-6 md:gap-10 items-stretch text-left">
-                <div class="bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-950 p-8 md:p-12 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden group">
-                    <div class="absolute -top-10 -right-10 text-9xl opacity-5 rotate-12"><i class="fas fa-laptop-code"></i></div>
-                    <div class="relative z-10 h-full flex flex-col justify-between">
-                        <div>
-                            <span class="inline-block px-4 py-1.5 bg-white/10 rounded-full text-[9px] font-black uppercase tracking-widest mb-6">Portal Akademik</span>
-                            <h3 class="text-3xl md:text-5xl font-black mb-6 leading-tight tracking-tight uppercase">Sistem <br> LMS</h3>
-                            <p class="text-blue-100 mb-10 text-xs md:text-base leading-relaxed opacity-80">Akses materi, video pembelajaran, dan tugas daring dalam satu pintu digital.</p>
-                        </div>
-                        <a id="lms-btn" href="#" target="_blank" class="inline-flex items-center justify-center gap-3 bg-white text-blue-900 font-black py-4 px-8 rounded-2xl shadow-xl hover:bg-slate-50 transition-all uppercase text-[10px] tracking-widest font-black">Masuk LMS <i class="fas fa-arrow-right text-xs"></i></a>
-                    </div>
-                </div>
-                <div class="grid gap-4 md:gap-6">
-                    <div class="bg-white p-6 md:p-8 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4 md:gap-8 group card-premium">
-                        <div class="w-14 h-14 md:w-20 md:h-20 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 text-2xl"><i class="fas fa-book-reader"></i></div>
-                        <div><h4 class="text-sm md:text-xl font-black text-slate-800 uppercase tracking-tighter text-left">E-Library</h4><p class="text-slate-400 text-[8px] md:text-[10px] font-bold uppercase tracking-widest mt-1 text-left">Literasi Digital</p></div>
-                    </div>
-                    <div class="bg-white p-6 md:p-8 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4 md:gap-8 group card-premium">
-                        <div class="w-14 h-14 md:w-20 md:h-20 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-600 text-2xl"><i class="fas fa-medal"></i></div>
-                        <div><h4 class="text-sm md:text-xl font-black text-slate-800 uppercase tracking-tighter text-left">Prestasi</h4><p class="text-slate-400 text-[8px] md:text-[10px] font-bold uppercase tracking-widest mt-1 text-left">Galeri Juara</p></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION: MUTASI -->
-        <section id="mutasi" class="hidden-section page-section container mx-auto px-4 max-w-5xl">
-            <div class="bg-white rounded-[2rem] md:rounded-[3.5rem] shadow-xl border border-slate-50 overflow-hidden card-premium text-center md:text-left text-left">
-                <div class="p-8 md:p-12 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <div><h2 class="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-tighter uppercase">Data Mutasi</h2><p class="text-slate-400 font-bold text-[8px] md:text-[10px] uppercase tracking-[0.2em]">Pindah Datang & Keluar Siswa</p></div>
-                    <div class="flex gap-2">
-                        <div class="bg-emerald-50 px-4 md:px-6 py-2 rounded-2xl text-center border border-emerald-100 font-black"><p class="text-[7px] font-black text-emerald-600 uppercase">Masuk</p><h4 id="total-mut-masuk" class="text-sm md:text-xl font-black text-emerald-800">0</h4></div>
-                        <div class="bg-rose-50 px-4 md:px-6 py-2 rounded-2xl text-center border border-rose-100 font-black"><p class="text-[7px] font-black text-rose-600 uppercase">Keluar</p><h4 id="total-mut-keluar" class="text-sm md:text-xl font-black text-rose-800">0</h4></div>
-                    </div>
-                </div>
-                <div class="table-container">
-                    <table class="w-full text-[10px] md:text-sm min-w-[600px]">
-                        <thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest">
-                            <tr>
-                                <th class="p-6 text-left uppercase">Rombel</th>
-                                <th class="p-6 text-center text-emerald-600 bg-emerald-50/20 font-black">In (L)</th>
-                                <th class="p-6 text-center text-emerald-600 bg-emerald-50/40 font-black">In (P)</th>
-                                <th class="p-6 text-center text-rose-500 bg-rose-50/20 font-black">Out (L)</th>
-                                <th class="p-6 text-center text-rose-500 bg-rose-50/40 font-black">Out (P)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbl-mutasi" class="divide-y divide-slate-50 font-bold"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION: GURU -->
-        <section id="guru" class="hidden-section page-section container mx-auto px-4">
-            <h2 class="text-2xl md:text-4xl font-black text-center text-slate-900 mb-10 uppercase tracking-tighter text-center">Dewan Pendidik</h2>
-            <div id="grid-guru" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8"></div>
-        </section>
-
-        <!-- SECTION: FASILITAS -->
-        <section id="fasilitas" class="hidden-section page-section container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-black text-center text-slate-900 mb-10 uppercase text-center">Fasilitas & Ekskul</h2>
-            <div id="grid-fasilitas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 text-left"></div>
-        </section>
-
-        <!-- LOGIN -->
-        <section id="login" class="hidden-section page-section flex justify-center py-20 px-4">
-            <div class="bg-white p-10 rounded-[3rem] shadow-2xl w-full max-w-sm border border-slate-100 text-center card-premium">
-                <div class="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white text-2xl mx-auto mb-8 shadow-xl"><i class="fas fa-lock"></i></div>
-                <h2 class="text-xl font-black text-slate-800 mb-8 uppercase tracking-widest text-center">Admin Login</h2>
-                <form onsubmit="doLogin(event)" class="space-y-4">
-                    <input type="text" id="u" placeholder="Admin ID" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold outline-none text-center shadow-inner" required>
-                    <input type="password" id="p" placeholder="Password" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold outline-none text-center shadow-inner" required>
-                    <button type="submit" id="btn-login" class="w-full bg-slate-900 text-white font-black py-4 rounded-2xl hover:bg-black shadow-xl active:scale-95 transition uppercase text-[10px] tracking-widest font-black">Verify Login</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- ADMIN DASHBOARD -->
-        <section id="admin" class="hidden-section page-section container mx-auto px-4 max-w-7xl text-left">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 text-center md:text-left">
-                <div><h2 class="text-3xl font-black text-slate-900 uppercase tracking-tighter">Dashboard</h2><p class="text-slate-400 text-[8px] font-black uppercase tracking-widest mt-1 text-left">Sistem Manajemen SDN 4 Taman</p></div>
-                <button onclick="location.reload()" class="bg-rose-50 text-rose-600 px-8 py-3 rounded-2xl font-black text-[9px] uppercase border border-rose-100 shadow-sm font-black">Logout</button>
-            </div>
-            
-            <div class="grid lg:grid-cols-12 gap-6">
-                <div class="lg:col-span-3 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0">
-                    <button onclick="showTabAdmin('adm-mutasi')" class="whitespace-nowrap px-6 py-4 bg-slate-900 text-white rounded-2xl font-black text-[9px] uppercase tracking-widest shadow-xl flex-shrink-0" id="tab-btn-mutasi">Edit Mutasi</button>
-                    <button onclick="showTabAdmin('adm-config')" class="whitespace-nowrap px-6 py-4 bg-white border border-slate-100 rounded-2xl font-black text-[9px] uppercase tracking-widest text-slate-400 flex-shrink-0 hover:bg-blue-50 transition" id="tab-btn-config">Config</button>
-                    <button onclick="showTabAdmin('adm-media')" class="whitespace-nowrap px-6 py-4 bg-white border border-slate-100 rounded-2xl font-black text-[9px] uppercase tracking-widest text-slate-400 flex-shrink-0 hover:bg-blue-50 transition" id="tab-btn-media">Multimedia</button>
-                </div>
-
-                <div class="lg:col-span-9 bg-white p-6 md:p-12 rounded-[2.5rem] shadow-sm border border-slate-50 card-premium">
-                    <div id="adm-mutasi" class="adm-content">
-                        <div class="flex justify-between items-center mb-8"><h3 class="font-black text-xl uppercase tracking-tighter text-slate-800 text-left">Editor Mutasi</h3><button onclick="addRowMutasi()" class="bg-blue-50 text-blue-600 font-black text-[8px] px-4 py-2 rounded-xl uppercase shadow-sm"><i class="fas fa-plus"></i></button></div>
-                        <div class="table-container mb-10 rounded-2xl border border-slate-100"><table class="w-full text-[10px] min-w-[500px]"><thead class="bg-slate-50 text-slate-400 uppercase font-black tracking-widest border-b"><tr><th class="p-4 text-left">Rombel</th><th class="p-4 text-center">In(L)</th><th class="p-4 text-center">In(P)</th><th class="p-4 text-center">Out(L)</th><th class="p-4 text-center">Out(P)</th><th class="p-4"></th></tr></thead><tbody id="editor-mutasi-body" class="divide-y divide-slate-50 font-bold text-left"></tbody></table></div>
-                        <button onclick="saveMutasiData()" id="btn-save-mutasi" class="w-full bg-blue-600 text-white font-black py-5 rounded-3xl shadow-xl hover:bg-blue-700 uppercase tracking-widest text-[10px] font-black">Perbarui Website</button>
-                    </div>
-                    <div id="adm-config" class="adm-content hidden text-left">
-                        <h3 class="font-black text-xl mb-8 uppercase tracking-tighter text-slate-800 text-left">Sistem Config</h3>
-                        <form onsubmit="saveWebConfig(event)" class="space-y-6 text-left">
-                            <input type="text" id="adm-nama" placeholder="Nama Sekolah" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold shadow-inner text-left">
-                            <input type="text" id="adm-lms" placeholder="URL LMS" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold shadow-inner text-left">
-                            <textarea id="adm-running" rows="3" placeholder="Warta Berjalan" class="w-full p-6 bg-slate-50 rounded-3xl border-0 font-bold shadow-inner text-left"></textarea>
-                            <button type="submit" class="w-full bg-slate-900 text-white font-black py-5 rounded-3xl shadow-xl text-[10px] uppercase font-black">Update Config</button>
-                        </form>
-                    </div>
-                    <div id="adm-media" class="adm-content hidden text-left">
-                        <h3 class="font-black text-xl mb-8 uppercase tracking-tighter text-slate-800 text-left">Add Multimedia</h3>
-                        <form onsubmit="saveGaleri(event)" class="space-y-4 text-left">
-                            <select id="media-tipe" class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-black shadow-inner outline-none"><option value="Foto">Foto Dokumentasi</option><option value="Video">YouTube</option><option value="Musik">Lagu Mars</option></select>
-                            <input type="text" id="media-judul" placeholder="Judul" required class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold text-left">
-                            <input type="text" id="media-link" placeholder="Link Alamat File" required class="w-full p-4 bg-slate-50 rounded-2xl border-0 font-bold text-left">
-                            <button type="submit" class="w-full bg-emerald-600 text-white font-black py-5 rounded-3xl shadow-xl text-[10px] uppercase font-black">Save to Gallery</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SPMB -->
-        <section id="spmb" class="hidden-section page-section container mx-auto px-4 max-w-xl text-left">
-            <div class="bg-white p-10 rounded-[3rem] shadow-2xl border-t-[10px] border-blue-600 card-premium">
-                <h2 class="text-2xl font-black text-slate-800 mb-6 uppercase text-center md:text-left text-left">Pendaftaran PPDB</h2>
-                <div id="spmb-info-content" class="bg-slate-50 p-6 rounded-2xl text-xs text-slate-500 mb-8 italic text-left"></div>
-                <form id="form-spmb" onsubmit="kirimSPMB(event)" class="hidden space-y-4 text-left">
-                    <input type="text" name="nama" placeholder="Nama Lengkap" class="w-full p-4 bg-slate-100 rounded-2xl border-0 font-bold outline-none text-left" required>
-                    <input type="number" name="nik" placeholder="NIK" class="w-full p-4 bg-slate-100 rounded-2xl border-0 font-bold outline-none text-left" required>
-                    <input type="text" name="hp" placeholder="No WhatsApp" class="w-full p-4 bg-slate-100 rounded-2xl border-0 font-bold outline-none text-left" required>
-                    <button type="submit" class="w-full bg-blue-600 text-white font-black py-4 rounded-2xl shadow-xl font-black uppercase text-[10px]">Kirim Pendaftaran</button>
-                </form>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-slate-950 text-slate-600 py-16 md:py-24 text-center">
-        <div class="container mx-auto px-4">
-            <h3 class="text-white font-black text-3xl md:text-5xl mb-4 tracking-tighter uppercase leading-none" id="foot-nama">SDN 4 TAMAN</h3>
-            <p id="foot-alamat" class="mb-10 max-w-2xl mx-auto italic font-medium leading-relaxed opacity-50 uppercase tracking-widest text-[8px] md:text-[10px]">Taman, Pemalang, Jawa Tengah.</p>
-            <div class="flex justify-center gap-10 mb-12">
-                <a id="link-fb" href="#" target="_blank" class="text-slate-600 hover:text-blue-500 text-3xl transition transform hover:scale-125"><i class="fab fa-facebook-f"></i></a>
-                <a id="link-ig" href="#" target="_blank" class="text-slate-600 hover:text-pink-500 text-3xl transition transform hover:scale-125"><i class="fab fa-instagram"></i></a>
-                <a id="link-yt" href="#" target="_blank" class="text-slate-600 hover:text-red-600 text-3xl transition transform hover:scale-125"><i class="fab fa-youtube"></i></a>
-            </div>
-            <p class="text-[8px] md:text-[10px] font-black tracking-[0.4em] uppercase opacity-30">&copy; 2026 SDN 4 TAMAN • THE FUTURE OF EDUCATION</p>
-        </div>
-    </footer>
-
-    <div id="toast" class="toast font-black">Pesan Sistem...</div>
-
-    <script>
-        let DATA_GLOBAL = null;
-
-        // Pintu Darurat: Loading overlay hilang dalam 6 saat paksa
-        setTimeout(() => {
-            const overlay = document.getElementById('loading-overlay');
-            if(overlay) {
-                overlay.style.opacity = '0';
-                setTimeout(() => overlay.remove(), 800);
-            }
-        }, 6000);
-
-        async function fetchAPI(act, params={}) {
-            try {
-                let url = `${API_URL}?action=${act}`;
-                for (let key in params) { url += `&${key}=${encodeURIComponent(params[key])}`; }
-                const response = await fetch(url);
-                return await response.json();
-            } catch (e) { 
-                console.error("Fetch Error:", e);
-                return null; 
-            }
-        }
-
-        async function postAPI(act, data) {
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: act, data: data }),
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                });
-                return await response.json();
-            } catch (e) { return null; }
-        }
-
-        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
-
-        function setGreeting() {
-            const hr = new Date().getHours();
-            let msg = "Selamat Malam";
-            if(hr < 11) msg = "Selamat Pagi";
-            else if(hr < 15) msg = "Selamat Siang";
-            else if(hr < 19) msg = "Selamat Sore";
-            document.getElementById('txt-greeting').innerText = `${msg} • SDN 4 Taman`;
-        }
-
-        function navigate(id) {
-            document.querySelectorAll('.page-section').forEach(s => s.classList.add('hidden-section'));
-            document.getElementById(id).classList.remove('hidden-section');
-            document.querySelectorAll('.nav-btn').forEach(l => l.classList.remove('active-nav'));
-            window.scrollTo(0, 0);
-            document.getElementById('mobile-menu').classList.add('hidden');
-            if(id === 'home' && DATA_GLOBAL) setTimeout(() => renderChart(DATA_GLOBAL.siswaDetail), 300);
-            if(id === 'admin') renderEditorMutasi();
-        }
-
-        async function initApp() {
-            const res = await fetchAPI('getPublicData');
-            
-            const overlay = document.getElementById('loading-overlay');
-            if(overlay) {
-                overlay.style.opacity = '0';
-                setTimeout(() => overlay.remove(), 800);
-            }
-
-            if (res && res.status === 'success') {
-                DATA_GLOBAL = res;
-                const c = res.config;
-                
-                document.getElementById('header-nama').innerText = c.NamaSekolah || "SDN 4 TAMAN";
-                document.getElementById('foot-nama').innerText = c.NamaSekolah || "SDN 4 TAMAN";
-                document.getElementById('banner-title').innerText = c.NamaSekolah || "SDN 4 Taman";
-                document.getElementById('running-text').innerText = c.RunningText || "-";
-                document.getElementById('txt-alamat').innerText = c.Alamat || "-";
-                document.getElementById('foot-alamat').innerText = c.Alamat || "-";
-                document.getElementById('view-visi').innerText = c.Visi || "-";
-                document.getElementById('view-misi').innerHTML = (c.Misi || "").replace(/\n/g, "<br>");
-                document.getElementById('lms-btn').href = c.LMS_Link || "#";
-
-                document.getElementById('adm-nama').value = c.NamaSekolah || "";
-                document.getElementById('adm-lms').value = c.LMS_Link || "";
-                document.getElementById('adm-running').value = c.RunningText || "";
-
-                if (c.LogoURL) { document.getElementById('header-logo').src = c.LogoURL; document.getElementById('header-logo').classList.remove('hidden'); }
-                if (c.BannerURL) document.getElementById('home-banner').src = c.BannerURL;
-                if (c.Url_SOTK) document.getElementById('img-sotk').src = c.Url_SOTK;
-
-                if (c.GoogleMapsEmbed) {
-                    document.getElementById('map-container').innerHTML = `<iframe src="${c.GoogleMapsEmbed}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`;
-                }
-
-                // Stats
-                let tSiswa = 0;
-                res.siswaDetail.forEach(r => tSiswa += (Number(r[1]) + Number(r[2])));
-                document.getElementById('stat-siswa').innerText = tSiswa;
-                document.getElementById('stat-guru').innerText = res.guruList.length;
-                renderChart(res.siswaDetail);
-
-                // Guru
-                const gGrid = document.getElementById('grid-guru'); gGrid.innerHTML = '';
-                res.guruList.forEach(g => {
-                    gGrid.innerHTML += `<div class="bg-white p-5 md:p-10 rounded-[2rem] shadow-sm text-center border border-slate-50 card-premium group text-center">
-                        <div class="w-16 h-16 md:w-24 md:h-24 mx-auto mb-4"><img src="${g.foto || 'https://via.placeholder.com/200'}" class="w-full h-full rounded-full object-cover border-4 border-white shadow-xl"></div>
-                        <h4 class="font-black text-slate-800 text-[9px] md:text-[11px] leading-tight uppercase text-center font-black">${g.nama}</h4>
-                        <p class="text-[7px] md:text-[8px] text-blue-500 font-black uppercase mt-2 tracking-widest">${g.mapel}</p>
-                    </div>`;
-                });
-
-                // Mutasi
-                let totM = 0, totK = 0;
-                const mTbl = document.getElementById('tbl-mutasi'); mTbl.innerHTML = '';
-                res.mutasi.forEach(m => {
-                    totM += (Number(m[1]) + Number(m[2]));
-                    totK += (Number(m[3]) + Number(m[4]));
-                    mTbl.innerHTML += `<tr class="hover:bg-slate-50 transition border-b border-slate-50">
-                        <td class="p-6 md:p-8 uppercase tracking-widest text-[11px] font-black">${m[0]}</td>
-                        <td class="p-6 md:p-8 text-center text-emerald-600 font-black bg-emerald-50/10 font-black">${m[1]}</td>
-                        <td class="p-6 md:p-8 text-center text-emerald-700 font-black bg-emerald-50/20 font-black">${m[2]}</td>
-                        <td class="p-6 md:p-8 text-center text-rose-500 font-black bg-rose-50/10 font-black">${m[3]}</td>
-                        <td class="p-6 md:p-8 text-center text-rose-700 font-black bg-rose-50/20 font-black">${m[4]}</td>
-                    </tr>`;
-                });
-                document.getElementById('total-mut-masuk').innerText = totM;
-                document.getElementById('total-mut-keluar').innerText = totK;
-
-                // Berita
-                const bList = document.getElementById('list-berita'); bList.innerHTML = '';
-                res.berita.forEach(b => {
-                    bList.innerHTML += `<div class="bg-white p-6 md:p-10 rounded-[2.5rem] shadow-sm border border-slate-50 hover:border-blue-200 transition card-premium group text-left">
-                        <p class="text-[8px] md:text-[9px] font-black text-blue-500 uppercase tracking-widest mb-4 font-black">📢 ${new Date(b[1]).toLocaleDateString('id-ID', {day:'numeric', month:'long'})}</p>
-                        <h4 class="font-black text-slate-800 text-sm md:text-xl leading-snug tracking-tighter uppercase text-left">${b[0]}</h4>
-                    </div>`;
-                });
-
-                // Fasilitas
-                const fGrid = document.getElementById('grid-fasilitas'); fGrid.innerHTML = '';
-                res.fasilitas.forEach(f => {
-                    fGrid.innerHTML += `<div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-50 overflow-hidden card-premium group text-left">
-                        <div class="h-44 md:h-64 overflow-hidden relative"><img src="${f.foto || 'https://via.placeholder.com/800x600'}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700"></div>
-                        <div class="p-6 md:p-10 text-left">
-                            <span class="text-[7px] md:text-[9px] font-black text-blue-500 uppercase tracking-[0.3em] bg-blue-50 px-5 py-2 rounded-full font-black">${f.kategori}</span>
-                            <h4 class="font-black text-slate-800 text-lg md:text-2xl mt-6 mb-3 tracking-tighter">${f.nama}</h4>
-                            <p class="text-[10px] md:text-xs text-slate-500 leading-relaxed font-medium">${f.ket}</p>
-                        </div>
-                    </div>`;
-                });
-
-                document.getElementById('txt-ppdb-status').innerText = c.SPMB_Status === 'Buka' ? 'DIBUKA' : 'TUTUP';
-                if (c.SPMB_Status === 'Buka') document.getElementById('form-spmb').classList.remove('hidden');
-
-                const sl = (id, link) => { if(link) document.getElementById(id).href = link; };
-                sl('link-fb', c.Facebook); sl('link-ig', c.Instagram); sl('link-yt', c.YoutubeChannel);
-            }
-        }
-
-        function renderChart(data) {
-            const ctx = document.getElementById('chartSiswa').getContext('2d');
-            if(window.myChart) window.myChart.destroy();
-            window.myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.map(r => r[0]),
-                    datasets: [
-                        { label: 'L', data: data.map(r => Number(r[1])), backgroundColor: '#3b82f6', borderRadius: 6, barThickness: window.innerWidth < 768 ? 12 : 25 },
-                        { label: 'P', data: data.map(r => Number(r[2])), backgroundColor: '#fb7185', borderRadius: 6, barThickness: window.innerWidth < 768 ? 12 : 25 }
-                    ]
-                },
-                options: { 
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: true, position: 'bottom', labels: { font: { weight: 'bold' } } } },
-                    scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { color: '#f1f5f9' } } }
-                }
-            });
-        }
-
-        function showTabAdmin(id) {
-            document.querySelectorAll('.adm-content').forEach(c => c.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        function showToast(m) {
-            const t = document.getElementById('toast'); t.innerText = m; t.className = "toast show";
-            setTimeout(() => t.className = "toast", 3000);
-        }
-
-        function renderEditorMutasi() {
-            const body = document.getElementById('editor-mutasi-body'); body.innerHTML = '';
-            DATA_GLOBAL.mutasi.forEach(m => {
-                body.innerHTML += `<tr>
-                    <td class="p-4"><input type="text" value="${m[0]}" class="w-full p-3 bg-slate-50 rounded-xl mut-kelas border-0 font-bold outline-none shadow-inner text-xs"></td>
-                    <td class="p-4"><input type="number" value="${m[1]}" class="w-12 md:w-16 p-3 bg-slate-50 rounded-xl mut-lm border-0 text-center font-bold text-xs shadow-inner"></td>
-                    <td class="p-4"><input type="number" value="${m[2]}" class="w-12 md:w-16 p-3 bg-slate-50 rounded-xl mut-pm border-0 text-center font-bold text-xs shadow-inner"></td>
-                    <td class="p-4"><input type="number" value="${m[3]}" class="w-12 md:w-16 p-3 bg-slate-50 rounded-xl mut-lk border-0 text-center font-bold text-xs shadow-inner"></td>
-                    <td class="p-4"><input type="number" value="${m[4]}" class="w-12 md:w-16 p-3 bg-slate-50 rounded-xl mut-pk border-0 text-center font-bold text-xs shadow-inner"></td>
-                    <td class="p-4 text-center"><button onclick="this.parentElement.parentElement.remove()" class="text-rose-400"><i class="fas fa-trash"></i></button></td>
-                </tr>`;
-            });
-        }
-
-        function addRowMutasi() {
-            const body = document.getElementById('editor-mutasi-body');
-            body.insertAdjacentHTML('beforeend', `<tr><td class="p-4"><input type="text" placeholder="Rombel" class="w-full p-4 bg-slate-50 rounded-2xl mut-kelas border-0 font-bold text-xs"></td><td class="p-4"><input type="number" value="0" class="w-14 md:w-20 p-4 bg-slate-50 rounded-2xl mut-lm border-0 text-center font-bold text-xs"></td><td class="p-4"><input type="number" value="0" class="w-14 md:w-20 p-4 bg-slate-50 rounded-2xl mut-pm border-0 text-center font-bold text-xs"></td><td class="p-4"><input type="number" value="0" class="w-14 md:w-20 p-4 bg-slate-50 rounded-2xl mut-lk border-0 text-center font-bold text-xs"></td><td class="p-4"><input type="number" value="0" class="w-14 md:w-20 p-4 bg-slate-50 rounded-2xl mut-pk border-0 text-center font-bold text-xs"></td><td class="p-4 text-center"><button onclick="this.parentElement.parentElement.remove()" class="text-rose-400"><i class="fas fa-trash"></i></button></td></tr>`);
-        }
-
-        async function saveMutasiData() {
-            const rows = document.querySelectorAll('#editor-mutasi-body tr'); let data = [];
-            rows.forEach(r => {
-                const k = r.querySelector('.mut-kelas').value;
-                const lm = r.querySelector('.mut-lm').value, pm = r.querySelector('.mut-pm').value;
-                const lk = r.querySelector('.mut-lk').value, pk = r.querySelector('.mut-pk').value;
-                if(k) data.push([k, lm, pm, lk, pk]);
-            });
-            showToast("Mensinkronkan...");
-            const res = await postAPI('saveMutasi', data);
-            if(res && res.status === 'success') { showToast("Selesai!"); setTimeout(() => location.reload(), 1000); }
-        }
-
-        async function saveWebConfig(e) {
-            e.preventDefault();
-            const d = { NamaSekolah: document.getElementById('adm-nama').value, LMS_Link: document.getElementById('adm-lms').value, RunningText: document.getElementById('adm-running').value };
-            showToast("Saving...");
-            const res = await postAPI('saveConfig', d);
-            if(res && res.status === 'success') { showToast("Selesai!"); setTimeout(() => location.reload(), 1000); }
-        }
-
-        async function doLogin(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-login'); btn.innerText = "VERIFYING...";
-            const res = await fetchAPI('login', { user: document.getElementById('u').value, pass: document.getElementById('p').value });
-            if (res && res.status === 'success') { showToast("Akses Diterima!"); navigate('admin'); }
-            else { showToast("Ditolak!"); btn.innerText = "AUTHENTICATE"; }
-        }
-
-        async function saveGaleri(e) {
-            e.preventDefault();
-            const data = { tipe: document.getElementById('media-tipe').value, judul: document.getElementById('media-judul').value, link: document.getElementById('media-link').value };
-            const res = await postAPI('saveGaleri', data);
-            if (res && res.status === 'success') { showToast("Media Tersimpan!"); location.reload(); }
-        }
-
-        async function kirimSPMB(e) {
-            e.preventDefault();
-            showToast("Mengirim...");
-            const res = await postAPI('submitSPMB', { nama: e.target.nama.value, nik: e.target.nik.value, hp: e.target.hp.value });
-            if (res && res.status === 'success') { showToast("Berhasil Terkirim!"); e.target.reset(); }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            setGreeting();
-            initApp();
-        });
     </script>
 </body>
 </html>
