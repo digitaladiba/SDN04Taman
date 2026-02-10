@@ -47,12 +47,14 @@
         .loader-fill { position: absolute; height: 100%; width: 30%; background: #3b82f6; animation: loading 1.5s infinite ease-in-out; }
         @keyframes loading { 0% { left: -30%; } 100% { left: 100%; } }
         .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .social-btn { transition: all 0.3s; }
+        .social-btn:hover { transform: translateY(-3px); }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-slate-800 antialiased selection:bg-blue-100 selection:text-blue-900">
 
     <script>
-        // API URL (Updated)
+        // API URL
         const API_URL = "https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec";
     </script>
 
@@ -83,6 +85,7 @@
                     <button onclick="navigate('home')" class="px-3 py-1.5 text-xs font-bold text-gray-300 hover:text-white hover:bg-white/5 rounded-md transition uppercase tracking-wide">Home</button>
                     <button onclick="navigate('profil')" class="px-3 py-1.5 text-xs font-bold text-gray-300 hover:text-white hover:bg-white/5 rounded-md transition uppercase tracking-wide">Profil</button>
                     <button onclick="navigate('guru')" class="px-3 py-1.5 text-xs font-bold text-gray-300 hover:text-white hover:bg-white/5 rounded-md transition uppercase tracking-wide">Guru</button>
+                    <button onclick="navigate('download')" class="px-3 py-1.5 text-xs font-bold text-gray-300 hover:text-white hover:bg-white/5 rounded-md transition uppercase tracking-wide">Unduhan</button>
                     <button onclick="navigate('spmb')" class="ml-2 px-4 py-1.5 text-xs font-black bg-blue-600 text-white rounded-full hover:bg-blue-500 transition shadow-lg shadow-blue-500/20 uppercase tracking-wide">SPMB</button>
                     <button onclick="navigate('login')" class="ml-2 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition"><i class="fas fa-lock text-xs"></i></button>
                 </div>
@@ -105,8 +108,15 @@
                     <button onclick="navigate('fasilitas')" class="hover:text-white transition">Fasilitas</button>
                     <button onclick="navigate('mutasi')" class="hover:text-white transition">Mutasi</button>
                     <button onclick="navigate('guru')" class="hover:text-white transition">Guru</button>
-                    <button onclick="navigate('download')" class="hover:text-white transition">Unduhan</button>
-                    <button onclick="navigate('spmb')" class="hover:text-white transition text-yellow-500">Info SPMB</button>
+                    <button onclick="navigate('download')" class="hover:text-white transition text-yellow-500">Unduhan</button>
+                    <button onclick="navigate('spmb')" class="hover:text-white transition">Info SPMB</button>
+                </div>
+
+                <!-- Social Icons (Desktop) -->
+                <div class="hidden md:flex items-center gap-4 text-slate-500 pl-4 border-l border-slate-800">
+                    <a id="nav-fb" href="#" target="_blank" class="social-btn hover:text-blue-500" title="Facebook"><i class="fab fa-facebook-f text-xs"></i></a>
+                    <a id="nav-ig" href="#" target="_blank" class="social-btn hover:text-pink-500" title="Instagram"><i class="fab fa-instagram text-xs"></i></a>
+                    <a id="nav-yt" href="#" target="_blank" class="social-btn hover:text-red-500" title="YouTube"><i class="fab fa-youtube text-xs"></i></a>
                 </div>
             </div>
         </div>
@@ -120,8 +130,14 @@
                 <button onclick="navigate('fasilitas')" class="p-3 bg-white/5 rounded-lg text-left hover:bg-white/10">Fasilitas</button>
                 <button onclick="navigate('mutasi')" class="p-3 bg-white/5 rounded-lg text-left hover:bg-white/10">Mutasi Siswa</button>
                 <button onclick="navigate('guru')" class="p-3 bg-white/5 rounded-lg text-left hover:bg-white/10">Data Guru</button>
-                <button onclick="navigate('download')" class="p-3 bg-white/5 rounded-lg text-left hover:bg-white/10">Download</button>
+                <button onclick="navigate('download')" class="p-3 bg-white/5 rounded-lg text-left hover:bg-white/10">Download Area</button>
                 <button onclick="navigate('spmb')" class="p-3 bg-blue-600 text-white rounded-lg text-center col-span-2 shadow-lg">SPMB Online</button>
+            </div>
+            <!-- Social Mobile -->
+            <div class="flex justify-center gap-6 mt-6 pt-6 border-t border-slate-800">
+                <a id="mob-fb" href="#" target="_blank" class="text-slate-400 hover:text-blue-500"><i class="fab fa-facebook-f text-lg"></i></a>
+                <a id="mob-ig" href="#" target="_blank" class="text-slate-400 hover:text-pink-500"><i class="fab fa-instagram text-lg"></i></a>
+                <a id="mob-yt" href="#" target="_blank" class="text-slate-400 hover:text-red-500"><i class="fab fa-youtube text-lg"></i></a>
             </div>
         </div>
     </nav>
@@ -153,7 +169,7 @@
                     <h3 class="text-3xl font-black text-slate-800" id="stat-siswa">0</h3>
                 </div>
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 card-pro">
-                    <p class="text-slate-400 text-[9px] font-bold uppercase tracking-widest mb-1">Jumlah Kelas</p>
+                    <p class="text-slate-400 text-[9px] font-bold uppercase tracking-widest mb-1">Rombel</p>
                     <h3 class="text-3xl font-black text-slate-800" id="stat-kelas">...</h3>
                 </div>
                 <div class="bg-slate-900 p-5 rounded-2xl shadow-lg text-white flex flex-col justify-between cursor-pointer hover:bg-slate-800 transition" onclick="navigate('spmb')">
@@ -166,7 +182,7 @@
             </div>
 
             <div class="grid lg:grid-cols-12 gap-8">
-                <!-- Main Content: Chart & News -->
+                <!-- Main Content -->
                 <div class="lg:col-span-8 space-y-8">
                     <!-- Chart & Table Siswa -->
                     <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100 card-pro">
@@ -206,20 +222,25 @@
                     </div>
                 </div>
 
-                <!-- Sidebar Maps (FIXED AUTO LOAD) -->
+                <!-- Sidebar Maps (HARDCODED DIRECTLY IN HTML) -->
                 <div class="lg:col-span-4 space-y-6">
                     <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 card-pro sticky top-28">
                         <h4 class="font-black text-slate-800 mb-4 text-xs uppercase tracking-widest flex items-center gap-2"><i class="fas fa-map-pin text-rose-500"></i> Lokasi Sekolah</h4>
                         
-                        <!-- Container Maps (AUTO LOAD) -->
+                        <!-- Container Maps -->
                         <div id="map-container" class="rounded-2xl overflow-hidden aspect-square bg-slate-100 border border-slate-200 relative">
-                            <!-- Placeholder Loading -->
-                            <div id="map-loading" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 z-0">
-                                <i class="fas fa-circle-notch fa-spin text-2xl mb-2"></i>
-                                <span class="text-[10px] font-bold uppercase">Memuat Peta...</span>
+                            <!-- Iframe ditanam LANGSUNG di HTML sebagai Default -->
+                            <div id="map-frame-wrapper" class="absolute inset-0 z-10">
+                                <iframe 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.9217349990363!2d109.4007788!3d-6.8999636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6fdb7437a71bd5%3A0xbdf8c2aa130e3359!2sSDN%204%20Taman!5e0!3m2!1sid!2sid!4v1770707408965!5m2!1sid!2sid" 
+                                    width="100%" 
+                                    height="100%" 
+                                    style="border:0;" 
+                                    allowfullscreen="" 
+                                    loading="lazy" 
+                                    referrerpolicy="no-referrer-when-downgrade">
+                                </iframe>
                             </div>
-                            <!-- Iframe akan diinject disini -->
-                            <div id="map-frame-wrapper" class="absolute inset-0 z-10"></div>
                         </div>
 
                         <div class="mt-4 pt-4 border-t border-slate-50 text-center">
@@ -277,6 +298,18 @@
                         <div class="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center text-rose-600 text-xl"><i class="fas fa-trophy"></i></div>
                         <div><h4 class="font-black text-slate-800">Prestasi</h4><p class="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Galeri Juara</p></div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: DOWNLOAD -->
+        <section id="download" class="hidden-section page-section container mx-auto px-4 max-w-4xl">
+            <h2 class="text-2xl font-black text-center mb-6 uppercase tracking-tight text-slate-900">Download Area</h2>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 card-pro">
+                <p class="text-center text-slate-500 text-xs mb-6">Unduh dokumen resmi sekolah, jadwal pelajaran, dan formulir di sini.</p>
+                <div id="list-download" class="space-y-3">
+                    <!-- Dokumen akan diload disini -->
+                    <div class="text-center p-4 text-slate-400 text-xs italic">Memuat daftar unduhan...</div>
                 </div>
             </div>
         </section>
@@ -368,6 +401,26 @@
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Running Text Banner</label>
                             <input type="text" id="adm-running" placeholder="Teks berjalan di halaman depan" class="w-full p-3 bg-slate-50 rounded-xl font-bold text-xs border border-slate-200">
                         </div>
+                        
+                        <!-- SOSIAL MEDIA SETTINGS (NEW) -->
+                        <div class="md:col-span-2 border-t pt-4 mt-2">
+                            <p class="text-xs font-black uppercase text-slate-800 mb-3">Pengaturan Media Sosial</p>
+                            <div class="grid md:grid-cols-3 gap-3">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block"><i class="fab fa-facebook text-blue-600"></i> Facebook</label>
+                                    <input type="text" id="adm-fb" placeholder="Link Facebook" class="w-full p-3 bg-slate-50 rounded-xl font-bold text-xs border border-slate-200">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block"><i class="fab fa-instagram text-pink-500"></i> Instagram</label>
+                                    <input type="text" id="adm-ig" placeholder="Link Instagram" class="w-full p-3 bg-slate-50 rounded-xl font-bold text-xs border border-slate-200">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block"><i class="fab fa-youtube text-red-500"></i> YouTube</label>
+                                    <input type="text" id="adm-yt" placeholder="Link YouTube" class="w-full p-3 bg-slate-50 rounded-xl font-bold text-xs border border-slate-200">
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <button onclick="saveWebConfig(event)" class="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold text-xs w-full shadow-lg hover:bg-slate-800 transition">Update Konfigurasi Website</button>
                 </div>
@@ -392,6 +445,11 @@
     <footer class="bg-slate-900 text-slate-500 py-10 text-center text-xs mt-auto">
         <h3 class="text-white font-black text-lg mb-2" id="foot-nama">SDN 4 TAMAN</h3>
         <p id="foot-alamat" class="opacity-60 mb-6">Alamat Sekolah</p>
+        <div class="flex justify-center gap-4 mb-6">
+             <a id="foot-fb" href="#" target="_blank" class="hover:text-blue-500 transition"><i class="fab fa-facebook-f"></i></a>
+             <a id="foot-ig" href="#" target="_blank" class="hover:text-pink-500 transition"><i class="fab fa-instagram"></i></a>
+             <a id="foot-yt" href="#" target="_blank" class="hover:text-red-500 transition"><i class="fab fa-youtube"></i></a>
+        </div>
         <p class="font-bold uppercase tracking-widest opacity-30">&copy; 2026 DIGITAL SCHOOL SYSTEM</p>
     </footer>
 
@@ -432,34 +490,28 @@
             if(id === 'admin') renderEditorMutasi();
         }
 
-        // --- MAPS FIX FUNCTION (VERSI FINAL AUTO-LOAD) ---
+        // --- MAPS FIX FUNCTION (VERSI FINAL HARDCODED) ---
         function renderMapSmart(rawData) {
             const container = document.getElementById('map-frame-wrapper');
             const loader = document.getElementById('map-loading');
             
-            // Bersihkan kontainer
+            // LINK DEFAULT DARI BAPAK (SAYA TANAM DISINI)
+            const DEFAULT_MAP = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.9217349990363!2d109.4007788!3d-6.8999636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6fdb7437a71bd5%3A0xbdf8c2aa130e3359!2sSDN%204%20Taman!5e0!3m2!1sid!2sid!4v1770707408965!5m2!1sid!2sid";
+
             container.innerHTML = '';
             
-            if(!rawData || rawData === '') {
-                loader.innerHTML = '<span class="text-[10px] text-slate-300">Data Peta Kosong</span>';
-                return;
-            }
-
-            let mapSrc = rawData;
+            // Logika: Kalau Data di DB kosong, pakai DEFAULT_MAP
+            let mapSrc = (rawData && rawData.length > 10) ? rawData : DEFAULT_MAP;
             
             // 1. Deteksi Cerdas: Apakah ini kode Iframe atau Link Biasa?
-            // Jika user copas <iframe>...</iframe> kita ambil URL-nya saja
-            if (rawData.includes('<iframe')) {
-                const match = rawData.match(/src="([^"]+)"/);
+            if (mapSrc.includes('<iframe')) {
+                const match = mapSrc.match(/src="([^"]+)"/);
                 if (match && match[1]) {
                     mapSrc = match[1];
                 }
             }
 
             // 2. Inject Iframe
-            // Penting: loading="lazy" biar web tidak berat
-            // style="border:0" biar rapi
-            // w-full h-full biar menuhin kotak
             const iframeHTML = `<iframe 
                 src="${mapSrc}" 
                 width="100%" 
@@ -493,14 +545,40 @@
                 if(c.BannerURL) document.getElementById('home-banner').src=c.BannerURL;
                 if(c.Url_SOTK) document.getElementById('img-sotk').src=c.Url_SOTK;
                 
-                // --- PANGGIL FUNGSI MAPS ---
-                renderMapSmart(c.GoogleMapsEmbed);
+                // --- MEDSOS & MAPS SETTING ---
+                // Link Facebook Default dari Bapak
+                const DEFAULT_FB = "https://www.facebook.com/share/17rZf7Yykn/";
+                
+                // Helper Binding Medsos
+                const setLink = (id, val) => { 
+                    const el = document.getElementById(id); 
+                    if(el) el.href = (val && val.length > 3) ? val : "#";
+                };
+
+                // Set link ke Nav Desktop, Nav Mobile, dan Footer
+                // Prioritas: Database > Default Hardcoded (untuk FB)
+                const fbLink = c.Facebook || DEFAULT_FB;
+                setLink('nav-fb', fbLink); setLink('mob-fb', fbLink); setLink('foot-fb', fbLink);
+                setLink('nav-ig', c.Instagram); setLink('mob-ig', c.Instagram); setLink('foot-ig', c.Instagram);
+                setLink('nav-yt', c.Youtube); setLink('mob-yt', c.Youtube); setLink('foot-yt', c.Youtube);
+
+                // Maps
+                // Prioritas: MapsEmbed (Nama baru) > GoogleMapsEmbed (Nama lama)
+                renderMapSmart(c.MapsEmbed || c.GoogleMapsEmbed);
 
                 // Admin Prefill
+                const DEFAULT_MAP = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.9217349990363!2d109.4007788!3d-6.8999636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6fdb7437a71bd5%3A0xbdf8c2aa130e3359!2sSDN%204%20Taman!5e0!3m2!1sid!2sid!4v1770707408965!5m2!1sid!2sid";
+                
                 if(document.getElementById('adm-nama')) document.getElementById('adm-nama').value = c.NamaSekolah||"";
                 if(document.getElementById('adm-lms')) document.getElementById('adm-lms').value = c.LMS_Link||"";
                 if(document.getElementById('adm-running')) document.getElementById('adm-running').value = c.RunningText||"";
-                if(document.getElementById('adm-maps')) document.getElementById('adm-maps').value = c.GoogleMapsEmbed||"";
+                if(document.getElementById('adm-maps')) document.getElementById('adm-maps').value = (c.MapsEmbed || c.GoogleMapsEmbed || DEFAULT_MAP);
+                
+                // Admin Prefill Medsos
+                if(document.getElementById('adm-fb')) document.getElementById('adm-fb').value = c.Facebook || DEFAULT_FB;
+                if(document.getElementById('adm-ig')) document.getElementById('adm-ig').value = c.Instagram || "";
+                if(document.getElementById('adm-yt')) document.getElementById('adm-yt').value = c.Youtube || "";
+
 
                 // Stats & Chart
                 let tS=0; res.siswaDetail.forEach(r => tS += (Number(r[1])+Number(r[2])));
@@ -515,6 +593,30 @@
                     res.siswaDetail.forEach(r => {
                         tblS.innerHTML += `<tr class="border-b border-slate-50 hover:bg-slate-50"><td class="p-3 font-bold">${r[0]}</td><td class="text-center text-blue-600 bg-blue-50/50">${r[1]}</td><td class="text-center text-rose-500 bg-rose-50/50">${r[2]}</td><td class="text-center font-black">${Number(r[1])+Number(r[2])}</td></tr>`;
                     });
+                }
+                
+                // RENDER DOWNLOADS
+                const dlList = document.getElementById('list-download');
+                if(dlList && res.downloads && res.downloads.length > 0) {
+                    dlList.innerHTML = '';
+                    res.downloads.forEach(d => {
+                        dlList.innerHTML += `
+                            <div class="flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-xl hover:bg-blue-50 transition group">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-blue-500 shadow-sm border border-slate-100 group-hover:scale-110 transition">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-slate-800">${d.nama}</h4>
+                                        <span class="text-[9px] font-bold text-slate-400 bg-slate-200 px-2 py-0.5 rounded-full uppercase">${d.kategori}</span>
+                                    </div>
+                                </div>
+                                <a href="${d.link}" target="_blank" class="text-[10px] font-black bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-500 transition">UNDUH</a>
+                            </div>
+                        `;
+                    });
+                } else if(dlList) {
+                    dlList.innerHTML = '<div class="text-center p-8 border-2 border-dashed border-slate-200 rounded-xl text-slate-400 text-xs">Belum ada file yang diunggah.</div>';
                 }
 
                 // Grid Guru
@@ -551,11 +653,6 @@
                 // Link LMS
                 const elLMS = document.getElementById('lms-btn');
                 if(elLMS && c.LMS_Link) elLMS.href = c.LMS_Link;
-
-                // Sosmed
-                const setLink = (id, l) => { if(l) document.getElementById(id).href = l; };
-                setLink('nav-fb', c.Facebook); setLink('nav-ig', c.Instagram); setLink('nav-yt', c.YoutubeChannel);
-                setLink('link-fb', c.Facebook); setLink('link-ig', c.Instagram); setLink('link-yt', c.YoutubeChannel);
             }
         }
 
@@ -602,7 +699,7 @@
         function renderEditorMutasi() {
             const b = document.getElementById('editor-mutasi-body'); b.innerHTML='';
             DATA_GLOBAL.mutasi.forEach(m => {
-                b.innerHTML += `<tr><td class="p-2"><input type=\"text\" value="${m[0]}" class="mut-kelas w-20 border p-1 rounded"></td><td class="p-2"><input type=\"number\" value="${m[1]}" class="mut-lm w-12 border p-1 rounded"></td><td class="p-2"><input type=\"number\" value="${m[2]}" class="mut-pm w-12 border p-1 rounded"></td><td class="p-2"><input type=\"number\" value="${m[3]}" class="mut-lk w-12 border p-1 rounded"></td><td class="p-2"><input type=\"number\" value="${m[4]}" class="mut-pk w-12 border p-1 rounded"></td><td class="p-2"><button onclick="this.closest('tr').remove()" class="text-red-500">x</button></td></tr>`;
+                b.innerHTML += `<tr><td class="p-2"><input type="text" value="${m[0]}" class="mut-kelas w-20 border p-1 rounded"></td><td class="p-2"><input type="number" value="${m[1]}" class="mut-lm w-12 border p-1 rounded"></td><td class="p-2"><input type="number" value="${m[2]}" class="mut-pm w-12 border p-1 rounded"></td><td class="p-2"><input type="number" value="${m[3]}" class="mut-lk w-12 border p-1 rounded"></td><td class="p-2"><input type="number" value="${m[4]}" class="mut-pk w-12 border p-1 rounded"></td><td class="p-2"><button onclick="this.closest('tr').remove()" class="text-red-500">x</button></td></tr>`;
             });
         }
         function addRowMutasi() {
@@ -615,7 +712,11 @@
                 NamaSekolah: document.getElementById('adm-nama').value, 
                 LMS_Link: document.getElementById('adm-lms').value,
                 RunningText: document.getElementById('adm-running').value,
-                GoogleMapsEmbed: document.getElementById('adm-maps').value
+                GoogleMapsEmbed: document.getElementById('adm-maps').value,
+                // Kirim data Medsos ke Server
+                Facebook: document.getElementById('adm-fb').value,
+                Instagram: document.getElementById('adm-ig').value,
+                Youtube: document.getElementById('adm-yt').value
             };
             const res = await postAPI('saveConfig', d);
             if(res && res.status==='success') { alert("Disimpan!"); location.reload(); }
