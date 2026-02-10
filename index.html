@@ -34,62 +34,19 @@
 
     <style>
         body { background-color: #f8fafc; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
-        
-        /* Glassmorphism Navbar */
-        .glass-nav { 
-            background: rgba(15, 23, 42, 0.95); 
-            backdrop-filter: blur(12px); 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
-            z-index: 1000;
-        }
-
+        .glass-nav { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 1000; }
         .hidden-section { display: none !important; }
-        
-        /* Secondary Menu Scrollbar */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Card Interactions */
-        .card-pro { 
-            background: white; 
-            border: 1px solid #f1f5f9; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-        }
-        @media (min-width: 768px) {
-            .card-pro:hover { 
-                transform: translateY(-5px); 
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); 
-                border-color: #e2e8f0;
-            }
-        }
-
-        /* Loading Screen Animation */
-        #loading-overlay {
-            position: fixed; inset: 0; background: #0f172a; z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.5s ease-out;
-        }
+        .card-pro { background: white; border: 1px solid #f1f5f9; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        @media (min-width: 768px) { .card-pro:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); border-color: #e2e8f0; } }
+        #loading-overlay { position: fixed; inset: 0; background: #0f172a; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease-out; }
         .pulse-logo { animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 0.6; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.6; transform: scale(0.98); } }
-        
         .loader-bar { width: 160px; height: 2px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-top: 20px; overflow: hidden; position: relative; }
         .loader-fill { position: absolute; height: 100%; width: 30%; background: #3b82f6; animation: loading 1.5s infinite ease-in-out; }
         @keyframes loading { 0% { left: -30%; } 100% { left: 100%; } }
-
-        /* Toast Notification */
-        .toast { visibility: hidden; min-width: 250px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 8px; padding: 12px 24px; position: fixed; z-index: 10000; left: 50%; transform: translateX(-50%); bottom: 30px; font-size: 0.875rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .toast.show { visibility: visible; animation: slideUp 0.3s, fadeOut 0.5s 2.5s; }
-        @keyframes slideUp { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-        @keyframes fadeOut { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-
-        /* Table Styling */
         .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        
-        /* Map Placeholder Pattern */
-        .bg-pattern-map {
-            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-slate-800 antialiased selection:bg-blue-100 selection:text-blue-900">
@@ -150,13 +107,6 @@
                     <button onclick="navigate('guru')" class="hover:text-white transition">Guru</button>
                     <button onclick="navigate('download')" class="hover:text-white transition">Unduhan</button>
                     <button onclick="navigate('spmb')" class="hover:text-white transition text-yellow-500">Info SPMB</button>
-                </div>
-                
-                <!-- Social Icons -->
-                <div class="hidden md:flex items-center gap-3 text-slate-500 pl-4 border-l border-slate-800">
-                    <a id="nav-fb" href="#" target="_blank" class="hover:text-blue-500 transition"><i class="fab fa-facebook-f text-xs"></i></a>
-                    <a id="nav-ig" href="#" target="_blank" class="hover:text-pink-500 transition"><i class="fab fa-instagram text-xs"></i></a>
-                    <a id="nav-yt" href="#" target="_blank" class="hover:text-red-500 transition"><i class="fab fa-youtube text-xs"></i></a>
                 </div>
             </div>
         </div>
@@ -256,21 +206,20 @@
                     </div>
                 </div>
 
-                <!-- Sidebar Maps (FIXED) -->
+                <!-- Sidebar Maps (FIXED AUTO LOAD) -->
                 <div class="lg:col-span-4 space-y-6">
                     <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 card-pro sticky top-28">
                         <h4 class="font-black text-slate-800 mb-4 text-xs uppercase tracking-widest flex items-center gap-2"><i class="fas fa-map-pin text-rose-500"></i> Lokasi Sekolah</h4>
                         
-                        <!-- Container Maps Baru -->
-                        <div id="map-container" class="rounded-2xl overflow-hidden aspect-square bg-slate-50 border border-slate-200 relative bg-pattern-map">
-                            <!-- Default State: Tombol Click to Load -->
-                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
-                                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md mb-3 text-rose-500">
-                                    <i class="fas fa-map-marked-alt text-xl"></i>
-                                </div>
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3">Peta Lokasi</p>
-                                <span class="text-[10px] text-slate-300">Menunggu Data...</span>
+                        <!-- Container Maps (AUTO LOAD) -->
+                        <div id="map-container" class="rounded-2xl overflow-hidden aspect-square bg-slate-100 border border-slate-200 relative">
+                            <!-- Placeholder Loading -->
+                            <div id="map-loading" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 z-0">
+                                <i class="fas fa-circle-notch fa-spin text-2xl mb-2"></i>
+                                <span class="text-[10px] font-bold uppercase">Memuat Peta...</span>
                             </div>
+                            <!-- Iframe akan diinject disini -->
+                            <div id="map-frame-wrapper" class="absolute inset-0 z-10"></div>
                         </div>
 
                         <div class="mt-4 pt-4 border-t border-slate-50 text-center">
@@ -483,43 +432,46 @@
             if(id === 'admin') renderEditorMutasi();
         }
 
-        // --- MAPS FIX FUNCTION ---
-        // Fungsi pintar untuk mendeteksi apakah itu link biasa atau iframe full
+        // --- MAPS FIX FUNCTION (VERSI FINAL AUTO-LOAD) ---
         function renderMapSmart(rawData) {
-            const container = document.getElementById('map-container');
+            const container = document.getElementById('map-frame-wrapper');
+            const loader = document.getElementById('map-loading');
+            
+            // Bersihkan kontainer
+            container.innerHTML = '';
+            
             if(!rawData || rawData === '') {
-                container.innerHTML = `<div class="w-full h-full flex items-center justify-center text-xs text-slate-400">Data Peta Belum Diisi</div>`;
+                loader.innerHTML = '<span class="text-[10px] text-slate-300">Data Peta Kosong</span>';
                 return;
             }
 
             let mapSrc = rawData;
             
-            // 1. Cek apakah user paste kode iframe lengkap (<iframe src="...">)
+            // 1. Deteksi Cerdas: Apakah ini kode Iframe atau Link Biasa?
+            // Jika user copas <iframe>...</iframe> kita ambil URL-nya saja
             if (rawData.includes('<iframe')) {
-                // Ambil cuma URL di dalam src="..."
                 const match = rawData.match(/src="([^"]+)"/);
                 if (match && match[1]) {
                     mapSrc = match[1];
                 }
             }
 
-            // 2. Render tombol "Click to Load" (Biar gak muter2 terus)
-            container.innerHTML = `
-                <div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer group hover:bg-slate-100 transition" onclick="loadMapFrame('${mapSrc}')">
-                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg mb-3 text-rose-500 group-hover:scale-110 transition duration-300 ring-4 ring-rose-50">
-                        <i class="fas fa-map-marked-alt text-2xl"></i>
-                    </div>
-                    <button class="px-6 py-2 bg-slate-900 text-white text-[10px] font-bold rounded-full uppercase tracking-widest shadow-lg group-hover:bg-blue-600 transition">
-                        Buka Peta Interaktif
-                    </button>
-                </div>
-            `;
-        }
-
-        // Fungsi yang dipanggil saat tombol peta diklik
-        window.loadMapFrame = function(url) {
-            const container = document.getElementById('map-container');
-            container.innerHTML = `<iframe src="${url}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+            // 2. Inject Iframe
+            // Penting: loading="lazy" biar web tidak berat
+            // style="border:0" biar rapi
+            // w-full h-full biar menuhin kotak
+            const iframeHTML = `<iframe 
+                src="${mapSrc}" 
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade"
+                onload="document.getElementById('map-loading').style.display='none'">
+            </iframe>`;
+            
+            container.innerHTML = iframeHTML;
         }
 
         async function initApp() {
@@ -541,7 +493,7 @@
                 if(c.BannerURL) document.getElementById('home-banner').src=c.BannerURL;
                 if(c.Url_SOTK) document.getElementById('img-sotk').src=c.Url_SOTK;
                 
-                // --- UPDATE PANGGILAN MAPS ---
+                // --- PANGGIL FUNGSI MAPS ---
                 renderMapSmart(c.GoogleMapsEmbed);
 
                 // Admin Prefill
@@ -553,7 +505,7 @@
                 // Stats & Chart
                 let tS=0; res.siswaDetail.forEach(r => tS += (Number(r[1])+Number(r[2])));
                 safeTxt('stat-siswa', tS); safeTxt('stat-guru', res.guruList.length);
-                safeTxt('stat-kelas', res.siswaDetail.length); // Update Rombel real
+                safeTxt('stat-kelas', res.siswaDetail.length);
                 renderChart(res.siswaDetail);
 
                 // Table Siswa
@@ -650,7 +602,7 @@
         function renderEditorMutasi() {
             const b = document.getElementById('editor-mutasi-body'); b.innerHTML='';
             DATA_GLOBAL.mutasi.forEach(m => {
-                b.innerHTML += `<tr><td class="p-2"><input type="text" value="${m[0]}" class="mut-kelas w-20 border p-1 rounded"></td><td class="p-2"><input type="number" value="${m[1]}" class="mut-lm w-12 border p-1 rounded"></td><td class="p-2"><input type="number" value="${m[2]}" class="mut-pm w-12 border p-1 rounded"></td><td class="p-2"><input type="number" value="${m[3]}" class="mut-lk w-12 border p-1 rounded"></td><td class="p-2"><input type="number" value="${m[4]}" class="mut-pk w-12 border p-1 rounded"></td><td class="p-2"><button onclick="this.closest('tr').remove()" class="text-red-500">x</button></td></tr>`;
+                b.innerHTML += `<tr><td class="p-2"><input type=\"text\" value="${m[0]}" class="mut-kelas w-20 border p-1 rounded"></td><td class="p-2"><input type=\"number\" value="${m[1]}" class="mut-lm w-12 border p-1 rounded"></td><td class="p-2"><input type=\"number\" value="${m[2]}" class="mut-pm w-12 border p-1 rounded"></td><td class="p-2"><input type=\"number\" value="${m[3]}" class="mut-lk w-12 border p-1 rounded"></td><td class="p-2"><input type=\"number\" value="${m[4]}" class="mut-pk w-12 border p-1 rounded"></td><td class="p-2"><button onclick="this.closest('tr').remove()" class="text-red-500">x</button></td></tr>`;
             });
         }
         function addRowMutasi() {
