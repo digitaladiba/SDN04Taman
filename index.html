@@ -84,12 +84,18 @@
 
         /* Table Styling */
         .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        
+        /* Map Placeholder Pattern */
+        .bg-pattern-map {
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-slate-800 antialiased selection:bg-blue-100 selection:text-blue-900">
 
     <script>
-        // API URL
+        // API URL (Updated)
         const API_URL = "https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec";
     </script>
 
@@ -98,14 +104,14 @@
         <div class="text-center">
             <h1 class="text-2xl md:text-3xl font-black text-white tracking-[0.2em] uppercase pulse-logo">SDN 4 TAMAN</h1>
             <div class="loader-bar mx-auto"><div class="loader-fill"></div></div>
-            <p class="text-blue-400 text-[10px] font-bold tracking-widest mt-4 uppercase opacity-75">Memuat Sumber Data...</p>
+            <p class="text-blue-400 text-[10px] font-bold tracking-widest mt-4 uppercase opacity-75">Menghubungkan Database...</p>
         </div>
     </div>
 
     <!-- PRIMARY NAVBAR (Sticky) -->
     <nav class="glass-nav fixed top-0 w-full">
         <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center h-14 md:h-16"> <!-- Header lebih compact -->
+            <div class="flex justify-between items-center h-14 md:h-16">
                 <!-- Logo & Brand -->
                 <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
                     <img id="header-logo" src="" class="w-8 h-8 hidden object-contain bg-white rounded-lg p-0.5 shadow-sm ring-1 ring-white/20">
@@ -115,7 +121,7 @@
                     </div>
                 </div>
 
-                <!-- Desktop Menu (Utama) -->
+                <!-- Desktop Menu -->
                 <div class="hidden lg:flex items-center gap-1">
                     <button onclick="navigate('home')" class="px-3 py-1.5 text-xs font-bold text-gray-300 hover:text-white hover:bg-white/5 rounded-md transition uppercase tracking-wide">Home</button>
                     <button onclick="navigate('profil')" class="px-3 py-1.5 text-xs font-bold text-gray-300 hover:text-white hover:bg-white/5 rounded-md transition uppercase tracking-wide">Profil</button>
@@ -146,7 +152,7 @@
                     <button onclick="navigate('spmb')" class="hover:text-white transition text-yellow-500">Info SPMB</button>
                 </div>
                 
-                <!-- Social Icons (Desktop only to save space) -->
+                <!-- Social Icons -->
                 <div class="hidden md:flex items-center gap-3 text-slate-500 pl-4 border-l border-slate-800">
                     <a id="nav-fb" href="#" target="_blank" class="hover:text-blue-500 transition"><i class="fab fa-facebook-f text-xs"></i></a>
                     <a id="nav-ig" href="#" target="_blank" class="hover:text-pink-500 transition"><i class="fab fa-instagram text-xs"></i></a>
@@ -156,7 +162,7 @@
         </div>
         
         <!-- Mobile Sidebar Drawer -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-slate-900 border-t border-slate-800 p-4 absolute w-full shadow-2xl">
+        <div id="mobile-menu" class="hidden lg:hidden bg-slate-900 border-t border-slate-800 p-4 absolute w-full shadow-2xl transition-all z-50">
             <div class="grid grid-cols-2 gap-2 text-white text-[10px] font-bold uppercase tracking-widest">
                 <button onclick="navigate('home')" class="p-3 bg-white/5 rounded-lg text-left hover:bg-white/10">Beranda</button>
                 <button onclick="navigate('profil')" class="p-3 bg-white/5 rounded-lg text-left hover:bg-white/10">Profil</button>
@@ -177,7 +183,7 @@
         <section id="home" class="page-section container mx-auto px-4 animate-fade-in">
             <!-- Hero Banner -->
             <div class="relative h-[300px] md:h-[500px] rounded-3xl overflow-hidden shadow-lg mb-10 bg-slate-900 group">
-                <img id="home-banner" src="" class="w-full h-full object-cover opacity-60 transition duration-1000 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/1200x600/0f172a/ffffff?text=SDN+4+TAMAN'">
+                <img id="home-banner" src="" class="w-full h-full object-cover opacity-60 transition duration-1000 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/1200x600/0f172a/ffffff?text=LOADING+DATA...'">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
                 <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 z-10">
                     <span class="px-3 py-1 bg-blue-600/90 text-white text-[10px] font-black rounded-full tracking-widest uppercase mb-3 inline-block">Official Website</span>
@@ -198,7 +204,7 @@
                 </div>
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 card-pro">
                     <p class="text-slate-400 text-[9px] font-bold uppercase tracking-widest mb-1">Rombel</p>
-                    <h3 class="text-3xl font-black text-slate-800" id="stat-kelas">12</h3>
+                    <h3 class="text-3xl font-black text-slate-800" id="stat-kelas">...</h3>
                 </div>
                 <div class="bg-slate-900 p-5 rounded-2xl shadow-lg text-white flex flex-col justify-between cursor-pointer hover:bg-slate-800 transition" onclick="navigate('spmb')">
                     <p class="text-blue-400 text-[9px] font-bold uppercase tracking-widest">Status SPMB</p>
@@ -250,11 +256,23 @@
                     </div>
                 </div>
 
-                <!-- Sidebar Maps -->
+                <!-- Sidebar Maps (FIXED) -->
                 <div class="lg:col-span-4 space-y-6">
                     <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 card-pro sticky top-28">
                         <h4 class="font-black text-slate-800 mb-4 text-xs uppercase tracking-widest flex items-center gap-2"><i class="fas fa-map-pin text-rose-500"></i> Lokasi Sekolah</h4>
-                        <div id="map-container" class="rounded-2xl overflow-hidden aspect-square bg-slate-50 border flex items-center justify-center text-xs text-slate-400 font-medium">Peta Sedang Dimuat...</div>
+                        
+                        <!-- Container Maps Baru -->
+                        <div id="map-container" class="rounded-2xl overflow-hidden aspect-square bg-slate-50 border border-slate-200 relative bg-pattern-map">
+                            <!-- Default State: Tombol Click to Load -->
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md mb-3 text-rose-500">
+                                    <i class="fas fa-map-marked-alt text-xl"></i>
+                                </div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3">Peta Lokasi</p>
+                                <span class="text-[10px] text-slate-300">Menunggu Data...</span>
+                            </div>
+                        </div>
+
                         <div class="mt-4 pt-4 border-t border-slate-50 text-center">
                             <p class="text-[10px] font-bold text-slate-500 leading-relaxed uppercase" id="txt-alamat">...</p>
                         </div>
@@ -279,7 +297,7 @@
             </div>
         </section>
 
-        <!-- SECTION: AKADEMIK (GRID CARD STYLE) -->
+        <!-- SECTION: AKADEMIK -->
         <section id="akademik" class="hidden-section page-section container mx-auto px-4 max-w-5xl">
             <div class="text-center mb-10">
                 <h2 class="text-3xl font-black text-slate-900 mb-2 uppercase tracking-tight">Akademik</h2>
@@ -314,9 +332,9 @@
             </div>
         </section>
 
-        <!-- SECTION: MUTASI & GURU & FASILITAS (Standard Premium) -->
+        <!-- SECTION: MUTASI -->
         <section id="mutasi" class="hidden-section page-section container mx-auto px-4 max-w-4xl">
-            <h2 class="text-2xl font-black text-center mb-6 uppercase tracking-tight text-slate-900">Data Mutasi Siswa Bulan Januari</h2>
+            <h2 class="text-2xl font-black text-center mb-6 uppercase tracking-tight text-slate-900">Data Mutasi Siswa Bulan Ini</h2>
             <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden">
                 <div class="table-responsive">
                     <table class="w-full text-xs min-w-[500px]">
@@ -335,13 +353,15 @@
             </div>
         </section>
 
+        <!-- SECTION: GURU -->
         <section id="guru" class="hidden-section page-section container mx-auto px-4">
-            <h2 class="text-2xl font-black text-center mb-8 uppercase tracking-tight text-slate-900">KS Guru dan Staf</h2>
+            <h2 class="text-2xl font-black text-center mb-8 uppercase tracking-tight text-slate-900">Guru dan Tenaga Pendidik</h2>
             <div id="grid-guru" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
         </section>
 
+        <!-- SECTION: FASILITAS -->
         <section id="fasilitas" class="hidden-section page-section container mx-auto px-4">
-            <h2 class="text-2xl font-black text-center mb-8 uppercase tracking-tight text-slate-900">Fasilitas</h2>
+            <h2 class="text-2xl font-black text-center mb-8 uppercase tracking-tight text-slate-900">Fasilitas Sekolah</h2>
             <div id="grid-fasilitas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </section>
 
@@ -362,7 +382,7 @@
                 <h2 class="text-2xl font-black uppercase text-slate-900">Admin Panel</h2>
                 <button onclick="location.reload()" class="text-rose-500 font-bold text-xs uppercase border border-rose-200 px-4 py-2 rounded-xl hover:bg-rose-50">Logout</button>
             </div>
-            <!-- Admin Tabs & Content (Sama seperti sebelumnya) -->
+            
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
                 <div class="flex gap-2 overflow-x-auto pb-4 mb-4 border-b border-slate-100">
                     <button onclick="showTabAdmin('adm-mutasi')" class="px-4 py-2 bg-slate-900 text-white rounded-xl font-bold text-xs flex-shrink-0">Mutasi</button>
@@ -381,9 +401,26 @@
                 </div>
                 <!-- Config Editor -->
                 <div id="adm-config" class="adm-content hidden space-y-4">
-                    <input type="text" id="adm-nama" placeholder="Nama Sekolah" class="w-full p-3 bg-slate-50 rounded-xl font-bold text-xs">
-                    <input type="text" id="adm-lms" placeholder="Link LMS" class="w-full p-3 bg-slate-50 rounded-xl font-bold text-xs">
-                    <button onclick="saveWebConfig(event)" class="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold text-xs w-full">Update Config</button>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Nama Sekolah</label>
+                            <input type="text" id="adm-nama" placeholder="Nama Sekolah" class="w-full p-3 bg-slate-50 rounded-xl font-bold text-xs border border-slate-200">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Link LMS (Vercel/Lainnya)</label>
+                            <input type="text" id="adm-lms" placeholder="Link LMS" class="w-full p-3 bg-slate-50 rounded-xl font-bold text-xs border border-slate-200">
+                        </div>
+                        <div class="md:col-span-2">
+                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Google Maps (Link / Iframe)</label>
+                            <input type="text" id="adm-maps" placeholder="Paste link Google Maps atau Code Embed di sini" class="w-full p-3 bg-slate-50 rounded-xl font-bold text-xs border border-slate-200">
+                            <p class="text-[9px] text-blue-500 mt-1 italic">*Bisa pakai Link Share biasa atau Kode Embed HTML</p>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Running Text Banner</label>
+                            <input type="text" id="adm-running" placeholder="Teks berjalan di halaman depan" class="w-full p-3 bg-slate-50 rounded-xl font-bold text-xs border border-slate-200">
+                        </div>
+                    </div>
+                    <button onclick="saveWebConfig(event)" class="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold text-xs w-full shadow-lg hover:bg-slate-800 transition">Update Konfigurasi Website</button>
                 </div>
             </div>
         </section>
@@ -425,14 +462,14 @@
                 let url = `${API_URL}?action=${act}`;
                 for(let k in params) url += `&${k}=${encodeURIComponent(params[k])}`;
                 const res = await fetch(url); return await res.json();
-            } catch(e){ return null; }
+            } catch(e){ console.error(e); return null; }
         }
 
         async function postAPI(act, data) {
             try {
                 const res = await fetch(API_URL, { method:'POST', body:JSON.stringify({action:act, data:data}), headers:{'Content-Type':'text/plain'} });
                 return await res.json();
-            } catch(e){ return null; }
+            } catch(e){ console.error(e); return null; }
         }
 
         function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
@@ -444,6 +481,45 @@
             document.getElementById('mobile-menu').classList.add('hidden');
             if(id === 'home' && DATA_GLOBAL) setTimeout(()=>renderChart(DATA_GLOBAL.siswaDetail), 200);
             if(id === 'admin') renderEditorMutasi();
+        }
+
+        // --- MAPS FIX FUNCTION ---
+        // Fungsi pintar untuk mendeteksi apakah itu link biasa atau iframe full
+        function renderMapSmart(rawData) {
+            const container = document.getElementById('map-container');
+            if(!rawData || rawData === '') {
+                container.innerHTML = `<div class="w-full h-full flex items-center justify-center text-xs text-slate-400">Data Peta Belum Diisi</div>`;
+                return;
+            }
+
+            let mapSrc = rawData;
+            
+            // 1. Cek apakah user paste kode iframe lengkap (<iframe src="...">)
+            if (rawData.includes('<iframe')) {
+                // Ambil cuma URL di dalam src="..."
+                const match = rawData.match(/src="([^"]+)"/);
+                if (match && match[1]) {
+                    mapSrc = match[1];
+                }
+            }
+
+            // 2. Render tombol "Click to Load" (Biar gak muter2 terus)
+            container.innerHTML = `
+                <div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer group hover:bg-slate-100 transition" onclick="loadMapFrame('${mapSrc}')">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg mb-3 text-rose-500 group-hover:scale-110 transition duration-300 ring-4 ring-rose-50">
+                        <i class="fas fa-map-marked-alt text-2xl"></i>
+                    </div>
+                    <button class="px-6 py-2 bg-slate-900 text-white text-[10px] font-bold rounded-full uppercase tracking-widest shadow-lg group-hover:bg-blue-600 transition">
+                        Buka Peta Interaktif
+                    </button>
+                </div>
+            `;
+        }
+
+        // Fungsi yang dipanggil saat tombol peta diklik
+        window.loadMapFrame = function(url) {
+            const container = document.getElementById('map-container');
+            container.innerHTML = `<iframe src="${url}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
         }
 
         async function initApp() {
@@ -464,16 +540,20 @@
                 if(c.LogoURL) { document.getElementById('header-logo').src=c.LogoURL; document.getElementById('header-logo').classList.remove('hidden'); }
                 if(c.BannerURL) document.getElementById('home-banner').src=c.BannerURL;
                 if(c.Url_SOTK) document.getElementById('img-sotk').src=c.Url_SOTK;
-                if(c.GoogleMapsEmbed) document.getElementById('map-container').innerHTML=`<iframe src="${c.GoogleMapsEmbed}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`;
+                
+                // --- UPDATE PANGGILAN MAPS ---
+                renderMapSmart(c.GoogleMapsEmbed);
 
                 // Admin Prefill
                 if(document.getElementById('adm-nama')) document.getElementById('adm-nama').value = c.NamaSekolah||"";
                 if(document.getElementById('adm-lms')) document.getElementById('adm-lms').value = c.LMS_Link||"";
                 if(document.getElementById('adm-running')) document.getElementById('adm-running').value = c.RunningText||"";
+                if(document.getElementById('adm-maps')) document.getElementById('adm-maps').value = c.GoogleMapsEmbed||"";
 
                 // Stats & Chart
                 let tS=0; res.siswaDetail.forEach(r => tS += (Number(r[1])+Number(r[2])));
                 safeTxt('stat-siswa', tS); safeTxt('stat-guru', res.guruList.length);
+                safeTxt('stat-kelas', res.siswaDetail.length); // Update Rombel real
                 renderChart(res.siswaDetail);
 
                 // Table Siswa
@@ -488,7 +568,7 @@
                 // Grid Guru
                 const gGrid = document.getElementById('grid-guru'); gGrid.innerHTML='';
                 res.guruList.forEach(g => {
-                    gGrid.innerHTML += `<div class="bg-white p-4 rounded-3xl shadow-sm text-center border border-slate-50 card-premium"><img src="${g.foto||'https://via.placeholder.com/150'}" class="w-16 h-16 mx-auto rounded-full object-cover mb-3"><h4 class="font-bold text-xs uppercase">${g.nama}</h4><p class="text-[9px] text-blue-500 font-bold uppercase mt-1">${g.mapel}</p></div>`;
+                    gGrid.innerHTML += `<div class="bg-white p-4 rounded-3xl shadow-sm text-center border border-slate-50 card-pro"><img src="${g.foto||'https://via.placeholder.com/150'}" class="w-16 h-16 mx-auto rounded-full object-cover mb-3"><h4 class="font-bold text-xs uppercase">${g.nama}</h4><p class="text-[9px] text-blue-500 font-bold uppercase mt-1">${g.mapel}</p></div>`;
                 });
 
                 // Mutasi
@@ -501,22 +581,24 @@
                 // Berita
                 const bList = document.getElementById('list-berita'); bList.innerHTML='';
                 res.berita.forEach(b => {
-                    bList.innerHTML += `<div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-50 hover:border-blue-200 transition card-premium"><p class="text-[9px] font-black text-blue-500 uppercase mb-2">📢 ${new Date(b[1]).toLocaleDateString()}</p><h4 class="font-bold text-sm leading-tight">${b[0]}</h4></div>`;
+                    bList.innerHTML += `<div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-50 hover:border-blue-200 transition card-pro"><p class="text-[9px] font-black text-blue-500 uppercase mb-2">📢 ${new Date(b[1]).toLocaleDateString()}</p><h4 class="font-bold text-sm leading-tight">${b[0]}</h4></div>`;
                 });
 
                 // Fasilitas
                 const fGrid = document.getElementById('grid-fasilitas'); fGrid.innerHTML='';
                 res.fasilitas.forEach(f => {
-                    fGrid.innerHTML += `<div class="bg-white rounded-3xl shadow-sm border border-slate-50 overflow-hidden card-premium"><div class="h-32 bg-slate-200 relative"><img src="${f.foto}" class="w-full h-full object-cover"></div><div class="p-5"><span class="text-[8px] font-black bg-blue-50 text-blue-600 px-2 py-1 rounded-full uppercase">${f.kategori}</span><h4 class="font-bold text-sm mt-3 mb-1">${f.nama}</h4><p class="text-[10px] text-slate-500 leading-tight">${f.ket}</p></div></div>`;
+                    fGrid.innerHTML += `<div class="bg-white rounded-3xl shadow-sm border border-slate-50 overflow-hidden card-pro"><div class="h-32 bg-slate-200 relative"><img src="${f.foto}" class="w-full h-full object-cover"></div><div class="p-5"><span class="text-[8px] font-black bg-blue-50 text-blue-600 px-2 py-1 rounded-full uppercase">${f.kategori}</span><h4 class="font-bold text-sm mt-3 mb-1">${f.nama}</h4><p class="text-[10px] text-slate-500 leading-tight">${f.ket}</p></div></div>`;
                 });
 
                 // SPMB
                 safeTxt('spmb-info-content', c.SPMB_Info);
                 const SPMBStat = document.getElementById('txt-SPMB-status');
                 if(SPMBStat) SPMBStat.innerText = (c.SPMB_Status === 'Buka' ? 'DIBUKA' : 'TUTUP');
-                if(c.SPMB_Status === 'Buka') document.getElementById('form-spmb').classList.remove('hidden');const elLMS = document.getElementById('lms-btn');
-if(elLMS) elLMS.href = "https://e-learning-sd.vercel.app/";
-// --------------------------
+                if(c.SPMB_Status === 'Buka') document.getElementById('form-spmb').classList.remove('hidden');
+                
+                // Link LMS
+                const elLMS = document.getElementById('lms-btn');
+                if(elLMS && c.LMS_Link) elLMS.href = c.LMS_Link;
 
                 // Sosmed
                 const setLink = (id, l) => { if(l) document.getElementById(id).href = l; };
@@ -577,7 +659,12 @@ if(elLMS) elLMS.href = "https://e-learning-sd.vercel.app/";
 
         async function saveWebConfig(e) {
             e.preventDefault();
-            const d = { NamaSekolah: document.getElementById('adm-nama').value, LMS_Link: document.getElementById('adm-lms').value };
+            const d = { 
+                NamaSekolah: document.getElementById('adm-nama').value, 
+                LMS_Link: document.getElementById('adm-lms').value,
+                RunningText: document.getElementById('adm-running').value,
+                GoogleMapsEmbed: document.getElementById('adm-maps').value
+            };
             const res = await postAPI('saveConfig', d);
             if(res && res.status==='success') { alert("Disimpan!"); location.reload(); }
         }
