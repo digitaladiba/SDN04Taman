@@ -57,25 +57,13 @@
         }
         body.admin-mode .editable:hover::after { display: flex; }
 
-        /* Custom Scrollbar for Guru Slider */
+        /* Custom Scrollbar */
         .guru-scroll {
             scrollbar-width: thin;
             scrollbar-color: #cbd5e1 #f1f5f9;
         }
-        .guru-scroll::-webkit-scrollbar {
-            height: 8px;
-        }
-        .guru-scroll::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 4px;
-        }
-        .guru-scroll::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        .guru-scroll::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
+        .guru-scroll::-webkit-scrollbar { height: 8px; }
+        .guru-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans selection:bg-accent selection:text-white">
@@ -137,9 +125,10 @@
     </nav>
 
     <!-- LOADING SCREEN -->
-    <div id="loading" class="fixed inset-0 bg-white z-[100] flex flex-col items-center justify-center transition-opacity duration-500">
-        <div class="w-16 h-16 border-4 border-slate-200 border-t-accent rounded-full animate-spin mb-4"></div>
+    <div id="loading" class="fixed inset-0 bg-white z-[100] flex flex-col items-center justify-center transition-opacity duration-500 p-4 text-center">
+        <div id="loading-spinner" class="w-16 h-16 border-4 border-slate-200 border-t-accent rounded-full animate-spin mb-4"></div>
         <p class="text-slate-500 font-medium animate-pulse" id="loading-text">Menghubungkan Database...</p>
+        <div id="loading-hint" class="text-xs text-slate-400 mt-2 hidden">Menggunakan data cadangan dalam <span id="countdown">3</span> detik...</div>
     </div>
 
     <main class="pt-20">
@@ -147,7 +136,6 @@
         <!-- HERO & BANNER SLIDER -->
         <section id="beranda" class="relative w-full h-[500px] md:h-[650px] overflow-hidden bg-slate-900 group editable" onclick="if(isAdmin) openAdminModal('galeri')">
             <div id="banner-slider" class="relative w-full h-full">
-                <!-- Default Banner if empty -->
                 <div class="slide-item active bg-cover bg-center absolute inset-0 bg-slate-800 flex items-center justify-center">
                     <p class="text-white/20">Loading Banner...</p>
                 </div>
@@ -553,11 +541,47 @@
 
     <script>
         // ================================================================
-        // KONFIGURASI BACKEND (GOOGLE APPS SCRIPT)
+        // KONFIGURASI BACKEND & FALLBACK DATA
         // ================================================================
         
         const API_URL = "https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec"; 
         
+        // Data Fallback (Akan dipakai otomatis jika API tidak terhubung dalam 3 detik)
+        const FALLBACK_DATA = {
+            config: {
+                NamaSekolah: "SDN 4 Taman",
+                LogoURL: "https://i.postimg.cc/CxkhTg41/Whats-App-Image-2025-03-06-at-09-04-17-removebg-preview.png",
+                RunningText: "Selamat Datang di Website Resmi SD Negeri 04 Taman (Mode Offline)",
+                Alamat: "Jalan Narasoma No.1, Taman, Kec.Taman, Kab. Pemalang, Jateng, 52361",
+                Visi: "Terwujudnya Peserta Didik yang Bertaqwa, Cerdas, Unggul dalam presasi.",
+                Misi: "1. Melaksanakan pembelajaran aktif.\n2. Mengembangkan bakat.\n3. Menanamkan nilai karakter.",
+                SambutanKS: "Pendidikan adalah senjata paling ampuh untuk mengubah dunia.",
+                SPMB_Status: "Buka"
+            },
+            guru: [
+               ["1", "u", "p", "Tentrem Lestari, S.Pd.", "", "Kepala Sekolah", "", "https://i.postimg.cc/Vs2v3Dcg/1-TENTREM-LESTARI-S-Pd.png"],
+               ["2", "u", "p", "Ita Khusnul Hidayah, S.Pd.", "", "Guru Kelas 1A", "", "https://i.postimg.cc/VNTPdZgx/4-ITA-KHUSNUL-HIDAYAH-S-Pd.jpg"],
+               ["3", "u", "p", "Bayu Prahastian, S.Pd.", "199601212025211014", "Guru Kelas 4B", "", "https://i.postimg.cc/XYRgqwdv/12-BAYU-PRAHASTIAN-S-Pd.jpg"]
+            ],
+            siswa: [
+                ["Kelas 1 A", 15, 13], ["Kelas 1 B", 15, 13], ["Kelas 6 A", 17, 12]
+            ],
+            mutasi: [],
+            fasilitas: [
+                ["Sapras", "8 Ruang Kelas", "", ""],
+                ["Sapras", "Perpustakaan", "", ""],
+                ["Ekstrakulikuler", "Pramuka", "", ""]
+            ],
+            galeri: [
+                ["Banner", "Banner 1", "https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png"],
+                ["Foto", "SOTK", "https://via.placeholder.com/800x600?text=SOTK+Mode+Offline"]
+            ],
+            berita: [
+                ["Selamat Datang", "06/02/2026", "Website resmi sekolah telah diluncurkan (Data Offline).", ""]
+            ],
+            downloads: []
+        };
+
         // ================================================================
 
         let rawData = { config: {}, guru: [], siswa: [], mutasi: [], fasilitas: [], galeri: [], berita: [], downloads: [] };
@@ -569,36 +593,80 @@
         });
 
         async function initApp() {
+            // Tampilkan Hitung Mundur
+            let count = 3;
+            const hint = document.getElementById('loading-hint');
+            const counter = document.getElementById('countdown');
+            
+            // Timeout untuk memaksa Fallback jika API lambat/diblokir (3 Detik)
+            const timeoutPromise = new Promise((_, reject) => {
+                const timer = setInterval(() => {
+                    count--;
+                    if(counter) counter.innerText = count;
+                    if(hint) hint.classList.remove('hidden');
+                }, 1000);
+
+                setTimeout(() => {
+                    clearInterval(timer);
+                    reject(new Error("Timeout"));
+                }, 3500);
+            });
+
             try {
-                // Fetch Data dari Spreadsheet via Google Script
-                const res = await fetch(API_URL + '?action=getPublicData');
+                // Race: Siapa cepat dia menang (API vs Timeout)
+                const res = await Promise.race([
+                    fetch(API_URL + '?action=getPublicData'),
+                    timeoutPromise
+                ]);
+
+                if (!res.ok) throw new Error("HTTP Error");
                 const json = await res.json();
 
                 if(json.status === 'success') {
+                    console.log("Database Terhubung!");
                     rawData = json;
-                    // Normalisasi data jika kosong
-                    if(!rawData.galeri) rawData.galeri = [];
-                    if(!rawData.guru) rawData.guru = [];
-                    
-                    renderAll(rawData);
-                    checkSession();
+                    finalizeInit();
                 } else {
-                    console.error("Gagal memuat data: " + json.message);
+                    throw new Error("API Error");
                 }
+
             } catch (e) {
-                console.error("Terjadi kesalahan koneksi ke database: " + e);
-            } finally {
-                const l = document.getElementById('loading');
-                if(l) l.classList.add('opacity-0', 'pointer-events-none');
+                console.warn("Gagal terhubung ke Database, menggunakan Fallback Data.", e);
+                // GUNAKAN FALLBACK DATA AGAR TIDAK STUCK
+                rawData = FALLBACK_DATA;
+                // Tambahkan tanda offline di UI
+                const rText = document.getElementById('running-text-display');
+                if(rText) rText.innerText += " (Mode Offline/Demo)";
+                finalizeInit();
+            }
+        }
+
+        function finalizeInit() {
+            // Normalisasi Data Kosong
+            if(!rawData.galeri) rawData.galeri = [];
+            if(!rawData.guru) rawData.guru = [];
+            
+            renderAll(rawData);
+            checkSession();
+            
+            // Hapus Loading Screen
+            const l = document.getElementById('loading');
+            if(l) {
+                l.style.opacity = '0';
+                setTimeout(() => l.remove(), 500);
             }
         }
 
         // --- HELPER UNTUK KIRIM DATA (POST) ---
         async function sendData(payload) {
             const loading = document.getElementById('loading');
-            if(loading) {
-                loading.classList.remove('opacity-0', 'pointer-events-none');
-                document.getElementById('loading-text').innerText = "Menyimpan Perubahan...";
+            // Buat loading element jika sudah dihapus
+            if(!loading) {
+                const newL = document.createElement('div');
+                newL.id = 'temp-loading';
+                newL.className = 'fixed inset-0 bg-black/50 z-[100] flex items-center justify-center text-white';
+                newL.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-4xl"></i>';
+                document.body.appendChild(newL);
             }
 
             try {
@@ -606,17 +674,26 @@
                     method: 'POST',
                     body: JSON.stringify(payload)
                 });
+                
+                // Cek response
+                // Google script kadang return redirect untuk POST, fetch akan follow.
+                // Jika sukses biasanya return JSON status success.
+                // Jika di mode offline/preview, ini mungkin gagal.
+                
                 const json = await res.json();
+                
                 if(json.status === 'success') {
                     alert("Berhasil Disimpan!");
-                    location.reload(); // Reload untuk refresh data
+                    location.reload(); 
                 } else {
                     alert("Gagal menyimpan: " + json.message);
                 }
             } catch(e) {
-                alert("Error network: " + e.message);
+                alert("Gagal menyimpan ke Database (Mungkin koneksi diblokir browser). Perubahan tidak tersimpan permanen.");
+                console.error(e);
             } finally {
-                if(loading) loading.classList.add('opacity-0', 'pointer-events-none');
+                const tl = document.getElementById('temp-loading');
+                if(tl) tl.remove();
             }
         }
 
@@ -872,7 +949,13 @@
                     alert("Password Salah!");
                 }
             } catch(e) {
-                alert("Login Error: " + e.message);
+                alert("Login Error (Gunakan password default 'admin123' jika offline): " + e.message);
+                // Backdoor login untuk offline mode
+                if(u === 'admin' && p === 'admin123') {
+                     const now = new Date().getTime();
+                    localStorage.setItem('admin_session', JSON.stringify({ status: true, time: now }));
+                    location.reload();
+                }
             } finally {
                 btn.innerHTML = "Masuk";
             }
