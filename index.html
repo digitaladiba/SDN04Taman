@@ -116,9 +116,13 @@
     </nav>
 
     <!-- STATUS BAR (Koneksi Database) -->
-    <div id="db-status" class="fixed bottom-4 left-4 z-[90] bg-white border border-slate-200 shadow-lg rounded-full px-4 py-2 text-xs font-bold text-slate-500 flex items-center gap-2 transition-all opacity-0 pointer-events-none">
-        <span class="w-2 h-2 rounded-full bg-slate-400" id="db-indicator"></span>
-        <span id="db-text">Mode Offline</span>
+    <div id="db-status" class="fixed bottom-4 left-4 z-[90] bg-white border border-slate-200 shadow-lg rounded-lg px-4 py-3 text-xs font-medium text-slate-600 flex flex-col gap-1 transition-all opacity-100 max-w-xs">
+        <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse" id="db-indicator"></span>
+            <span id="db-text" class="font-bold">Menghubungkan Database...</span>
+        </div>
+        <div id="db-detail" class="text-[10px] text-slate-400">Mohon tunggu sebentar...</div>
+        <button id="btn-retry" onclick="initApp()" class="hidden mt-1 bg-slate-100 text-accent px-2 py-1 rounded border border-slate-200 hover:bg-slate-200">Coba Lagi</button>
     </div>
 
     <main class="pt-20">
@@ -580,53 +584,71 @@
 
         // --- INIT ---
         window.addEventListener('load', () => {
-            // Render langsung (Instant Load)
-            renderAll(rawData);
-            
-            // Coba update data dari server di background
-            initApp();
+            renderAll(rawData); // Tampil data awal dulu
+            initApp();          // Coba update data dari server
         });
 
         async function initApp() {
+            const statusEl = document.getElementById('db-text');
+            const detailEl = document.getElementById('db-detail');
+            const indicatorEl = document.getElementById('db-indicator');
+            const btnRetry = document.getElementById('btn-retry');
+
+            // Reset UI Status
+            indicatorEl.className = "w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse";
+            statusEl.innerText = "Menghubungkan...";
+            detailEl.innerText = "Mengontak server Google...";
+            btnRetry.classList.add('hidden');
+
             try {
-                // Beri batas waktu 2 detik untuk connect ke database
-                const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 2500));
+                // Timeout lebih panjang (10 detik) karena cold start Google Script
+                const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error("Koneksi Timeout (Server sibuk)")), 10000));
                 
-                const res = await Promise.race([
+                const response = await Promise.race([
                     fetch(API_URL + '?action=getPublicData'),
                     timeout
                 ]);
 
-                if (!res.ok) throw new Error("HTTP Error");
-                const json = await res.json();
+                // CEK JIKA RESPON HTML (TANDA PERMISSION ERROR)
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") === -1) {
+                    const text = await response.text();
+                    if(text.includes("Google Accounts") || text.trim().startsWith("<")) {
+                        throw new Error("Izin Script Ditolak. Ubah ke 'Anyone'!");
+                    }
+                }
+
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+                
+                const json = await response.json();
 
                 if(json.status === 'success') {
-                    console.log("Database Terhubung! Mengupdate tampilan...");
+                    console.log("Database Terhubung!");
                     rawData = json;
-                    
-                    // Update tampilan dengan data baru dari database
                     renderAll(rawData);
                     
-                    // Tampilkan indikator online
-                    document.getElementById('db-indicator').classList.replace('bg-slate-400', 'bg-green-500');
-                    document.getElementById('db-text').innerText = "Database Terhubung";
-                    showStatus();
+                    // Update Status Bar -> Sukses
+                    indicatorEl.className = "w-2.5 h-2.5 rounded-full bg-green-500";
+                    statusEl.innerText = "Online";
+                    detailEl.innerText = "Data tersinkronisasi.";
+                    
+                    // Hilangkan status bar setelah 3 detik
+                    setTimeout(() => document.getElementById('db-status').classList.add('opacity-0', 'pointer-events-none'), 3000);
+                } else {
+                    throw new Error("API Error: " + json.message);
                 }
 
             } catch (e) {
-                console.warn("Koneksi Database Lambat/Gagal. Tetap menggunakan data lokal.", e);
-                // Indikator Offline
-                document.getElementById('db-indicator').classList.replace('bg-green-500', 'bg-red-500');
-                document.getElementById('db-text').innerText = "Mode Offline";
-                showStatus();
+                console.error("Gagal Connect:", e);
+                // Update Status Bar -> Gagal
+                indicatorEl.className = "w-2.5 h-2.5 rounded-full bg-red-500";
+                statusEl.innerText = "Mode Offline";
+                detailEl.innerText = e.message;
+                btnRetry.classList.remove('hidden');
+                
+                // Jangan sembunyikan status bar jika error, biar user tau
+                document.getElementById('db-status').classList.remove('opacity-0', 'pointer-events-none');
             }
-        }
-
-        function showStatus() {
-            const el = document.getElementById('db-status');
-            el.classList.remove('opacity-0', 'pointer-events-none');
-            // Hilang otomatis setelah 3 detik
-            setTimeout(() => el.classList.add('opacity-0', 'pointer-events-none'), 3000);
         }
 
         // --- RENDER LOGIC ---
@@ -780,7 +802,7 @@
             } catch(e) {
                 // Fallback login untuk offline mode
                 if(u === 'admin' && p === 'admin123') {
-                    alert("Login Mode Offline");
+                    alert("Login Mode Offline (Database Gagal Connect)");
                     enableAdminMode();
                     closeModal();
                 } else {
