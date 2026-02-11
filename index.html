@@ -22,15 +22,6 @@
                         gold: '#fbbf24', 
                         emerald: '#10b981', 
                         rose: '#f43f5e'
-                    },
-                    animation: {
-                        'scroll': 'scroll 25s linear infinite',
-                    },
-                    keyframes: {
-                        scroll: {
-                            '0%': { transform: 'translateX(0)' },
-                            '100%': { transform: 'translateX(-100%)' },
-                        }
                     }
                 }
             }
@@ -46,24 +37,20 @@
         body.admin-mode .admin-block { display: block !important; }
         
         /* Edit Overlay */
-        .editable { position: relative; }
+        .editable { position: relative; cursor: pointer; }
         .editable:hover::after {
             content: '✏️ Edit';
-            position: absolute; inset: 0; background: rgba(0,0,0,0.6);
+            position: absolute; inset: 0; background: rgba(37, 99, 235, 0.8);
             display: none; align-items: center; justify-content: center;
-            color: white; font-weight: bold; font-size: 1.2rem; cursor: pointer; z-index: 20; border-radius: inherit;
+            color: white; font-weight: bold; font-size: 1.2rem; z-index: 50; border-radius: inherit;
+            backdrop-filter: blur(2px);
         }
         body.admin-mode .editable:hover::after { display: flex; }
 
         /* Custom Scrollbar */
-        .custom-scroll {
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e1 #f1f5f9;
-        }
+        .custom-scroll { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
         .custom-scroll::-webkit-scrollbar { height: 8px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        
-        /* Hide scrollbar for banner slider but keep functionality */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -75,7 +62,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex items-center gap-3">
-                    <img id="nav-logo" src="https://i.postimg.cc/CxkhTg41/Whats-App-Image-2025-03-06-at-09-04-17-removebg-preview.png" alt="Logo" class="h-12 w-auto object-contain hidden">
+                    <img id="nav-logo" src="https://via.placeholder.com/50?text=Logo" alt="Logo" class="h-12 w-auto object-contain hidden">
                     <div class="leading-tight">
                         <h1 id="nav-nama-sekolah" class="text-xl font-bold text-primary">SDN 4 Taman</h1>
                         <p class="text-[10px] md:text-xs text-slate-500 font-bold tracking-widest uppercase">Berkarakter & Berprestasi</p>
@@ -86,7 +73,7 @@
                     <a href="#beranda" class="nav-item text-sm font-semibold text-slate-600 hover:text-accent transition">Beranda</a>
                     <div class="relative group">
                         <button class="nav-item text-sm font-semibold text-slate-600 hover:text-accent flex items-center gap-1 py-4">Profil <i class="fa-solid fa-chevron-down text-xs"></i></button>
-                        <div class="absolute top-full left-0 w-56 bg-white border border-slate-100 shadow-xl rounded-xl p-2 hidden group-hover:block z-50">
+                        <div class="absolute top-full left-0 w-56 bg-white border border-slate-100 shadow-xl rounded-xl p-2 hidden group-hover:block z-50 animate-fade-in-up">
                             <a href="#sambutan" class="block px-4 py-2 text-sm hover:bg-slate-50 rounded font-medium text-slate-600">Sambutan KS</a>
                             <a href="#visi-misi" class="block px-4 py-2 text-sm hover:bg-slate-50 rounded font-medium text-slate-600">Visi & Misi</a>
                             <a href="#guru" class="block px-4 py-2 text-sm hover:bg-slate-50 rounded font-medium text-slate-600">Guru & Staf</a>
@@ -95,13 +82,14 @@
                     </div>
                     <div class="relative group">
                         <button class="nav-item text-sm font-semibold text-slate-600 hover:text-accent flex items-center gap-1 py-4">Data <i class="fa-solid fa-chevron-down text-xs"></i></button>
-                        <div class="absolute top-full left-0 w-56 bg-white border border-slate-100 shadow-xl rounded-xl p-2 hidden group-hover:block z-50">
+                        <div class="absolute top-full left-0 w-56 bg-white border border-slate-100 shadow-xl rounded-xl p-2 hidden group-hover:block z-50 animate-fade-in-up">
                             <a href="#data-siswa" class="block px-4 py-2 text-sm hover:bg-slate-50 rounded font-medium text-slate-600">Data Siswa</a>
                             <a href="#mutasi" class="block px-4 py-2 text-sm hover:bg-slate-50 rounded font-medium text-slate-600">Mutasi Siswa</a>
                         </div>
                     </div>
                     <a href="#fasilitas" class="nav-item text-sm font-semibold text-slate-600 hover:text-accent transition">Fasilitas</a>
                     
+                    <!-- MENU LMS (Akan tampil jika link LMS diisi di Config) -->
                     <a href="#" id="btn-lms" target="_blank" class="px-4 py-2 bg-orange-500 text-white text-sm font-bold rounded-lg hover:bg-orange-600 transition shadow-lg shadow-orange-500/20 flex items-center gap-2 hidden">
                         <i class="fa-solid fa-laptop-code"></i> LMS
                     </a>
@@ -121,12 +109,13 @@
             <a href="#guru" class="block font-medium text-slate-600 p-2 hover:bg-slate-50 rounded">Guru & Staf</a>
             <a href="#data-siswa" class="block font-medium text-slate-600 p-2 hover:bg-slate-50 rounded">Data Siswa</a>
             <a href="#sotk" class="block font-medium text-slate-600 p-2 hover:bg-slate-50 rounded">SOTK</a>
+            <!-- MENU LMS MOBILE -->
             <a href="#" id="lms-mobile-link" target="_blank" class="block font-bold text-orange-500 p-2 bg-orange-50 rounded text-center mt-4 border border-orange-200 hidden">Akses LMS</a>
             <button onclick="handleLoginButton()" id="btn-login-mobile" class="w-full text-center font-bold text-slate-500 p-2 border border-slate-200 rounded mt-2">Login Admin</button>
         </div>
     </nav>
 
-    <!-- STATUS BAR (Koneksi Database) -->
+    <!-- STATUS BAR -->
     <div id="db-status" class="fixed bottom-4 left-4 z-[90] bg-white border border-slate-200 shadow-lg rounded-lg px-4 py-3 text-xs font-medium text-slate-600 flex flex-col gap-1 transition-all opacity-100 max-w-xs">
         <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse" id="db-indicator"></span>
@@ -140,9 +129,8 @@
         
         <!-- HERO (GAMBAR UTAMA STATIS) -->
         <section id="beranda" class="relative w-full h-[400px] md:h-[550px] overflow-hidden bg-slate-900 group editable" onclick="if(isAdmin) openAdminModal('config')">
-            <!-- Background Image Utama -->
-            <div id="hero-background" class="absolute inset-0 bg-cover bg-center transition-all duration-1000" style="background-image: url('https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png');">
-                <div class="absolute inset-0 bg-black/50"></div> <!-- Overlay Gelap -->
+            <div id="hero-background" class="absolute inset-0 bg-cover bg-center transition-all duration-1000" style="background-image: url('https://via.placeholder.com/1920x1080?text=Loading+Image');">
+                <div class="absolute inset-0 bg-black/50"></div>
             </div>
             
             <div class="absolute inset-0 flex items-center justify-center z-20 text-center px-4">
@@ -156,31 +144,25 @@
                         <a href="#spmb-section" id="btn-hero-spmb" class="px-8 py-3 bg-green-500 text-white font-bold rounded-full hover:bg-green-600 transition shadow-lg shadow-green-500/30 flex items-center justify-center">
                             <i class="fa-solid fa-user-plus mr-2"></i> Info SPMB
                         </a>
-                        <a href="#profil" class="px-8 py-3 bg-white text-slate-900 font-bold rounded-full hover:bg-slate-100 transition shadow-lg">
-                            Profil Sekolah
-                        </a>
+                        <a href="#profil" class="px-8 py-3 bg-white text-slate-900 font-bold rounded-full hover:bg-slate-100 transition shadow-lg">Profil Sekolah</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- BANNER SLIDER (INFO TERKINI - BERGERAK DI BAWAH GAMBAR UTAMA) -->
-        <section id="info-slider-section" class="bg-primary py-4 border-t-4 border-accent relative overflow-hidden">
+        <!-- BANNER SLIDER (INFO TERKINI) -->
+        <section id="info-slider-section" class="bg-primary py-4 border-t-4 border-accent relative overflow-hidden editable" onclick="if(isAdmin) openAdminModal('galeri')">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="w-2 h-8 bg-gold rounded-full"></span>
-                    <h3 class="text-white font-bold text-lg uppercase tracking-wider">Info & Pengumuman</h3>
+                    <h3 class="text-white font-bold text-lg uppercase tracking-wider">Info & Pengumuman Sekolah</h3>
                 </div>
             </div>
             
-            <!-- Slider Container -->
             <div class="relative w-full overflow-hidden mt-2">
                 <div id="banner-track" class="flex gap-4 px-4 overflow-x-auto no-scrollbar snap-x snap-mandatory py-2" style="scroll-behavior: smooth;">
-                    <!-- Banners akan dimasukkan di sini oleh JS -->
-                    <div class="w-full text-center text-white/50 text-sm py-8">Memuat Banner...</div>
+                    <div class="w-full text-center text-white/50 text-sm py-8">Memuat Banner Informasi...</div>
                 </div>
-                
-                <!-- Navigasi Manual Slider -->
                 <button onclick="scrollBanner('left')" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-accent z-10"><i class="fa-solid fa-chevron-left"></i></button>
                 <button onclick="scrollBanner('right')" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-accent z-10"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
@@ -190,19 +172,19 @@
         <section id="sambutan" class="py-20 bg-white relative overflow-hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row items-center gap-12">
-                    <div class="md:w-1/3 relative text-center md:text-left group editable" onclick="if(isAdmin) openAdminModal('guru')">
+                    <div class="md:w-1/3 relative text-center md:text-left group editable" onclick="if(isAdmin) openAdminModal('config')">
                         <div class="absolute inset-0 bg-accent/10 rounded-3xl rotate-6 transform hidden md:block"></div>
-                        <img id="ks-foto" src="https://i.postimg.cc/Vs2v3Dcg/1-TENTREM-LESTARI-S-Pd.png" class="relative rounded-3xl shadow-2xl w-full max-w-xs mx-auto md:max-w-full object-cover h-[450px] border-4 border-white bg-slate-200" onerror="this.src='https://via.placeholder.com/400x600?text=Foto+KS'">
+                        <img id="ks-foto" src="" class="relative rounded-3xl shadow-2xl w-full max-w-xs mx-auto md:max-w-full object-cover h-[450px] border-4 border-white bg-slate-200" onerror="this.src='https://via.placeholder.com/400x600?text=Foto+KS'">
                         <div class="edit-overlay rounded-3xl"><i class="fa-solid fa-pen mr-2"></i> Ganti Foto KS</div>
                     </div>
                     <div class="md:w-2/3 editable" onclick="if(isAdmin) openAdminModal('config')">
                         <span class="text-accent font-bold tracking-wider uppercase text-sm mb-2 block">Sambutan Kepala Sekolah</span>
                         <h2 class="text-3xl md:text-4xl font-bold text-primary mb-6">Assalamu'alaikum Warahmatullahi Wabarakatuh</h2>
                         <div class="prose prose-lg text-slate-600 mb-6 italic border-l-4 border-accent pl-6 py-2 bg-slate-50 rounded-r-lg">
-                            <p id="ks-sambutan">"Pendidikan adalah tiket ke masa depan. Hari esok dimiliki oleh orang-orang yang mempersiapkan dirinya pada hari ini."</p>
+                            <p id="ks-sambutan">"..."</p>
                         </div>
-                        <h4 id="ks-nama" class="font-bold text-lg text-primary">Tentrem Lestari, S.Pd.</h4>
-                        <p class="text-slate-500">Kepala Sekolah</p>
+                        <h4 id="ks-nama" class="font-bold text-lg text-primary">-</h4>
+                        <p class="text-slate-500">NIP. <span id="ks-nip">-</span></p>
                         <div class="edit-overlay"><i class="fa-solid fa-pen mr-2"></i> Edit Sambutan</div>
                     </div>
                 </div>
@@ -214,14 +196,11 @@
             <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 relative z-10">
                 <div>
                     <h3 class="text-2xl font-bold text-white mb-6 border-b border-slate-700 pb-4"><i class="fa-solid fa-star text-yellow-400 mr-2"></i> Visi Sekolah</h3>
-                    <p id="visi-text" class="text-lg leading-relaxed text-slate-300 font-light">Terwujudnya Peserta Didik yang Bertaqwa, Cerdas, Terampil, dan Berkarakter.</p>
+                    <p id="visi-text" class="text-lg leading-relaxed text-slate-300 font-light">Loading...</p>
                 </div>
                 <div>
                     <h3 class="text-2xl font-bold text-white mb-6 border-b border-slate-700 pb-4"><i class="fa-solid fa-list-check text-emerald-400 mr-2"></i> Misi Sekolah</h3>
-                    <ul id="misi-list" class="space-y-3 text-slate-300">
-                        <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>Melaksanakan pembelajaran aktif, kreatif, efektif.</li>
-                        <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>Mengembangkan bakat dan minat siswa.</li>
-                    </ul>
+                    <ul id="misi-list" class="space-y-3 text-slate-300"></ul>
                 </div>
             </div>
         </section>
@@ -278,7 +257,7 @@
         <section id="mutasi" class="py-16 bg-white border-y border-slate-100 relative editable" onclick="if(isAdmin) openAdminModal('mutasi')">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl font-bold text-primary">Data Mutasi Siswa Bulan ini</h2>
+                    <h2 class="text-2xl font-bold text-primary">Data Mutasi Siswa</h2>
                 </div>
                 <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
                     <div class="overflow-x-auto">
@@ -303,19 +282,17 @@
 
         <!-- GURU (SLIDER) -->
         <section id="guru" class="py-20 bg-slate-50 relative">
-            <button onclick="openAdminModal('guru')" class="admin-only absolute top-8 right-8 bg-accent text-white px-4 py-2 rounded shadow"><i class="fa-solid fa-plus mr-2"></i> Kelola Guru</button>
+            <button onclick="openAdminModal('guru')" class="admin-only absolute top-8 right-8 bg-accent text-white px-4 py-2 rounded shadow z-10"><i class="fa-solid fa-plus mr-2"></i> Kelola Guru</button>
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl font-bold text-primary">Guru dan Staf</h2>
                     <p class="text-slate-500">Pendidik Profesional SDN 4 Taman</p>
                 </div>
                 
-                <!-- SLIDER CONTAINER -->
                 <div class="relative group">
                     <div id="guru-container" class="flex gap-6 overflow-x-auto pb-8 px-4 snap-x custom-scroll">
                         <!-- Items guru akan dimasukkan di sini oleh JS -->
                     </div>
-                    
                     <button onclick="scrollGuru('left')" class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-primary z-10 -ml-4 hover:bg-slate-50 transition hidden md:flex"><i class="fa-solid fa-chevron-left"></i></button>
                     <button onclick="scrollGuru('right')" class="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-primary z-10 -mr-4 hover:bg-slate-50 transition hidden md:flex"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
@@ -324,6 +301,7 @@
                 <div id="sotk" class="mt-16 bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center relative editable" onclick="if(isAdmin) openAdminModal('config')">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-xl font-bold mx-auto">Struktur Organisasi (SOTK)</h3>
+                        <small class="text-slate-400 font-normal hidden md:block">(Klik untuk edit gambar SOTK)</small>
                     </div>
                     <div id="sotk-container" class="bg-slate-50 rounded-xl border border-slate-200 overflow-hidden min-h-[300px] flex items-center justify-center">
                         <p class="text-slate-400 italic">Memuat gambar SOTK...</p>
@@ -369,7 +347,7 @@
                             <p class="text-blue-100 mb-6">Sistem Penerimaan Murid Baru Tahun Ajaran 2026/2027</p>
                             <div class="flex items-center gap-4 mb-6">
                                 <span id="spmb-status-badge" class="px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-500 text-white shadow-sm">
-                                    Status Loading...
+                                    Memuat Status...
                                 </span>
                             </div>
                             <div class="flex gap-4 flex-wrap">
@@ -414,70 +392,106 @@
         </footer>
     </main>
 
-    <!-- ADMIN MODAL -->
+    <!-- ADMIN MODAL (DASHBOARD LENGKAP) -->
     <div id="modal-admin" class="fixed inset-0 bg-black/50 hidden z-[70] flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-xl w-full max-w-5xl h-[90vh] flex flex-col shadow-2xl">
+            <!-- Header -->
             <div class="p-4 border-b flex justify-between items-center bg-slate-50">
                 <h3 class="font-bold text-lg text-primary"><i class="fa-solid fa-user-gear text-accent mr-2"></i>Admin Dashboard</h3>
                 <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-200 hover:text-red-600 flex items-center justify-center"><i class="fa-solid fa-times"></i></button>
             </div>
+            
             <div class="flex flex-1 overflow-hidden">
+                <!-- Sidebar -->
                 <div class="w-64 bg-slate-50 border-r p-4 space-y-1 overflow-y-auto hidden md:block">
-                    <button onclick="switchTab('config')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition">⚙️ Konfigurasi & SPMB</button>
-                    <button onclick="switchTab('guru')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition">👨‍🏫 Data Guru</button>
-                    <button onclick="switchTab('siswa')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition">🎓 Data Siswa</button>
-                    <button onclick="switchTab('mutasi')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition">📊 Mutasi</button>
-                    <button onclick="switchTab('galeri')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition">📷 Galeri & SOTK</button>
-                    <button onclick="switchTab('berita')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition">📰 Berita</button>
-                    <button onclick="switchTab('fasilitas')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition">🏫 Fasilitas</button>
+                    <button onclick="switchTab('config')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition focus:bg-white focus:font-bold">⚙️ Konfigurasi & SPMB</button>
+                    <button onclick="switchTab('guru')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition focus:bg-white focus:font-bold">👨‍🏫 Data Guru</button>
+                    <button onclick="switchTab('siswa')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition focus:bg-white focus:font-bold">🎓 Data Siswa</button>
+                    <button onclick="switchTab('mutasi')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition focus:bg-white focus:font-bold">📊 Mutasi</button>
+                    <button onclick="switchTab('galeri')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition focus:bg-white focus:font-bold">📷 Galeri & Banner</button>
+                    <button onclick="switchTab('berita')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition focus:bg-white focus:font-bold">📰 Berita</button>
+                    <button onclick="switchTab('fasilitas')" class="w-full text-left px-4 py-2 rounded text-sm hover:bg-white transition focus:bg-white focus:font-bold">🏫 Fasilitas</button>
                     <button onclick="doLogout()" class="w-full text-left px-4 py-2 rounded text-sm text-red-600 hover:bg-red-50 mt-8">🚪 Logout</button>
                 </div>
+                
+                <!-- Content Area -->
                 <div class="flex-1 p-6 overflow-y-auto" id="modal-content">
                     
-                    <!-- Config Tab -->
+                    <!-- TAB CONFIG -->
                     <div id="tab-config" class="tab-content">
-                        <h4 class="font-bold mb-4 border-b pb-2">Pengaturan Umum & SPMB</h4>
-                        <form onsubmit="saveData(event, 'config')" class="space-y-4 max-w-xl">
-                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-6">
-                                <h5 class="font-bold text-accent mb-2">Kontrol Pendaftaran (SPMB)</h5>
+                        <h4 class="font-bold mb-4 border-b pb-2">Pengaturan Umum</h4>
+                        <form onsubmit="saveData(event, 'config')" class="space-y-4 max-w-2xl">
+                            <!-- Hero & SOTK -->
+                            <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded border">
+                                <div><label class="text-xs font-bold text-slate-500">Link Gambar Utama (Hero)</label><input id="adm-banner-utama" class="w-full border p-2 rounded bg-white" placeholder="https://..."></div>
+                                <div><label class="text-xs font-bold text-slate-500">Link Gambar SOTK</label><input id="adm-link-sotk" class="w-full border p-2 rounded bg-white" placeholder="https://..."></div>
+                            </div>
+
+                            <!-- KS Info -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label class="text-xs font-bold text-slate-500">Nama Kepala Sekolah</label><input id="adm-ks-nama" class="w-full border p-2 rounded"></div>
+                                <div><label class="text-xs font-bold text-slate-500">NIP Kepala Sekolah</label><input id="adm-ks-nip" class="w-full border p-2 rounded"></div>
+                            </div>
+                            <div><label class="text-xs font-bold text-slate-500">Sambutan KS (Singkat)</label><textarea id="adm-ks-sambutan" class="w-full border p-2 rounded" rows="2"></textarea></div>
+
+                            <!-- Sekolah Info -->
+                            <div><label class="text-xs font-bold text-slate-500">Nama Sekolah</label><input id="adm-nama" class="w-full border p-2 rounded"></div>
+                            <div><label class="text-xs font-bold text-slate-500">Running Text</label><input id="adm-running" class="w-full border p-2 rounded"></div>
+                            <div><label class="text-xs font-bold text-slate-500">Link LMS (E-Learning)</label><input id="adm-lms" class="w-full border p-2 rounded" placeholder="https://..."></div>
+                            
+                            <!-- SPMB -->
+                            <div class="bg-blue-50 p-4 rounded border border-blue-200">
+                                <h5 class="font-bold text-accent mb-2">SPMB</h5>
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="text-xs font-bold text-slate-500">Status Pendaftaran</label>
+                                    <div><label class="text-xs font-bold text-slate-500">Status Pendaftaran</label>
                                         <select id="adm-spmb-status" class="w-full border p-2 rounded bg-white">
                                             <option value="Tutup">⛔ Ditutup</option>
                                             <option value="Buka">✅ Dibuka</option>
                                         </select>
                                     </div>
-                                    <div>
-                                        <label class="text-xs font-bold text-slate-500">No WA Panitia (Format 62..)</label>
-                                        <input id="adm-wa" class="w-full border p-2 rounded" type="number">
-                                    </div>
+                                    <div><label class="text-xs font-bold text-slate-500">No WA Panitia (62..)</label><input id="adm-wa" class="w-full border p-2 rounded" type="number"></div>
                                 </div>
                             </div>
 
-                            <div><label class="text-xs font-bold text-slate-500">Nama Sekolah</label><input id="adm-nama" class="w-full border p-2 rounded"></div>
-                            <div><label class="text-xs font-bold text-slate-500">Running Text</label><input id="adm-running" class="w-full border p-2 rounded"></div>
-                            <div><label class="text-xs font-bold text-slate-500">Link LMS (E-Learning)</label><input id="adm-lms" class="w-full border p-2 rounded"></div>
-                            
+                            <!-- Medsos -->
                             <div class="grid grid-cols-3 gap-2">
                                 <div><label class="text-xs font-bold text-slate-500">Facebook</label><input id="adm-fb" class="w-full border p-2 rounded"></div>
                                 <div><label class="text-xs font-bold text-slate-500">Instagram</label><input id="adm-ig" class="w-full border p-2 rounded"></div>
                                 <div><label class="text-xs font-bold text-slate-500">Youtube</label><input id="adm-yt" class="w-full border p-2 rounded"></div>
                             </div>
-                            <button type="submit" class="bg-primary text-white px-4 py-2 rounded text-sm font-bold w-full">Simpan Perubahan</button>
+                            <button type="submit" class="bg-primary text-white px-4 py-3 rounded font-bold w-full hover:bg-slate-800 transition">Simpan Semua Perubahan</button>
                         </form>
                     </div>
 
-                    <!-- Guru Tab -->
+                    <!-- TAB GURU -->
                     <div id="tab-guru" class="tab-content hidden">
-                         <div class="flex justify-between items-center mb-4">
-                            <h4 class="font-bold">Data Guru & Staf</h4>
-                            <button onclick="addItem('guru')" class="bg-accent text-white px-3 py-1 rounded text-xs">+ Tambah Guru</button>
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-bold">Manajemen Guru</h4>
+                            <button onclick="prepareEdit('guru', null)" class="bg-accent text-white px-4 py-2 rounded text-sm hover:bg-blue-600 transition">+ Tambah Guru Baru</button>
                         </div>
-                        <div id="adm-list-guru" class="space-y-2"></div>
+                        
+                        <!-- Form Editor (Hidden by default) -->
+                        <div id="editor-guru" class="bg-slate-100 p-4 rounded mb-6 hidden border border-slate-300">
+                            <h5 class="font-bold mb-3 text-sm">Formulir Guru</h5>
+                            <input type="hidden" id="edit-guru-id">
+                            <div class="grid grid-cols-2 gap-3 mb-3">
+                                <input id="edit-guru-nama" placeholder="Nama Lengkap" class="border p-2 rounded w-full">
+                                <input id="edit-guru-nip" placeholder="NIP (Opsional)" class="border p-2 rounded w-full">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 mb-3">
+                                <input id="edit-guru-jabatan" placeholder="Jabatan (cth: Guru Kelas 1)" class="border p-2 rounded w-full">
+                                <input id="edit-guru-foto" placeholder="Link Foto URL" class="border p-2 rounded w-full">
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="saveItem('guru')" class="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700">Simpan Data</button>
+                                <button onclick="document.getElementById('editor-guru').classList.add('hidden')" class="bg-gray-400 text-white px-4 py-2 rounded text-sm hover:bg-gray-500">Batal</button>
+                            </div>
+                        </div>
+
+                        <div id="adm-list-guru" class="space-y-2 max-h-[60vh] overflow-y-auto"></div>
                     </div>
 
-                    <!-- Siswa Tab (Edit Langsung) -->
+                    <!-- TAB SISWA -->
                     <div id="tab-siswa" class="tab-content hidden">
                         <h4 class="font-bold mb-4">Input Data Siswa Per Kelas</h4>
                         <table class="w-full text-sm text-center border rounded">
@@ -486,13 +500,13 @@
                         </table>
                         <div class="mt-4 flex justify-between items-center">
                             <div class="text-xs text-yellow-800 bg-yellow-50 p-2 rounded border border-yellow-200">
-                                Info: Edit angka di kolom, lalu tekan tombol Simpan.
+                                Info: Ubah angka di kolom, lalu tekan Simpan.
                             </div>
-                            <button onclick="saveBulk('siswa')" class="bg-primary text-white px-4 py-2 rounded font-bold text-sm">Simpan Data Siswa</button>
+                            <button onclick="saveBulk('siswa')" class="bg-primary text-white px-6 py-2 rounded font-bold text-sm hover:bg-slate-800">Simpan Data Siswa</button>
                         </div>
                     </div>
 
-                     <!-- Mutasi Tab -->
+                     <!-- TAB MUTASI -->
                     <div id="tab-mutasi" class="tab-content hidden">
                         <h4 class="font-bold mb-4">Data Mutasi</h4>
                         <table class="w-full text-sm text-center border rounded">
@@ -500,38 +514,92 @@
                             <tbody id="adm-list-mutasi"></tbody>
                         </table>
                          <div class="mt-4 flex justify-end">
-                            <button onclick="saveBulk('mutasi')" class="bg-primary text-white px-4 py-2 rounded font-bold text-sm">Simpan Data Mutasi</button>
+                            <button onclick="saveBulk('mutasi')" class="bg-primary text-white px-6 py-2 rounded font-bold text-sm hover:bg-slate-800">Simpan Data Mutasi</button>
                         </div>
                     </div>
 
-                    <!-- Galeri Tab -->
+                    <!-- TAB GALERI -->
                     <div id="tab-galeri" class="tab-content hidden">
-                        <h4 class="font-bold mb-4">Galeri, Banner & SOTK</h4>
-                        <div class="bg-blue-50 p-2 rounded text-xs mb-4">
-                            Tips: 
-                            <ul class="list-disc ml-4">
-                                <li>Untuk <b>Slider Depan</b>, pilih Tipe: <b>Banner</b>.</li>
-                                <li>Untuk <b>Struktur Organisasi</b>, pilih Tipe: <b>Foto</b> dan ketik Judul: <b>SOTK</b>.</li>
-                            </ul>
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-bold">Galeri & Banner</h4>
+                            <button onclick="prepareEdit('galeri', null)" class="bg-accent text-white px-4 py-2 rounded text-sm hover:bg-blue-600 transition">+ Upload Gambar</button>
                         </div>
-                        <button onclick="addItem('galeri')" class="bg-accent text-white px-3 py-1 rounded text-xs mb-4">+ Upload Gambar</button>
-                        <div id="adm-list-galeri" class="grid grid-cols-3 gap-4"></div>
+                        <div class="bg-blue-50 p-2 rounded text-xs mb-4 text-blue-800 border border-blue-200">
+                            <b>Tips:</b> Untuk membuat Banner Bergerak di halaman depan, pilih Tipe <b>"Banner"</b>.
+                        </div>
+
+                        <!-- Form Editor -->
+                        <div id="editor-galeri" class="bg-slate-100 p-4 rounded mb-6 hidden border border-slate-300">
+                            <h5 class="font-bold mb-3 text-sm">Upload / Edit Gambar</h5>
+                            <input type="hidden" id="edit-galeri-oldjudul">
+                            <div class="mb-3">
+                                <label class="text-xs font-bold">Tipe Gambar</label>
+                                <select id="edit-galeri-tipe" class="w-full border p-2 rounded">
+                                    <option value="Foto">Foto Dokumentasi</option>
+                                    <option value="Banner">Banner Informasi (Slider Depan)</option>
+                                    <option value="SOTK">Struktur Organisasi (Khusus)</option>
+                                </select>
+                            </div>
+                            <div class="mb-3"><input id="edit-galeri-judul" placeholder="Judul / Keterangan" class="border p-2 rounded w-full"></div>
+                            <div class="mb-3"><input id="edit-galeri-link" placeholder="Link URL Gambar" class="border p-2 rounded w-full"></div>
+                            <div class="flex gap-2">
+                                <button onclick="saveItem('galeri')" class="bg-green-600 text-white px-4 py-2 rounded text-sm">Simpan</button>
+                                <button onclick="document.getElementById('editor-galeri').classList.add('hidden')" class="bg-gray-400 text-white px-4 py-2 rounded text-sm">Batal</button>
+                            </div>
+                        </div>
+
+                        <div id="adm-list-galeri" class="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto"></div>
                     </div>
 
-                    <!-- Berita Tab -->
+                    <!-- TAB BERITA -->
                     <div id="tab-berita" class="tab-content hidden">
                          <div class="flex justify-between items-center mb-4">
-                            <h4 class="font-bold">Berita</h4>
-                            <button onclick="addItem('berita')" class="bg-accent text-white px-3 py-1 rounded text-xs">+ Tambah</button>
+                            <h4 class="font-bold">Berita Sekolah</h4>
+                            <button onclick="prepareEdit('berita', null)" class="bg-accent text-white px-4 py-2 rounded text-sm hover:bg-blue-600 transition">+ Tulis Berita</button>
                         </div>
-                        <div id="adm-list-berita" class="space-y-2"></div>
+
+                        <!-- Form Editor -->
+                        <div id="editor-berita" class="bg-slate-100 p-4 rounded mb-6 hidden border border-slate-300">
+                            <h5 class="font-bold mb-3 text-sm">Editor Berita</h5>
+                            <input type="hidden" id="edit-berita-oldjudul">
+                            <div class="mb-3"><input id="edit-berita-judul" placeholder="Judul Berita" class="border p-2 rounded w-full font-bold"></div>
+                            <div class="mb-3"><input id="edit-berita-tgl" type="date" class="border p-2 rounded w-full"></div>
+                            <div class="mb-3"><textarea id="edit-berita-isi" placeholder="Isi Berita..." class="border p-2 rounded w-full" rows="3"></textarea></div>
+                            <div class="flex gap-2">
+                                <button onclick="saveItem('berita')" class="bg-green-600 text-white px-4 py-2 rounded text-sm">Terbitkan</button>
+                                <button onclick="document.getElementById('editor-berita').classList.add('hidden')" class="bg-gray-400 text-white px-4 py-2 rounded text-sm">Batal</button>
+                            </div>
+                        </div>
+
+                        <div id="adm-list-berita" class="space-y-2 max-h-[60vh] overflow-y-auto"></div>
                     </div>
 
-                     <!-- Fasilitas Tab -->
+                     <!-- TAB FASILITAS -->
                     <div id="tab-fasilitas" class="tab-content hidden">
-                        <h4 class="font-bold mb-4">Fasilitas</h4>
-                        <button onclick="addItem('fasilitas')" class="bg-accent text-white px-3 py-1 rounded text-xs mb-4">+ Tambah</button>
-                        <div id="adm-list-fasilitas" class="space-y-2"></div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-bold">Fasilitas</h4>
+                            <button onclick="prepareEdit('fasilitas', null)" class="bg-accent text-white px-4 py-2 rounded text-sm hover:bg-blue-600 transition">+ Tambah Item</button>
+                        </div>
+
+                        <!-- Form Editor -->
+                        <div id="editor-fasilitas" class="bg-slate-100 p-4 rounded mb-6 hidden border border-slate-300">
+                            <h5 class="font-bold mb-3 text-sm">Editor Fasilitas</h5>
+                            <input type="hidden" id="edit-fasilitas-oldnama">
+                            <div class="mb-3">
+                                <label class="text-xs font-bold">Kategori</label>
+                                <select id="edit-fasilitas-kategori" class="w-full border p-2 rounded">
+                                    <option value="Sapras">Sarana Prasarana</option>
+                                    <option value="Ekstrakulikuler">Ekstrakulikuler</option>
+                                </select>
+                            </div>
+                            <div class="mb-3"><input id="edit-fasilitas-nama" placeholder="Nama Fasilitas / Ekskul" class="border p-2 rounded w-full"></div>
+                            <div class="flex gap-2">
+                                <button onclick="saveItem('fasilitas')" class="bg-green-600 text-white px-4 py-2 rounded text-sm">Simpan</button>
+                                <button onclick="document.getElementById('editor-fasilitas').classList.add('hidden')" class="bg-gray-400 text-white px-4 py-2 rounded text-sm">Batal</button>
+                            </div>
+                        </div>
+
+                        <div id="adm-list-fasilitas" class="space-y-2 max-h-[60vh] overflow-y-auto"></div>
                     </div>
 
                 </div>
@@ -569,12 +637,13 @@
 
     <script>
         // ================================================================
-        // KONFIGURASI BACKEND & FALLBACK DATA (AUTO-FALLBACK MODE)
+        // KONFIGURASI BACKEND (GOOGLE APPS SCRIPT)
         // ================================================================
         
         const API_URL = "https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec"; 
         
-        // Data Fallback (Default Data jika API lambat)
+        // ================================================================
+        
         const FALLBACK_DATA = {
             config: {
                 NamaSekolah: "SDN 4 Taman",
@@ -585,76 +654,35 @@
                 Misi: "1. Melaksanakan pembelajaran aktif.\n2. Mengembangkan bakat.\n3. Menanamkan nilai karakter.",
                 SambutanKS: "Pendidikan adalah senjata paling ampuh untuk mengubah dunia.",
                 SPMB_Status: "Buka",
-                Main_Banner: "https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png", // Gambar Utama Default
-                Link_SOTK: "https://via.placeholder.com/800x600?text=SOTK+Mode+Offline" // SOTK Default
+                Main_Banner: "https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png", 
+                Link_SOTK: "https://via.placeholder.com/800x600?text=SOTK+Mode+Offline",
+                LMS_Link: "#"
             },
-            guru: [
-               ["1", "u", "p", "Tentrem Lestari, S.Pd.", "", "Kepala Sekolah", "", "https://i.postimg.cc/Vs2v3Dcg/1-TENTREM-LESTARI-S-Pd.png"],
-               ["2", "u", "p", "Ita Khusnul Hidayah, S.Pd.", "", "Guru Kelas 1A", "", "https://i.postimg.cc/VNTPdZgx/4-ITA-KHUSNUL-HIDAYAH-S-Pd.jpg"],
-               ["3", "u", "p", "Bayu Prahastian, S.Pd.", "199601212025211014", "Guru Kelas 4B", "", "https://i.postimg.cc/XYRgqwdv/12-BAYU-PRAHASTIAN-S-Pd.jpg"]
-            ],
-            siswa: [
-                ["Kelas 1 A", 15, 13], ["Kelas 1 B", 15, 13], ["Kelas 6 A", 17, 12]
-            ],
-            mutasi: [],
-            fasilitas: [
-                ["Sapras", "8 Ruang Kelas", "", ""],
-                ["Sapras", "Perpustakaan", "", ""],
-                ["Ekstrakulikuler", "Pramuka", "", ""]
-            ],
-            galeri: [
-                ["Banner", "Banner Kegiatan 1", "https://via.placeholder.com/800x400/2563eb/ffffff?text=Info+Kegiatan+1"],
-                ["Banner", "Banner Kegiatan 2", "https://via.placeholder.com/800x400/10b981/ffffff?text=Info+Kegiatan+2"]
-            ],
-            berita: [
-                ["Info Website", "06/02/2026", "Website resmi sekolah telah diluncurkan.", ""]
-            ],
-            downloads: []
+            guru: [], siswa: [], mutasi: [], fasilitas: [], galeri: [], berita: [], downloads: []
         };
 
-        // Mulai dengan data fallback agar tampilan langsung muncul
         let rawData = JSON.parse(JSON.stringify(FALLBACK_DATA)); 
         let isAdmin = false;
 
-        // --- INIT ---
         window.addEventListener('load', () => {
-            renderAll(rawData); // Tampil data awal dulu
-            initApp();          // Coba update data dari server
-            startBannerScroll(); // Mulai animasi slider
+            initApp();          
+            startBannerScroll();
         });
 
         async function initApp() {
             const statusEl = document.getElementById('db-text');
-            const detailEl = document.getElementById('db-detail');
             const indicatorEl = document.getElementById('db-indicator');
             const btnRetry = document.getElementById('btn-retry');
 
-            // Reset UI Status
             indicatorEl.className = "w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse";
             statusEl.innerText = "Menghubungkan...";
-            detailEl.innerText = "Mengontak server Google...";
             btnRetry.classList.add('hidden');
 
             try {
-                // Timeout lebih panjang (10 detik) karena cold start Google Script
-                const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error("Koneksi Timeout (Server sibuk)")), 10000));
-                
-                const response = await Promise.race([
-                    fetch(API_URL + '?action=getPublicData'),
-                    timeout
-                ]);
-
-                // CEK JIKA RESPON HTML (TANDA PERMISSION ERROR)
-                const contentType = response.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") === -1) {
-                    const text = await response.text();
-                    if(text.includes("Google Accounts") || text.trim().startsWith("<")) {
-                        throw new Error("Izin Script Ditolak. Ubah ke 'Anyone'!");
-                    }
-                }
+                const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 10000));
+                const response = await Promise.race([fetch(API_URL + '?action=getPublicData'), timeout]);
 
                 if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-                
                 const json = await response.json();
 
                 if(json.status === 'success') {
@@ -662,443 +690,387 @@
                     rawData = json;
                     renderAll(rawData);
                     
-                    // Update Status Bar -> Sukses
                     indicatorEl.className = "w-2.5 h-2.5 rounded-full bg-green-500";
                     statusEl.innerText = "Online";
-                    detailEl.innerText = "Data tersinkronisasi.";
-                    
-                    // Hilangkan status bar setelah 3 detik
                     setTimeout(() => document.getElementById('db-status').classList.add('opacity-0', 'pointer-events-none'), 3000);
                 } else {
                     throw new Error("API Error: " + json.message);
                 }
-
             } catch (e) {
                 console.error("Gagal Connect:", e);
-                // Update Status Bar -> Gagal
+                renderAll(FALLBACK_DATA); // Render fallback jika gagal
                 indicatorEl.className = "w-2.5 h-2.5 rounded-full bg-red-500";
                 statusEl.innerText = "Mode Offline";
-                detailEl.innerText = e.message;
                 btnRetry.classList.remove('hidden');
-                
-                // Jangan sembunyikan status bar jika error, biar user tau
-                document.getElementById('db-status').classList.remove('opacity-0', 'pointer-events-none');
             }
         }
 
-        // --- RENDER LOGIC ---
         function renderAll(d) {
             if(!d) return;
             const c = d.config || {};
 
-            // 1. Config General
-            const logo = document.getElementById('nav-logo');
-            if(c.LogoURL && logo) {
-                logo.src = c.LogoURL;
-                logo.classList.remove('hidden');
-            }
-            
-            // Update Text Elements
-            const txtMap = {
-                'nav-nama-sekolah': c.NamaSekolah,
-                'footer-nama': c.NamaSekolah,
-                'hero-title': c.NamaSekolah ? c.NamaSekolah.toUpperCase() : null,
-                'running-text-display': c.RunningText,
-                'footer-alamat': c.Alamat,
-                'visi-text': c.Visi,
+            // Config Text
+            const textMap = {
+                'nav-nama-sekolah': c.NamaSekolah, 'footer-nama': c.NamaSekolah, 'hero-title': c.NamaSekolah?.toUpperCase(),
+                'running-text-display': c.RunningText, 'footer-alamat': c.Alamat, 'visi-text': c.Visi,
                 'ks-sambutan': c.SambutanKS ? `"${c.SambutanKS}"` : null,
-                'ks-nama': c.KepalaSekolah || ((d.guru || []).find(g => g[5] && g[5].toLowerCase().includes('kepala'))?.[3]), // Fallback to find guru
-                'ks-nip': c.NIP_KS || ((d.guru || []).find(g => g[5] && g[5].toLowerCase().includes('kepala'))?.[4]) // Fallback
+                'ks-nama': c.KepalaSekolah, 'ks-nip': c.NIP_KS
             };
+            for(const [k, v] of Object.entries(textMap)) if(document.getElementById(k) && v) document.getElementById(k).innerText = v;
 
-            for (const [id, val] of Object.entries(txtMap)) {
-                const el = document.getElementById(id);
-                if(el && val) el.innerText = val;
-            }
-
-            // Maps
+            // Images & Maps
+            if(c.LogoURL) document.getElementById('nav-logo').src = c.LogoURL;
             if(document.getElementById('maps-container') && c.GoogleMapsEmbed) 
                 document.getElementById('maps-container').innerHTML = `<iframe src="${c.GoogleMapsEmbed}" width="100%" height="100%" style="border:0;" loading="lazy"></iframe>`;
 
-            // 2. HERO IMAGE (STATIS) - Prioritaskan Config
-            let heroUrl = c.Banner_Utama || c.Main_Banner || c.Foto_Utama || c.MainImage;
-            // Jika tidak ada di config, cari di Galeri (yang judulnya 'Main' atau 'Utama' atau tipe 'Banner' pertama)
-            if(!heroUrl) {
-                 const mainGal = (d.galeri || []).find(g => String(g[1]).toLowerCase().includes('utama') || String(g[1]).toLowerCase().includes('main'));
-                 if(mainGal) heroUrl = mainGal[2];
-            }
-            // Jika masih tidak ada, pakai default/fallback
-            if(!heroUrl) heroUrl = "https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png";
-            
+            // Hero Image
+            let heroUrl = c.Banner_Utama || c.Main_Banner || c.Foto_Utama || c.MainImage || "https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png";
             document.getElementById('hero-background').style.backgroundImage = `url('${heroUrl}')`;
 
-
-            // 3. SOTK - Prioritaskan Config
+            // SOTK
             let sotkUrl = c.SOTK || c.Link_SOTK || c.Url_SOTK || c.Foto_SOTK;
-            // Jika tidak ada di config, cari di Galeri (judul mengandung 'SOTK')
             if(!sotkUrl) {
-                const sotkItem = (d.galeri || []).find(g => String(g[1]).toLowerCase().includes('sotk'));
-                if(sotkItem) sotkUrl = sotkItem[2];
+                const item = (d.galeri||[]).find(g => String(g[1]).toLowerCase().includes('sotk'));
+                if(item) sotkUrl = item[2];
             }
-            
-            const sotkContainer = document.getElementById('sotk-container');
-            if(sotkContainer) {
-                if(sotkUrl) {
-                    sotkContainer.innerHTML = `<img src="${sotkUrl}" class="w-full h-auto object-contain shadow-lg rounded-lg" onerror="this.parentElement.innerHTML='<p class=text-red-500>Gagal memuat gambar SOTK</p>'">`;
-                } else {
-                    sotkContainer.innerHTML = `<div class="p-8 text-center text-slate-400"><p>Struktur Organisasi (SOTK) belum diatur.</p><small>Silakan isi URL di Config (key: Link_SOTK) atau upload di Galeri dengan judul 'SOTK'.</small></div>`;
-                }
+            if(document.getElementById('sotk-container')) {
+                document.getElementById('sotk-container').innerHTML = sotkUrl 
+                    ? `<img src="${sotkUrl}" class="w-full h-auto object-contain shadow-lg rounded-lg">` 
+                    : `<div class="p-8 text-center text-slate-400">Gambar SOTK belum diatur di Config / Galeri.</div>`;
             }
 
-            // 4. BANNER SLIDER (MOVING BANNER)
-            // Ambil semua item Galeri bertipe 'Banner'
-            const bannerItems = (d.galeri || []).filter(g => g && g[0] && String(g[0]).toLowerCase() === 'banner');
-            const bannerTrack = document.getElementById('banner-track');
-            
-            if(bannerTrack) {
-                if(bannerItems.length > 0) {
-                    bannerTrack.innerHTML = bannerItems.map(b => `
-                        <div class="shrink-0 snap-center w-[300px] md:w-[400px] h-[180px] md:h-[220px] rounded-xl overflow-hidden shadow-md border border-white/20 relative group">
-                            <img src="${b[2]}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400x200?text=Error+Image'">
-                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-3 pt-8">
-                                <p class="text-white text-sm font-bold truncate">${b[1]}</p>
-                            </div>
-                        </div>
-                    `).join('');
-                } else {
-                    bannerTrack.innerHTML = `<div class="w-full text-center text-white/70 py-4 italic">Belum ada info terbaru.</div>`;
-                }
-            }
-
-            // 5. LINKS (LMS & Social Media)
+            // Links (LMS, Medsos)
             const lmsUrl = c.LMS_Link;
             ['btn-lms', 'lms-mobile-link', 'footer-lms'].forEach(id => {
                 const el = document.getElementById(id);
-                if(el) {
-                    if(lmsUrl && lmsUrl !== '#' && lmsUrl !== '') {
-                        el.href = lmsUrl;
-                        el.classList.remove('hidden');
-                    } else {
-                        el.classList.add('hidden');
-                    }
-                }
+                if(el && lmsUrl && lmsUrl !== '#' && lmsUrl !== '') { el.href = lmsUrl; el.classList.remove('hidden'); }
+                else if(el) el.classList.add('hidden');
             });
-
-            // Social Media
-            const socMed = [
-                { id: 'link-fb', val: c.Facebook },
-                { id: 'link-ig', val: c.Instagram },
-                { id: 'link-yt', val: c.Youtube }
-            ];
-            socMed.forEach(item => {
-                const el = document.getElementById(item.id);
-                if(el) {
-                    if(item.val && item.val !== '#') {
-                        el.href = item.val;
-                        el.classList.remove('hidden');
-                    } else {
-                        el.href = "#";
-                    }
-                }
-            });
-
-            // 6. SPMB Logic
-            const spmbStatus = c.SPMB_Status || 'Tutup';
-            const badge = document.getElementById('spmb-status-badge');
-            const btnReg = document.getElementById('btn-spmb-register');
-            const btnHero = document.getElementById('btn-hero-spmb');
             
-            if(badge) {
-                if(spmbStatus === 'Buka') {
-                    badge.className = "px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-green-500 text-white shadow-sm";
-                    badge.innerText = "✅ PENDAFTARAN DIBUKA";
-                    if(btnReg) {
-                        btnReg.disabled = false;
-                        btnReg.innerText = "Isi Formulir Pendaftaran";
-                        btnReg.classList.remove('opacity-50', 'cursor-not-allowed');
-                    }
-                    if(btnHero) btnHero.href = "#spmb-section";
-                } else {
-                    badge.className = "px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-red-500 text-white shadow-sm";
-                    badge.innerText = "⛔ PENDAFTARAN DITUTUP";
-                    if(btnReg) {
-                        btnReg.disabled = true;
-                        btnReg.innerText = "Pendaftaran Ditutup";
-                        btnReg.classList.add('opacity-50', 'cursor-not-allowed');
-                    }
-                    if(btnHero) btnHero.onclick = (e) => { e.preventDefault(); alert('Maaf, Pendaftaran SPMB Sedang Ditutup.'); };
-                }
-            }
+            const medsos = [['link-fb', c.Facebook], ['link-ig', c.Instagram], ['link-yt', c.Youtube]];
+            medsos.forEach(([id, val]) => {
+                const el = document.getElementById(id);
+                if(el) { el.href = (val && val!=='#') ? val : '#'; if(!val || val==='#') el.classList.add('opacity-50'); }
+            });
 
+            // SPMB
+            if(document.getElementById('spmb-status-badge')) {
+                const isOpen = c.SPMB_Status === 'Buka';
+                document.getElementById('spmb-status-badge').innerText = isOpen ? "✅ PENDAFTARAN DIBUKA" : "⛔ PENDAFTARAN DITUTUP";
+                document.getElementById('spmb-status-badge').className = `px-4 py-1 rounded-full text-xs font-bold uppercase ${isOpen ? 'bg-green-500' : 'bg-red-500'} text-white shadow-sm`;
+                document.getElementById('btn-spmb-register').disabled = !isOpen;
+                if(!isOpen) document.getElementById('btn-spmb-register').classList.add('opacity-50', 'cursor-not-allowed');
+            }
             if(c.NoWaPPDB) {
-                const url = `https://wa.me/${c.NoWaPPDB}`;
-                if(document.getElementById('btn-spmb-wa')) document.getElementById('btn-spmb-wa').href = url;
-                if(document.getElementById('footer-ppdb')) {
-                    document.getElementById('footer-ppdb').href = url;
-                    document.getElementById('footer-ppdb').classList.remove('hidden');
-                }
+                document.getElementById('btn-spmb-wa').href = `https://wa.me/${c.NoWaPPDB}`;
             }
 
-            // 7. Data Siswa
-            let tL=0, tP=0;
+            // Banner Slider (Moving)
+            const banners = (d.galeri || []).filter(g => g && g[0] && String(g[0]).toLowerCase() === 'banner');
+            const track = document.getElementById('banner-track');
+            if(track) {
+                track.innerHTML = banners.length ? banners.map(b => `
+                    <div class="shrink-0 snap-center w-[300px] md:w-[400px] h-[180px] md:h-[220px] rounded-xl overflow-hidden shadow-md border border-white/20 relative group">
+                        <img src="${b[2]}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-3 pt-8">
+                            <p class="text-white text-sm font-bold truncate">${b[1]}</p>
+                        </div>
+                    </div>`).join('') : `<div class="w-full text-center text-white/50 py-4">Belum ada info. Upload di Galeri (Tipe: Banner)</div>`;
+            }
+
+            // Guru Slider & KS Fallback
+            const guruList = (d.guru||[]).filter(g => !String(g[5]).toLowerCase().includes('kepala'));
+            const guruCont = document.getElementById('guru-container');
+            if(guruCont) {
+                guruCont.innerHTML = guruList.map(g => `
+                    <div class="snap-center shrink-0 w-64 bg-white rounded-xl p-4 text-center shadow-sm border border-slate-100 hover:shadow-md transition">
+                        <div class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-3 bg-slate-100">
+                            <img src="${g[7]||'https://via.placeholder.com/150'}" class="w-full h-full object-cover">
+                        </div>
+                        <h5 class="font-bold text-sm text-primary leading-tight mb-1 truncate">${g[3]}</h5>
+                        <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-500 uppercase">${g[5]}</span>
+                    </div>`).join('');
+            }
+
+            // Siswa, Mutasi, Fasilitas, Berita (Looping)
+            // ... (Logic tabel siswa & mutasi)
             const tbody = document.getElementById('siswa-tbody');
-            if(tbody && d.siswa && Array.isArray(d.siswa)) {
-                tbody.innerHTML = '';
-                d.siswa.forEach(s => {
-                    const kelas = s[0];
-                    const l = parseInt(s[1]) || 0;
-                    const p = parseInt(s[2]) || 0;
-                    tL += l;
-                    tP += p;
-                    tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3 text-left font-medium border-b">${kelas}</td><td class="border-b text-blue-600 font-bold">${l}</td><td class="border-b text-pink-500 font-bold">${p}</td><td class="font-bold border-b bg-slate-50">${l+p}</td></tr>`;
+            if(tbody) {
+                let tL=0, tP=0; tbody.innerHTML='';
+                (d.siswa||[]).forEach(s => {
+                    tL += (parseInt(s[1])||0); tP += (parseInt(s[2])||0);
+                    tbody.innerHTML += `<tr><td class="p-2 text-left font-medium">${s[0]}</td><td>${s[1]}</td><td>${s[2]}</td><td class="font-bold">${(parseInt(s[1])||0)+(parseInt(s[2])||0)}</td></tr>`;
                 });
-                
                 if(document.getElementById('total-siswa')) document.getElementById('total-siswa').innerText = tL+tP;
                 if(document.getElementById('total-lk')) document.getElementById('total-lk').innerText = tL;
                 if(document.getElementById('total-pr')) document.getElementById('total-pr').innerText = tP;
-                if(document.getElementById('total-rombel')) document.getElementById('total-rombel').innerText = d.siswa.length;
-
+                if(document.getElementById('total-rombel')) document.getElementById('total-rombel').innerText = (d.siswa||[]).length;
+                
                 const ctx = document.getElementById('genderChart');
-                if(ctx && window.Chart) {
-                    if(window.myChart) window.myChart.destroy();
-                    window.myChart = new Chart(ctx, {
-                        type: 'doughnut', 
-                        data: { 
-                            labels: ['Laki-Laki', 'Perempuan'], 
-                            datasets:[{
-                                data:[tL, tP], 
-                                backgroundColor:['#2563eb','#f43f5e'], 
-                                borderWidth: 0
-                            }] 
-                        },
-                        options: { 
-                            plugins: { legend: { position: 'bottom' } },
-                            maintainAspectRatio: false,
-                            cutout: '70%'
-                        }
-                    });
-                }
+                if(ctx && window.Chart && window.myChart) window.myChart.destroy();
+                if(ctx && window.Chart) window.myChart = new Chart(ctx, { type: 'doughnut', data: { labels:['L','P'], datasets:[{data:[tL,tP], backgroundColor:['#2563eb','#f43f5e']}] }, options: { plugins: { legend: { position: 'bottom' } }, maintainAspectRatio: false } });
             }
 
-            // 8. Mutasi
             const mbody = document.getElementById('mutasi-tbody');
-            if(mbody && d.mutasi && Array.isArray(d.mutasi)) {
+            if(mbody) {
                 mbody.innerHTML = '';
-                d.mutasi.forEach(m => {
-                    mbody.innerHTML += `<tr>
-                        <td class="p-3 border-r font-medium text-left">${m[0]}</td>
-                        <td class="bg-emerald-50 text-emerald-700 font-bold border-b border-r">${m[1]||0}</td>
-                        <td class="bg-emerald-50 text-emerald-700 font-bold border-b border-r">${m[2]||0}</td>
-                        <td class="bg-rose-50 text-rose-700 font-bold border-b border-r">${m[3]||0}</td>
-                        <td class="bg-rose-50 text-rose-700 font-bold border-b">${m[4]||0}</td>
-                    </tr>`;
-                });
+                (d.mutasi||[]).forEach(m => mbody.innerHTML += `<tr><td class="p-2 text-left">${m[0]}</td><td class="bg-green-50">${m[1]}</td><td class="bg-green-50">${m[2]}</td><td class="bg-red-50">${m[3]}</td><td class="bg-red-50">${m[4]}</td></tr>`);
             }
 
-            // 9. Misi List
-            if(c.Misi && document.getElementById('misi-list')) {
-                document.getElementById('misi-list').innerHTML = c.Misi.split('\n').map(m => `<li class="flex items-start gap-2"><i class="fa-solid fa-check-circle text-emerald-400 mt-1 shrink-0"></i><span>${m}</span></li>`).join('');
-            }
-
-            // 10. Guru Slider
-            const gurus = (d.guru || []).filter(g => g && g[5] && !String(g[5]).toLowerCase().includes('kepala'));
-            const guruCont = document.getElementById('guru-container');
-            if(guruCont) {
-                guruCont.innerHTML = gurus.map(g => `
-                    <div class="snap-center shrink-0 w-64 bg-white rounded-xl p-4 text-center shadow-sm border border-slate-100 hover:shadow-md transition">
-                        <div class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-3 bg-slate-100">
-                            <img src="${g[7] || 'https://via.placeholder.com/150?text=Guru'}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/150?text=No+Img'">
-                        </div>
-                        <h5 class="font-bold text-sm text-primary leading-tight mb-1 truncate">${g[3] || 'Nama Guru'}</h5>
-                        <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-500 uppercase">${g[5] || 'Guru'}</span>
-                    </div>
-                `).join('');
-            }
-
-            // 11. Fasilitas & Berita
             const fasGrid = document.getElementById('fasilitas-grid');
-            if(fasGrid) {
-                fasGrid.innerHTML = (d.fasilitas || []).map(f => `
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-blue-50 text-accent flex items-center justify-center shrink-0">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <div class="text-left">
-                            <h5 class="font-bold text-sm">${f[1]}</h5>
-                            <p class="text-xs text-slate-400 uppercase">${f[0]}</p>
-                        </div>
-                    </div>
-                `).join('');
-            }
+            if(fasGrid) fasGrid.innerHTML = (d.fasilitas||[]).map(f => `<div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-blue-50 text-accent flex items-center justify-center shrink-0"><i class="fa-solid fa-check"></i></div><div class="text-left"><h5 class="font-bold text-sm">${f[1]}</h5><p class="text-xs text-slate-400 uppercase">${f[0]}</p></div></div>`).join('');
 
             const beritaList = document.getElementById('berita-list');
-            if(beritaList) {
-                beritaList.innerHTML = (d.berita || []).map(b => `
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-                        <span class="text-xs text-accent font-bold">${b[1] || 'Info'}</span>
-                        <h4 class="font-bold text-lg mt-1 mb-2">${b[0]}</h4>
-                        <p class="text-sm text-slate-500">${b[2]}</p>
-                    </div>
-                `).join('');
-            }
+            if(beritaList) beritaList.innerHTML = (d.berita||[]).map(b => `<div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100"><span class="text-xs text-accent font-bold">${b[1]}</span><h4 class="font-bold text-lg mt-1 mb-2">${b[0]}</h4><p class="text-sm text-slate-500 line-clamp-3">${b[2]}</p></div>`).join('');
+            
+            // Misi List
+            if(c.Misi && document.getElementById('misi-list')) document.getElementById('misi-list').innerHTML = c.Misi.split('\n').map(m => `<li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>${m}</li>`).join('');
         }
 
-        // --- SCROLL LOGIC ---
-        function scrollGuru(direction) {
-            const container = document.getElementById('guru-container');
-            const scrollAmount = 300;
-            if (direction === 'left') {
-                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            } else {
-                container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            }
-        }
-
-        function scrollBanner(direction) {
-            const container = document.getElementById('banner-track');
-            const scrollAmount = 350;
-            if (direction === 'left') {
-                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            } else {
-                container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            }
-        }
-
-        // Auto Scroll Banner
-        let bannerInterval;
+        // --- SCROLL UTILS ---
+        function scrollGuru(dir) { document.getElementById('guru-container').scrollBy({ left: dir==='left'?-300:300, behavior:'smooth' }); }
+        function scrollBanner(dir) { document.getElementById('banner-track').scrollBy({ left: dir==='left'?-350:350, behavior:'smooth' }); }
         function startBannerScroll() {
-            if(bannerInterval) clearInterval(bannerInterval);
-            const container = document.getElementById('banner-track');
-            bannerInterval = setInterval(() => {
-                if(!container) return;
-                // Jika sudah mentok kanan, balik ke kiri
-                if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
-                    container.scrollTo({ left: 0, behavior: 'smooth' });
-                } else {
-                    container.scrollBy({ left: 320, behavior: 'smooth' });
-                }
-            }, 4000); // 4 Detik sekali geser
+            setInterval(() => {
+                const c = document.getElementById('banner-track');
+                if(!c) return;
+                if(c.scrollLeft + c.clientWidth >= c.scrollWidth - 10) c.scrollTo({left:0, behavior:'smooth'});
+                else c.scrollBy({left:320, behavior:'smooth'});
+            }, 4000);
         }
 
-        // --- CRUD / ADMIN / LOGIN (Simpel) ---
+        // --- ADMIN SYSTEM (FULL CRUD) ---
+        function checkSession() {
+            const sess = localStorage.getItem('admin_session');
+            if (sess) {
+                const data = JSON.parse(sess);
+                if (new Date().getTime() - data.time > 3600000) logout(); // 1 Jam
+                else enableAdminMode();
+            }
+        }
+        function enableAdminMode() { isAdmin = true; document.body.classList.add('admin-mode'); document.getElementById('btn-login').innerHTML='<i class=\"fa-solid fa-right-from-bracket text-red-500\"></i>'; document.getElementById('btn-login').onclick=logout; }
         async function doLogin(e) {
             e.preventDefault();
-            const u = e.target.user.value.trim();
-            const p = e.target.pass.value.trim();
-            const btn = e.target.querySelector('button');
-            btn.innerHTML = "Memeriksa...";
-            
+            const btn = e.target.querySelector('button'); btn.innerHTML = "Memeriksa...";
             try {
-                // Coba Login API
-                const res = await fetch(`${API_URL}?action=login&user=${u}&pass=${p}`);
+                const res = await fetch(`${API_URL}?action=login&user=${e.target.user.value}&pass=${e.target.pass.value}`);
                 const json = await res.json();
-                if(json.status === 'success') {
-                    enableAdminMode();
-                    closeModal();
-                } else {
-                    alert("Password Salah!");
-                }
-            } catch(e) {
-                // Fallback login untuk offline mode
-                if(u === 'admin' && p === 'admin123') {
-                    alert("Login Mode Offline");
-                    enableAdminMode();
-                    closeModal();
-                } else {
-                    alert("Gagal login: " + e.message);
-                }
-            } finally {
-                btn.innerHTML = "Masuk";
-            }
+                if(json.status === 'success' || (e.target.user.value==='admin' && e.target.pass.value==='admin123')) {
+                    localStorage.setItem('admin_session', JSON.stringify({ status:true, time:new Date().getTime() }));
+                    location.reload();
+                } else alert("Password Salah!");
+            } catch(err) { alert("Login Error (Cek Koneksi): " + err); } 
+            finally { btn.innerHTML = "Masuk"; }
         }
-
-        function enableAdminMode() {
-            isAdmin = true;
-            document.body.classList.add('admin-mode');
-            const btn = document.getElementById('btn-login');
-            btn.innerHTML = '<i class="fa-solid fa-right-from-bracket text-red-500"></i>';
-            btn.onclick = logout;
-        }
-
-        function logout() {
-            if(confirm("Logout?")) location.reload();
-        }
-        
+        function logout() { if(confirm("Logout?")) { localStorage.removeItem('admin_session'); location.reload(); } }
+        function handleLoginButton() { if(isAdmin) logout(); else document.getElementById('modal-login').classList.remove('hidden'); }
         function closeModal() { document.getElementById('modal-admin').classList.add('hidden'); document.getElementById('modal-login').classList.add('hidden'); }
-        function handleLoginButton() {
-            if(isAdmin) logout();
-            else document.getElementById('modal-login').classList.remove('hidden');
-        }
-        function openAdminModal(tab) {
-             document.getElementById('modal-admin').classList.remove('hidden');
-             switchTab(tab);
-        }
+        function openAdminModal(tab) { document.getElementById('modal-admin').classList.remove('hidden'); switchTab(tab); }
+
         function switchTab(t) {
             document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden'));
-            const target = document.getElementById(`tab-${t}`);
-            if(target) target.classList.remove('hidden');
+            document.getElementById(`tab-${t}`).classList.remove('hidden');
+            renderAdminList(t);
         }
 
-        // --- FUNGSI KIRIM DATA ---
-        async function sendData(payload) {
-             try {
-                const res = await fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-                alert("Perubahan dikirim ke server! Refresh untuk melihat hasil (jika online).");
-            } catch(e) {
-                alert("Gagal terhubung ke server. Perubahan tidak tersimpan permanen.");
+        // RENDER ADMIN LISTS & FORMS
+        function renderAdminList(type) {
+            const c = rawData.config || {};
+            
+            if(type === 'config') {
+                // Populate Config Form
+                document.getElementById('adm-nama').value = c.NamaSekolah||'';
+                document.getElementById('adm-running').value = c.RunningText||'';
+                document.getElementById('adm-lms').value = c.LMS_Link||'';
+                document.getElementById('adm-wa').value = c.NoWaPPDB||'';
+                document.getElementById('adm-spmb-status').value = c.SPMB_Status||'Tutup';
+                document.getElementById('adm-fb').value = c.Facebook||'';
+                document.getElementById('adm-ig').value = c.Instagram||'';
+                document.getElementById('adm-yt').value = c.Youtube||'';
+                document.getElementById('adm-ks-nama').value = c.KepalaSekolah||'';
+                document.getElementById('adm-ks-nip').value = c.NIP_KS||'';
+                document.getElementById('adm-ks-sambutan').value = c.SambutanKS||'';
+                document.getElementById('adm-banner-utama').value = c.Main_Banner||'';
+                document.getElementById('adm-link-sotk').value = c.Link_SOTK||'';
+            }
+            else if(type === 'guru') {
+                document.getElementById('adm-list-guru').innerHTML = (rawData.guru||[]).map(g => `
+                    <div class="flex justify-between items-center p-3 bg-white border rounded shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <img src="${g[7]||'https://via.placeholder.com/40'}" class="w-10 h-10 rounded-full object-cover bg-slate-200">
+                            <div><div class="font-bold text-sm">${g[3]}</div><div class="text-xs text-slate-500">${g[5]}</div></div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="prepareEdit('guru', '${g[0]}')" class="text-blue-500 text-xs border border-blue-200 px-2 py-1 rounded hover:bg-blue-50">Edit</button>
+                            <button onclick="deleteItem('Guru', '${g[0]}')" class="text-red-500 text-xs border border-red-200 px-2 py-1 rounded hover:bg-red-50">Hapus</button>
+                        </div>
+                    </div>`).join('');
+            }
+            else if(type === 'berita') {
+                document.getElementById('adm-list-berita').innerHTML = (rawData.berita||[]).map(b => `
+                    <div class="p-3 bg-white border rounded shadow-sm mb-2">
+                        <div class="flex justify-between">
+                            <h5 class="font-bold text-sm">${b[0]}</h5>
+                            <button onclick="deleteItem('Berita', '${b[0]}')" class="text-red-500 text-xs">Hapus</button>
+                        </div>
+                        <p class="text-xs text-slate-500 truncate">${b[2]}</p>
+                    </div>`).join('');
+            }
+            else if(type === 'galeri') {
+                document.getElementById('adm-list-galeri').innerHTML = (rawData.galeri||[]).map(g => `
+                    <div class="relative group border rounded overflow-hidden h-32">
+                        <img src="${g[2]}" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 bg-black/60 text-white text-[10px] w-full p-1">
+                            <span class="bg-accent px-1 rounded">${g[0]}</span> ${g[1]}
+                        </div>
+                        <button onclick="deleteItem('Galeri', '${g[1]}')" class="absolute top-1 right-1 bg-red-600 text-white w-6 h-6 rounded-full text-xs flex items-center justify-center shadow">x</button>
+                    </div>`).join('');
+            }
+            else if(type === 'fasilitas') {
+                document.getElementById('adm-list-fasilitas').innerHTML = (rawData.fasilitas||[]).map(f => `
+                    <div class="flex justify-between p-2 border-b">
+                        <div><b>${f[1]}</b> <small>(${f[0]})</small></div>
+                        <button onclick="deleteItem('Fasilitas', '${f[1]}')" class="text-red-500 text-xs">Hapus</button>
+                    </div>`).join('');
+            }
+            else if(type === 'siswa') {
+                document.getElementById('adm-list-siswa').innerHTML = (rawData.siswa||[]).map((s,i) => `
+                    <tr><td class="p-2 font-bold">${s[0]}</td>
+                    <td><input type="number" value="${s[1]}" class="w-16 border text-center p-1" onchange="rawData.siswa[${i}][1]=this.value"></td>
+                    <td><input type="number" value="${s[2]}" class="w-16 border text-center p-1" onchange="rawData.siswa[${i}][2]=this.value"></td></tr>`).join('');
+            }
+            else if(type === 'mutasi') {
+                document.getElementById('adm-list-mutasi').innerHTML = (rawData.mutasi||[]).map((m,i) => `
+                    <tr><td class="p-2 font-bold">${m[0]}</td>
+                    <td><input value="${m[1]}" class="w-10 border text-center" onchange="rawData.mutasi[${i}][1]=this.value"></td>
+                    <td><input value="${m[2]}" class="w-10 border text-center" onchange="rawData.mutasi[${i}][2]=this.value"></td>
+                    <td><input value="${m[3]}" class="w-10 border text-center" onchange="rawData.mutasi[${i}][3]=this.value"></td>
+                    <td><input value="${m[4]}" class="w-10 border text-center" onchange="rawData.mutasi[${i}][4]=this.value"></td></tr>`).join('');
             }
         }
-        
-        function addItem(type) {
+
+        // PREPARE EDIT (Populate Forms)
+        function prepareEdit(type, id) {
+            document.getElementById(`editor-${type}`).classList.remove('hidden');
+            
             if(type === 'guru') {
-                const nama = prompt("Nama Guru:");
-                if(!nama) return;
-                const jabatan = prompt("Jabatan (Contoh: Guru Kelas 1A, Kepala Sekolah):");
-                const foto = prompt("URL Foto (Link Gambar):") || "";
-                
-                // Susunan Data Sesuai Backend (8 Kolom): ID, User, Pass, Nama, NIP, Mapel, Email, Foto
-                const newId = Date.now().toString();
-                const dataArr = [newId, "user", "pass", nama, "", jabatan, "", foto];
-                
-                sendData({ action: 'saveGeneral', sheet: 'Guru', data: dataArr });
+                const g = id ? rawData.guru.find(x => x[0] == id) : null;
+                document.getElementById('edit-guru-id').value = id || Date.now(); // ID baru jika null
+                document.getElementById('edit-guru-nama').value = g ? g[3] : '';
+                document.getElementById('edit-guru-nip').value = g ? g[4] : '';
+                document.getElementById('edit-guru-jabatan').value = g ? g[5] : '';
+                document.getElementById('edit-guru-foto').value = g ? g[7] : '';
+            } 
+            else if(type === 'galeri') {
+                document.getElementById('edit-galeri-judul').value = '';
+                document.getElementById('edit-galeri-link').value = '';
+            }
+            // Logic serupa bisa ditambah untuk Berita/Fasilitas jika ingin full edit, 
+            // saat ini Add New cukup untuk tipe list sederhana.
+        }
 
-            } else if(type === 'berita') {
-                const judul = prompt("Judul Berita:");
-                if(!judul) return;
-                const isi = prompt("Isi Singkat:");
-                const tgl = new Date().toLocaleString();
-                
-                const dataArr = [judul, tgl, isi, ""];
-                sendData({ action: 'saveGeneral', sheet: 'Berita', data: dataArr });
+        // SAVE ITEMS
+        async function saveItem(type) {
+            let dataArr;
+            let sheetName;
+            let id = null;
 
-            } else if(type === 'galeri') {
-                let tipe = prompt("Tipe Upload (Ketik: Banner / Foto):", "Foto");
-                if(!tipe) return;
-                if(tipe.toLowerCase() === 'banner') tipe = 'Banner';
-                
-                const judul = prompt("Judul/Keterangan:");
-                const link = prompt("Link URL Gambar:");
-                
-                if(tipe && judul && link) {
-                    const dataArr = [tipe, judul, link];
-                    sendData({ action: 'saveGeneral', sheet: 'Galeri', data: dataArr });
-                }
-            } else if(type === 'fasilitas') {
-                const nama = prompt("Nama Fasilitas:");
-                const kategori = prompt("Kategori (Sapras/Ekstrakulikuler):", "Sapras");
-                if(nama) {
-                    const dataArr = [kategori, nama, "", ""];
-                    sendData({ action: 'saveGeneral', sheet: 'Fasilitas', data: dataArr });
-                }
+            if(type === 'guru') {
+                id = document.getElementById('edit-guru-id').value;
+                const nama = document.getElementById('edit-guru-nama').value;
+                const jabatan = document.getElementById('edit-guru-jabatan').value;
+                const foto = document.getElementById('edit-guru-foto').value;
+                const nip = document.getElementById('edit-guru-nip').value;
+                if(!nama) return alert("Nama wajib diisi!");
+                dataArr = [id, "user", "pass", nama, nip, jabatan, "", foto];
+                sheetName = 'Guru';
+            }
+            else if(type === 'berita') {
+                const judul = document.getElementById('edit-berita-judul').value;
+                const tgl = document.getElementById('edit-berita-tgl').value || new Date().toLocaleDateString();
+                const isi = document.getElementById('edit-berita-isi').value;
+                if(!judul) return alert("Judul wajib diisi!");
+                dataArr = [judul, tgl, isi, ""];
+                sheetName = 'Berita';
+            }
+            else if(type === 'galeri') {
+                const tipe = document.getElementById('edit-galeri-tipe').value;
+                const judul = document.getElementById('edit-galeri-judul').value;
+                const link = document.getElementById('edit-galeri-link').value;
+                if(!link) return alert("Link gambar wajib diisi!");
+                dataArr = [tipe, judul, link];
+                sheetName = 'Galeri';
+            }
+            else if(type === 'fasilitas') {
+                const kat = document.getElementById('edit-fasilitas-kategori').value;
+                const nama = document.getElementById('edit-fasilitas-nama').value;
+                if(!nama) return alert("Nama wajib diisi!");
+                dataArr = [kat, nama, "", ""];
+                sheetName = 'Fasilitas';
+            }
+
+            await sendData({ action: 'saveGeneral', sheet: sheetName, id: id, data: dataArr });
+        }
+
+        async function saveData(e, type) {
+            e.preventDefault();
+            if(type === 'config') {
+                const newData = {
+                    NamaSekolah: document.getElementById('adm-nama').value,
+                    RunningText: document.getElementById('adm-running').value,
+                    LMS_Link: document.getElementById('adm-lms').value,
+                    NoWaPPDB: document.getElementById('adm-wa').value,
+                    SPMB_Status: document.getElementById('adm-spmb-status').value,
+                    Facebook: document.getElementById('adm-fb').value,
+                    Instagram: document.getElementById('adm-ig').value,
+                    Youtube: document.getElementById('adm-yt').value,
+                    KepalaSekolah: document.getElementById('adm-ks-nama').value,
+                    NIP_KS: document.getElementById('adm-ks-nip').value,
+                    SambutanKS: document.getElementById('adm-ks-sambutan').value,
+                    Main_Banner: document.getElementById('adm-banner-utama').value,
+                    Link_SOTK: document.getElementById('adm-link-sotk').value
+                };
+                await sendData({ action: 'saveConfig', data: newData });
             }
         }
 
-        function deleteItem(sheetName, id) {
-            if(!confirm("Yakin ingin menghapus item ini dari database?")) return;
-            sendData({ action: 'deleteGeneral', sheet: sheetName, id: id });
+        async function saveBulk(type) {
+            const sheet = type==='siswa' ? 'Siswa' : 'Mutasi';
+            const action = type==='siswa' ? 'saveGeneral' : 'saveMutasi'; // Siswa butuh loop di backend yang lebih canggih, 
+            // TAPI demi simplicity & robustness: kita gunakan 'saveMutasi' style (bulk replace) untuk Mutasi, 
+            // dan untuk siswa kita loop saveGeneral (sedikit lambat tapi aman) atau request fitur backend baru.
+            // *Solusi Cepat:* Gunakan endpoint 'saveMutasi' juga untuk Siswa jika kolom cocok? Tidak cocok.
+            // Kita loop fetch untuk siswa (paling aman tanpa ubah backend).
+            
+            if(type === 'siswa') {
+                alert("Menyimpan data siswa... Mohon tunggu.");
+                for(let row of rawData.siswa) {
+                    await fetch(API_URL, {method:'POST', body:JSON.stringify({action:'saveGeneral', sheet:'Siswa', id:row[0], data:row})});
+                }
+                alert("Data Siswa Tersimpan!");
+                location.reload();
+            } else {
+                await sendData({ action: 'saveMutasi', data: rawData.mutasi });
+            }
+        }
+
+        function deleteItem(sheet, id) {
+            if(confirm("Yakin hapus?")) sendData({ action: 'deleteGeneral', sheet: sheet, id: id });
+        }
+
+        async function sendData(payload) {
+            try {
+                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const json = await res.json();
+                if(json.status === 'success') { alert("Berhasil!"); location.reload(); }
+                else alert("Gagal: " + json.message);
+            } catch(e) { alert("Error Koneksi: " + e); }
+        }
+
+        async function kirimSPMB(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button'); btn.innerText = "Mengirim...";
+            await sendData({ action: 'submitSPMB', data: { nama: e.target.nama.value, nik: e.target.nik.value, hp: e.target.hp.value } });
         }
 
         function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
