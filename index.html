@@ -92,7 +92,7 @@
                     </div>
                     <a href="#fasilitas" class="nav-item text-sm font-semibold text-slate-600 hover:text-accent transition">Fasilitas</a>
                     
-                    <a href="#" id="btn-lms" target="_blank" class="px-4 py-2 bg-orange-500 text-white text-sm font-bold rounded-lg hover:bg-orange-600 transition shadow-lg shadow-orange-500/20 flex items-center gap-2 hidden">
+                    <a href="#" id="btn-lms" target="_blank" class="px-4 py-2 bg-orange-500 text-white text-sm font-bold rounded-lg hover:bg-orange-600 transition shadow-lg shadow-orange-500/20 flex items-center gap-2">
                         <i class="fa-solid fa-laptop-code"></i> LMS
                     </a>
 
@@ -111,7 +111,7 @@
             <a href="#guru" class="block font-medium text-slate-600 p-2 hover:bg-slate-50 rounded">Data Guru</a>
             <a href="#data-siswa" class="block font-medium text-slate-600 p-2 hover:bg-slate-50 rounded">Data Siswa</a>
             <a href="#sotk" class="block font-medium text-slate-600 p-2 hover:bg-slate-50 rounded">SOTK</a>
-            <a href="#" id="lms-mobile-link" target="_blank" class="block font-bold text-orange-500 p-2 bg-orange-50 rounded text-center mt-4 border border-orange-200 hidden">Akses LMS</a>
+            <a href="#" id="lms-mobile-link" target="_blank" class="block font-bold text-orange-500 p-2 bg-orange-50 rounded text-center mt-4 border border-orange-200">Akses LMS</a>
             <button onclick="handleLoginButton()" id="btn-login-mobile" class="w-full text-center font-bold text-slate-500 p-2 border border-slate-200 rounded mt-2">Login Admin</button>
         </div>
     </nav>
@@ -122,7 +122,6 @@
         <p class="text-slate-500 font-medium animate-pulse">Menyiapkan Data Sekolah...</p>
     </div>
     
-    <!-- SAFETY SCRIPT: Paksa Hapus Loading setelah 3 detik jika macet -->
     <script>setTimeout(()=>{const l=document.getElementById('loading');if(l)l.remove()},3000);</script>
 
     <main class="pt-20">
@@ -161,6 +160,7 @@
                     <div class="md:w-1/3 relative text-center md:text-left group editable" onclick="if(isAdmin) openAdminModal('guru')">
                         <div class="absolute inset-0 bg-accent/10 rounded-3xl rotate-6 transform hidden md:block"></div>
                         <img id="ks-foto" src="" class="relative rounded-3xl shadow-2xl w-full max-w-xs mx-auto md:max-w-full object-cover h-[450px] border-4 border-white bg-slate-200">
+                        <div class="edit-overlay rounded-3xl"><i class="fa-solid fa-pen mr-2"></i> Ganti Foto KS</div>
                     </div>
                     <div class="md:w-2/3 editable" onclick="if(isAdmin) openAdminModal('config')">
                         <span class="text-accent font-bold tracking-wider uppercase text-sm mb-2 block">Sambutan Kepala Sekolah</span>
@@ -170,6 +170,7 @@
                         </div>
                         <h4 id="ks-nama" class="font-bold text-lg text-primary">-</h4>
                         <p class="text-slate-500">NIP. <span id="ks-nip">-</span></p>
+                        <div class="edit-overlay"><i class="fa-solid fa-pen mr-2"></i> Edit Sambutan</div>
                     </div>
                 </div>
             </div>
@@ -344,6 +345,7 @@
 
         <!-- FOOTER -->
         <footer class="bg-primary text-white pt-16 pb-8 border-t-4 border-accent relative editable" onclick="if(isAdmin) openAdminModal('config')">
+            <div class="edit-overlay"><i class="fa-solid fa-pen mr-2"></i> Edit Kontak & Sosmed</div>
             <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
                 <div>
                     <h3 class="font-bold text-xl mb-4" id="footer-nama">SDN 4 Taman</h3>
@@ -475,6 +477,7 @@
                      <!-- Fasilitas Tab -->
                     <div id="tab-fasilitas" class="tab-content hidden">
                         <h4 class="font-bold mb-4">Fasilitas</h4>
+                        <button onclick="addItem('fasilitas')" class="bg-accent text-white px-3 py-1 rounded text-xs mb-4">+ Tambah</button>
                         <div id="adm-list-fasilitas" class="space-y-2"></div>
                     </div>
 
@@ -513,6 +516,7 @@
 
     <script>
         // --- 1. DATA DATABASE ASLI (PARSED FROM YOUR CSV) ---
+        // Note: Saya menggunakan fungsi parseCSV sederhana untuk menangani koma dalam tanda kutip.
         
         const CSV_CONFIG = `Key,Value
 NamaSekolah,SD Negeri 04 Taman
@@ -526,6 +530,10 @@ GoogleMapsEmbed,https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.92173
 NoWaPPDB,62895357305031
 SPMB_Status,Buka
 SPMB_Info,Pendaftaran dibuka
+LMS_Link,https://e-learning-sd.vercel.app/
+Facebook,https://www.facebook.com/share/17rZf7Yykn/
+Instagram,https://instagram.com
+Youtube,https://youtube.com
 Visi,"Terwujudnya Peserta Didik yang Bertaqwa, Cerdas, Unggul dalam presasi dan Berdaya Guna serta berwawasan Lingkungan."
 Misi,"1. Melaksanakan pembelajaran aktif, inovatif, kreatif, efektif dan menyenangkan.
 2. Mengembangkan bakat dan minat siswa.
@@ -542,7 +550,8 @@ SambutanKS,"Pendidikan adalah senjata paling ampuh untuk mengubah dunia. Mari be
 7,gurukls3b,12345@,"Yenining Tiyas, S.Pd.",,Guru Kelas 3B,Yeni@sekolah.sch.id,https://i.postimg.cc/sxs6XpFB/6-YENINING-TIYAS-S-Pd.jpg
 8,gurukls4a,12345@,"Nuryasih, S.Pd.",,Guru Kelas 4A,Asih@sekolah.sch.id,https://i.postimg.cc/q7N9VX0V/2-NURYASIH-S-Pd.png
 9,gurukls4b,12345@,"Bayu Prahastian, S.Pd.",199601212025211014,Guru Kelas 4B,bayu@sekolah.sch.id,https://i.postimg.cc/XYRgqwdv/12-BAYU-PRAHASTIAN-S-Pd.jpg
-10,gurukls5a,12345@,"Idhi Agung Mulyawan, S.Pd.",,Guru Kelas 5A,idhi@sekolah.sch.id,https://i.postimg.cc/zfHPPzSJ/5-IDHI-AGUNG-MULYAWAN-S-Pd.jpg`;
+10,gurukls5a,12345@,"Idhi Agung Mulyawan, S.Pd.",,Guru Kelas 5A,idhi@sekolah.sch.id,https://i.postimg.cc/zfHPPzSJ/5-IDHI-AGUNG-MULYAWAN-S-Pd.jpg
+11,gurukls5b,12345@,"Tuti Alawiyah, S.Pd.",,Guru Kelas 5B,tuti@sekolah.sch.id,https://via.placeholder.com/150`;
 
         const CSV_SISWA = `Kelas,L,P
 Kelas 1 A,15,13
@@ -648,7 +657,11 @@ Jadwal Pelajaran,,Akademik`;
         window.addEventListener('load', () => {
             checkSession();
             renderAll(rawData);
-            setTimeout(() => document.getElementById('loading').remove(), 800);
+            // SAFETY REMOVE LOADING (IN CASE OF ERROR)
+            setTimeout(() => {
+                const l = document.getElementById('loading');
+                if(l) l.remove();
+            }, 800);
         });
 
         // --- RENDER LOGIC ---
@@ -726,17 +739,18 @@ Jadwal Pelajaran,,Akademik`;
             }
 
             // Guru & KS
-            // Logic: Cari yang jabatannya mengandung "Kepala Sekolah"
             const ks = d.guru.find(g => g[5] && g[5].toLowerCase().includes('kepala')) || d.guru[0];
             if(ks) {
-                document.getElementById('ks-nama').innerText = ks[3]; // Nama (Index 3 di CSV)
+                document.getElementById('ks-nama').innerText = ks[3];
                 document.getElementById('ks-nip').innerText = ks[4] || '-';
                 document.getElementById('ks-foto').src = ks[7] || 'https://via.placeholder.com/300';
             }
             document.getElementById('ks-sambutan').innerText = `"${c.SambutanKS}"`;
 
-            // Grid Guru
-            document.getElementById('guru-grid').innerHTML = d.guru.map(g => `
+            // Grid Guru (Exclude KS & Limit 10)
+            const gurus = d.guru.filter(g => !g[5].toLowerCase().includes('kepala'));
+            const displayGurus = gurus.slice(0, 10);
+            document.getElementById('guru-grid').innerHTML = displayGurus.map(g => `
                 <div class="bg-white rounded-xl p-4 text-center shadow-sm border border-slate-100 hover:shadow-md transition">
                     <div class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-3 bg-slate-100">
                         <img src="${g[7]||'https://via.placeholder.com/150'}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/150'">
@@ -882,9 +896,10 @@ Jadwal Pelajaran,,Akademik`;
                 document.getElementById('adm-wa').value = rawData.config.NoWaPPDB;
                 document.getElementById('adm-spmb-status').value = rawData.config.SPMB_Status;
                 document.getElementById('adm-fb').value = rawData.config.Facebook || '';
+                document.getElementById('adm-ig').value = rawData.config.Instagram || '';
+                document.getElementById('adm-yt').value = rawData.config.Youtube || '';
             }
             if(t==='mutasi') {
-                // RENDER INPUT MUTASI YANG BISA DIKETIK
                 document.getElementById('adm-list-mutasi').innerHTML = rawData.mutasi.map((m, i) => `
                     <tr>
                         <td class="p-2 font-bold bg-slate-50">${m[0]}</td>
@@ -896,18 +911,23 @@ Jadwal Pelajaran,,Akademik`;
                 `).join('');
             }
             if(t==='guru') {
-                document.getElementById('adm-list-guru').innerHTML = rawData.guru.map(g => `<div class="border-b pb-2 mb-2 flex justify-between"><div><b>${g[3]}</b><br><small>${g[5]}</small></div><button class="text-red-500 text-xs">Hapus</button></div>`).join('');
+                document.getElementById('adm-list-guru').innerHTML = rawData.guru.map(g => `<div class="border-b pb-2 mb-2 flex justify-between"><div><b>${g[3]}</b><br><small>${g[5]}</small></div><button class="text-red-500 text-xs" onclick="deleteItem('guru', '${g[3]}')">Hapus</button></div>`).join('');
+            }
+            if(t==='berita') {
+                document.getElementById('adm-list-berita').innerHTML = rawData.berita.map(b => `<div class="border-b pb-2 mb-2 flex justify-between"><div><b>${b[0]}</b><br><small>${b[1]}</small></div><button class="text-red-500 text-xs" onclick="deleteItem('berita', '${b[0]}')">Hapus</button></div>`).join('');
             }
             if(t==='galeri') {
-                document.getElementById('adm-list-galeri').innerHTML = rawData.galeri.map(g => `<div class="relative group border rounded h-20 overflow-hidden"><img src="${g[2]}" class="w-full h-full object-cover"><div class="absolute bottom-0 bg-black/50 text-white text-[10px] w-full p-1">${g[0]}</div></div>`).join('');
+                document.getElementById('adm-list-galeri').innerHTML = rawData.galeri.map(g => `<div class="relative group border rounded h-20 overflow-hidden"><img src="${g[2]}" class="w-full h-full object-cover"><div class="absolute bottom-0 bg-black/50 text-white text-[10px] w-full p-1 truncate">${g[1]}</div><button class="absolute top-1 right-1 bg-red-600 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition" onclick="deleteItem('galeri', '${g[1]}')">x</button></div>`).join('');
+            }
+            if(t==='fasilitas') {
+                document.getElementById('adm-list-fasilitas').innerHTML = rawData.fasilitas.map(f => `<div class="border-b pb-2 mb-2 flex justify-between"><div><b>${f[1]}</b><br><small>${f[0]}</small></div><button class="text-red-500 text-xs" onclick="deleteItem('fasilitas', '${f[1]}')">Hapus</button></div>`).join('');
             }
         }
 
-        // --- UPDATE DATA HELPERS ---
+        // --- CRUD ACTIONS ---
         function updateMutasi(rowIndex, colIndex, val) {
             rawData.mutasi[rowIndex][colIndex] = val;
-            console.log("Mutasi updated:", rawData.mutasi);
-            renderAll(rawData); // Update frontend real-time
+            renderAll(rawData); 
         }
 
         function saveData(e, type) {
@@ -918,10 +938,75 @@ Jadwal Pelajaran,,Akademik`;
                 rawData.config.LMS_Link = document.getElementById('adm-lms').value;
                 rawData.config.NoWaPPDB = document.getElementById('adm-wa').value;
                 rawData.config.SPMB_Status = document.getElementById('adm-spmb-status').value;
+                rawData.config.Facebook = document.getElementById('adm-fb').value;
+                rawData.config.Instagram = document.getElementById('adm-ig').value;
+                rawData.config.Youtube = document.getElementById('adm-yt').value;
                 alert("Konfigurasi Disimpan!");
                 renderAll(rawData);
                 closeModal();
             }
+        }
+
+        function addItem(type) {
+            if(type === 'guru') {
+                const nama = prompt("Nama Guru:");
+                const jabatan = prompt("Jabatan:");
+                const foto = prompt("URL Foto (Kosongkan jika tidak ada):") || "";
+                if(nama && jabatan) {
+                    // ID, User, Pass, Nama, NIP, Mapel, Email, Foto
+                    rawData.guru.push([Date.now(), "user", "pass", nama, "", jabatan, "", foto]);
+                    alert("Guru Ditambahkan!");
+                    switchTab('guru'); // Refresh list
+                    renderAll(rawData);
+                }
+            } else if(type === 'berita') {
+                const judul = prompt("Judul Berita:");
+                const isi = prompt("Isi Singkat:");
+                if(judul && isi) {
+                    rawData.berita.unshift([judul, new Date().toLocaleString(), isi, ""]);
+                    alert("Berita Ditambahkan!");
+                    switchTab('berita');
+                    renderAll(rawData);
+                }
+            } else if(type === 'galeri') {
+                const tipe = prompt("Tipe (Banner/Foto/Video/SOTK):", "Foto");
+                const judul = prompt("Judul/Keterangan:");
+                const link = prompt("Link URL Gambar:");
+                if(tipe && judul && link) {
+                    rawData.galeri.push([tipe, judul, link]);
+                    alert("Galeri Ditambahkan!");
+                    switchTab('galeri');
+                    renderAll(rawData);
+                }
+            } else if(type === 'fasilitas') {
+                const nama = prompt("Nama Fasilitas:");
+                const kategori = prompt("Kategori (Sapras/Ekstrakulikuler):", "Sapras");
+                if(nama) {
+                    rawData.fasilitas.push([kategori, nama, "", ""]);
+                    alert("Fasilitas Ditambahkan!");
+                    switchTab('fasilitas');
+                    renderAll(rawData);
+                }
+            }
+        }
+
+        function deleteItem(type, key) {
+            if(!confirm("Yakin ingin menghapus?")) return;
+            
+            if(type === 'guru') {
+                rawData.guru = rawData.guru.filter(g => g[3] !== key);
+                switchTab('guru');
+            } else if(type === 'berita') {
+                rawData.berita = rawData.berita.filter(b => b[0] !== key);
+                switchTab('berita');
+            } else if(type === 'galeri') {
+                rawData.galeri = rawData.galeri.filter(g => g[1] !== key);
+                switchTab('galeri');
+            } else if(type === 'fasilitas') {
+                rawData.fasilitas = rawData.fasilitas.filter(f => f[1] !== key);
+                switchTab('fasilitas');
+            }
+            renderAll(rawData);
         }
 
         async function kirimSPMB(e) {
