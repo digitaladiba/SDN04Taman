@@ -56,6 +56,12 @@
             color: white; font-weight: bold; font-size: 1.2rem; cursor: pointer; z-index: 20; border-radius: inherit;
         }
         body.admin-mode .editable:hover::after { display: flex; }
+
+        /* Guru Slider Scrollbar */
+        .guru-scroll::-webkit-scrollbar { height: 8px; }
+        .guru-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .guru-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .guru-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans selection:bg-accent selection:text-white">
@@ -79,7 +85,7 @@
                         <div class="absolute top-full left-0 w-56 bg-white border border-slate-100 shadow-xl rounded-xl p-2 hidden group-hover:block animate-fade-in z-50">
                             <a href="#sambutan" class="block px-4 py-2 text-sm hover:bg-slate-50 rounded font-medium text-slate-600">Sambutan KS</a>
                             <a href="#visi-misi" class="block px-4 py-2 text-sm hover:bg-slate-50 rounded font-medium text-slate-600">Visi & Misi</a>
-                            <a href="#guru" class="block px-4 py-2 text-sm hover:bg-slate-50 rounded font-medium text-slate-600">Guru & Staff</a>
+                            <a href="#guru" class="block px-4 py-2 text-sm hover:bg-slate-50 rounded font-medium text-slate-600">Guru & Staf</a>
                             <a href="#sotk" class="block px-4 py-2 text-sm hover:bg-slate-50 rounded font-medium text-slate-600">Struktur Organisasi</a>
                         </div>
                     </div>
@@ -92,7 +98,7 @@
                     </div>
                     <a href="#fasilitas" class="nav-item text-sm font-semibold text-slate-600 hover:text-accent transition">Fasilitas</a>
                     
-                    <a href="#" id="btn-lms" target="_blank" class="px-4 py-2 bg-orange-500 text-white text-sm font-bold rounded-lg hover:bg-orange-600 transition shadow-lg shadow-orange-500/20 flex items-center gap-2">
+                    <a href="#" id="btn-lms" target="_blank" class="px-4 py-2 bg-orange-500 text-white text-sm font-bold rounded-lg hover:bg-orange-600 transition shadow-lg shadow-orange-500/20 flex items-center gap-2 hidden">
                         <i class="fa-solid fa-laptop-code"></i> LMS
                     </a>
 
@@ -108,10 +114,10 @@
         <!-- MOBILE MENU -->
         <div id="mobile-menu" class="hidden lg:hidden bg-white border-t p-4 space-y-3 shadow-xl max-h-[80vh] overflow-y-auto">
             <a href="#beranda" class="block font-medium text-slate-600 p-2 hover:bg-slate-50 rounded">Beranda</a>
-            <a href="#guru" class="block font-medium text-slate-600 p-2 hover:bg-slate-50 rounded">Data Guru</a>
+            <a href="#guru" class="block font-medium text-slate-600 p-2 hover:bg-slate-50 rounded">Guru & Staf</a>
             <a href="#data-siswa" class="block font-medium text-slate-600 p-2 hover:bg-slate-50 rounded">Data Siswa</a>
             <a href="#sotk" class="block font-medium text-slate-600 p-2 hover:bg-slate-50 rounded">SOTK</a>
-            <a href="#" id="lms-mobile-link" target="_blank" class="block font-bold text-orange-500 p-2 bg-orange-50 rounded text-center mt-4 border border-orange-200">Akses LMS</a>
+            <a href="#" id="lms-mobile-link" target="_blank" class="block font-bold text-orange-500 p-2 bg-orange-50 rounded text-center mt-4 border border-orange-200 hidden">Akses LMS</a>
             <button onclick="handleLoginButton()" id="btn-login-mobile" class="w-full text-center font-bold text-slate-500 p-2 border border-slate-200 rounded mt-2">Login Admin</button>
         </div>
     </nav>
@@ -122,6 +128,7 @@
         <p class="text-slate-500 font-medium animate-pulse">Menyiapkan Data Sekolah...</p>
     </div>
     
+    <!-- SAFETY SCRIPT: Paksa Hapus Loading setelah 3 detik jika macet -->
     <script>setTimeout(()=>{const l=document.getElementById('loading');if(l)l.remove()},3000);</script>
 
     <main class="pt-20">
@@ -229,9 +236,9 @@
                             </table>
                         </div>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col items-center justify-center">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col items-center justify-center w-full">
                         <h4 class="font-bold text-sm mb-6 text-slate-500 uppercase">Perbandingan Gender</h4>
-                        <div class="w-40 h-40 relative"><canvas id="genderChart"></canvas></div>
+                        <div class="w-full h-64 relative"><canvas id="genderChart"></canvas></div>
                     </div>
                 </div>
             </div>
@@ -269,10 +276,20 @@
             <button onclick="openAdminModal('guru')" class="admin-only absolute top-8 right-8 bg-accent text-white px-4 py-2 rounded shadow"><i class="fa-solid fa-plus mr-2"></i> Kelola Guru</button>
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-primary">Dewan Guru</h2>
+                    <h2 class="text-3xl font-bold text-primary">Guru dan Staf</h2>
                     <p class="text-slate-500">Pendidik Profesional SDN 4 Taman</p>
                 </div>
-                <div id="guru-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
+                
+                <!-- GURU SLIDER -->
+                <div class="relative group">
+                    <div id="guru-container" class="flex gap-6 overflow-x-auto pb-8 px-4 snap-x guru-scroll">
+                        <!-- Guru items injected via JS -->
+                    </div>
+                    
+                    <!-- Slider Controls -->
+                    <button onclick="scrollGuru('left')" class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-primary z-10 -ml-4 hover:bg-slate-50 transition"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button onclick="scrollGuru('right')" class="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-primary z-10 -mr-4 hover:bg-slate-50 transition"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
                 
                 <!-- SOTK SECTION -->
                 <div id="sotk" class="mt-16 bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center relative editable" onclick="if(isAdmin) openAdminModal('galeri')">
@@ -434,13 +451,16 @@
                         <div id="adm-list-guru" class="space-y-2"></div>
                     </div>
 
-                    <!-- Siswa Tab -->
+                    <!-- Siswa Tab (Inputable) -->
                     <div id="tab-siswa" class="tab-content hidden">
-                        <h4 class="font-bold mb-4">Data Siswa Per Kelas</h4>
-                        <table class="w-full text-sm text-left border rounded">
-                            <thead class="bg-slate-100"><tr><th class="p-2">Kelas</th><th>L</th><th>P</th><th>Aksi</th></tr></thead>
+                        <h4 class="font-bold mb-4">Data Siswa Per Kelas (Input)</h4>
+                        <table class="w-full text-sm text-center border rounded">
+                            <thead class="bg-slate-100"><tr><th class="p-2">Kelas</th><th>Laki-Laki</th><th>Perempuan</th></tr></thead>
                             <tbody id="adm-list-siswa"></tbody>
                         </table>
+                        <div class="mt-4 p-2 bg-yellow-50 text-xs text-yellow-800 rounded border border-yellow-200">
+                            Info: Edit angka langsung di kolom, data tersimpan otomatis.
+                        </div>
                     </div>
 
                      <!-- Mutasi Tab (Fixed: Inputable) -->
@@ -551,7 +571,12 @@ SambutanKS,"Pendidikan adalah senjata paling ampuh untuk mengubah dunia. Mari be
 8,gurukls4a,12345@,"Nuryasih, S.Pd.",,Guru Kelas 4A,Asih@sekolah.sch.id,https://i.postimg.cc/q7N9VX0V/2-NURYASIH-S-Pd.png
 9,gurukls4b,12345@,"Bayu Prahastian, S.Pd.",199601212025211014,Guru Kelas 4B,bayu@sekolah.sch.id,https://i.postimg.cc/XYRgqwdv/12-BAYU-PRAHASTIAN-S-Pd.jpg
 10,gurukls5a,12345@,"Idhi Agung Mulyawan, S.Pd.",,Guru Kelas 5A,idhi@sekolah.sch.id,https://i.postimg.cc/zfHPPzSJ/5-IDHI-AGUNG-MULYAWAN-S-Pd.jpg
-11,gurukls5b,12345@,"Tuti Alawiyah, S.Pd.",,Guru Kelas 5B,tuti@sekolah.sch.id,https://via.placeholder.com/150`;
+11,gurukls5b,12345@,"Tuti Alawiyah, S.Pd.",,Guru Kelas 5B,tuti@sekolah.sch.id,https://via.placeholder.com/150
+12,gurukls6a,12345@,"Slamet Riyadi, S.Pd.",,Guru Kelas 6A,slamet@sekolah.sch.id,https://via.placeholder.com/150
+13,gurukls6b,12345@,"Sri Wahyuni, S.Pd.",,Guru Kelas 6B,sri@sekolah.sch.id,https://via.placeholder.com/150
+14,gurupai,12345@,"Ahmad Fauzi, S.Pd.I",,Guru PAI,ahmad@sekolah.sch.id,https://via.placeholder.com/150
+15,gurupjok,12345@,"Rudi Hartono, S.Pd.",,Guru PJOK,rudi@sekolah.sch.id,https://via.placeholder.com/150
+16,penjaga,12345@,"Pak Budi",,Penjaga Sekolah,budi@sekolah.sch.id,https://via.placeholder.com/150`;
 
         const CSV_SISWA = `Kelas,L,P
 Kelas 1 A,15,13
@@ -747,15 +772,14 @@ Jadwal Pelajaran,,Akademik`;
             }
             document.getElementById('ks-sambutan').innerText = `"${c.SambutanKS}"`;
 
-            // Grid Guru (Exclude KS & Limit 10)
+            // Grid Guru (Exclude KS & Show All in Slider)
             const gurus = d.guru.filter(g => !g[5].toLowerCase().includes('kepala'));
-            const displayGurus = gurus.slice(0, 10);
-            document.getElementById('guru-grid').innerHTML = displayGurus.map(g => `
-                <div class="bg-white rounded-xl p-4 text-center shadow-sm border border-slate-100 hover:shadow-md transition">
+            document.getElementById('guru-container').innerHTML = gurus.map(g => `
+                <div class="snap-center shrink-0 w-64 bg-white rounded-xl p-4 text-center shadow-sm border border-slate-100 hover:shadow-md transition">
                     <div class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-3 bg-slate-100">
                         <img src="${g[7]||'https://via.placeholder.com/150'}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/150'">
                     </div>
-                    <h5 class="font-bold text-sm text-primary leading-tight mb-1">${g[3]}</h5>
+                    <h5 class="font-bold text-sm text-primary leading-tight mb-1 truncate">${g[3]}</h5>
                     <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-500 uppercase">${g[5]}</span>
                 </div>
             `).join('');
@@ -779,9 +803,20 @@ Jadwal Pelajaran,,Akademik`;
             document.getElementById('total-rombel').innerText = d.siswa.length;
 
             new Chart(document.getElementById('genderChart'), {
-                type: 'doughnut',
-                data: { labels: ['L','P'], datasets:[{data:[tL, tP], backgroundColor:['#2563eb','#ec4899'], borderWidth:0}] },
-                options: { plugins: { legend: { display: false } }, cutout: '70%' }
+                type: 'bar',
+                data: { 
+                    labels: ['Laki-Laki', 'Perempuan'], 
+                    datasets:[{
+                        label: 'Jumlah Siswa',
+                        data:[tL, tP], 
+                        backgroundColor:['#2563eb','#ec4899'], 
+                        borderRadius: 5
+                    }] 
+                },
+                options: { 
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
             });
 
             // Mutasi
@@ -829,6 +864,17 @@ Jadwal Pelajaran,,Akademik`;
             }
         }
 
+        // --- GURU SCROLL ---
+        function scrollGuru(direction) {
+            const container = document.getElementById('guru-container');
+            const scrollAmount = 300;
+            if (direction === 'left') {
+                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            } else {
+                container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+        }
+
         // --- ADMIN FUNCTIONS ---
         function checkSession() {
             const sess = localStorage.getItem('admin_session');
@@ -855,14 +901,15 @@ Jadwal Pelajaran,,Akademik`;
 
         function doLogin(e) {
             e.preventDefault();
-            const u = e.target.user.value;
-            const p = e.target.pass.value;
+            const u = e.target.user.value.trim();
+            const p = e.target.pass.value.trim();
+            // Fixing string comparison issue by trimming
             if(u === 'admin' && p === rawData.config.AdminPassword) {
                 const now = new Date().getTime();
                 localStorage.setItem('admin_session', JSON.stringify({ status: true, time: now }));
                 location.reload();
             } else {
-                alert("Password Salah!");
+                alert("Password Salah! Pastikan user: admin dan pass sesuai config.");
             }
         }
 
@@ -896,8 +943,6 @@ Jadwal Pelajaran,,Akademik`;
                 document.getElementById('adm-wa').value = rawData.config.NoWaPPDB;
                 document.getElementById('adm-spmb-status').value = rawData.config.SPMB_Status;
                 document.getElementById('adm-fb').value = rawData.config.Facebook || '';
-                document.getElementById('adm-ig').value = rawData.config.Instagram || '';
-                document.getElementById('adm-yt').value = rawData.config.Youtube || '';
             }
             if(t==='mutasi') {
                 document.getElementById('adm-list-mutasi').innerHTML = rawData.mutasi.map((m, i) => `
@@ -907,6 +952,16 @@ Jadwal Pelajaran,,Akademik`;
                         <td class="p-2"><input type="number" value="${m[2]||0}" class="w-12 border p-1 rounded text-center" onchange="updateMutasi(${i}, 2, this.value)"></td>
                         <td class="p-2"><input type="number" value="${m[3]||0}" class="w-12 border p-1 rounded text-center" onchange="updateMutasi(${i}, 3, this.value)"></td>
                         <td class="p-2"><input type="number" value="${m[4]||0}" class="w-12 border p-1 rounded text-center" onchange="updateMutasi(${i}, 4, this.value)"></td>
+                    </tr>
+                `).join('');
+            }
+            if(t==='siswa') {
+                // Populate Input Siswa
+                document.getElementById('adm-list-siswa').innerHTML = rawData.siswa.map((s, i) => `
+                    <tr>
+                        <td class="p-2 font-bold bg-slate-50">${s[0]}</td>
+                        <td class="p-2"><input type="number" value="${s[1]||0}" class="w-20 border p-1 rounded text-center" onchange="updateSiswa(${i}, 1, this.value)"></td>
+                        <td class="p-2"><input type="number" value="${s[2]||0}" class="w-20 border p-1 rounded text-center" onchange="updateSiswa(${i}, 2, this.value)"></td>
                     </tr>
                 `).join('');
             }
@@ -927,6 +982,11 @@ Jadwal Pelajaran,,Akademik`;
         // --- CRUD ACTIONS ---
         function updateMutasi(rowIndex, colIndex, val) {
             rawData.mutasi[rowIndex][colIndex] = val;
+            renderAll(rawData); 
+        }
+
+        function updateSiswa(rowIndex, colIndex, val) {
+            rawData.siswa[rowIndex][colIndex] = val;
             renderAll(rawData); 
         }
 
@@ -953,7 +1013,6 @@ Jadwal Pelajaran,,Akademik`;
                 const jabatan = prompt("Jabatan:");
                 const foto = prompt("URL Foto (Kosongkan jika tidak ada):") || "";
                 if(nama && jabatan) {
-                    // ID, User, Pass, Nama, NIP, Mapel, Email, Foto
                     rawData.guru.push([Date.now(), "user", "pass", nama, "", jabatan, "", foto]);
                     alert("Guru Ditambahkan!");
                     switchTab('guru'); // Refresh list
