@@ -19,8 +19,8 @@
                     colors: { 
                         primary: '#0f172a', 
                         accent: '#2563eb', 
-                        gold: '#fbbf24',
-                        emerald: '#10b981',
+                        gold: '#fbbf24', 
+                        emerald: '#10b981', 
                         rose: '#f43f5e'
                     },
                     animation: {
@@ -48,12 +48,13 @@
         body.admin-mode .admin-block { display: block !important; }
         
         /* Edit Overlay Effect */
-        .editable { position: relative; }
+        .editable { position: relative; cursor: pointer; }
         .editable:hover::after {
-            content: 'Klik untuk Edit';
-            position: absolute; inset: 0; background: rgba(0,0,0,0.5);
+            content: '✏️ Klik Edit';
+            position: absolute; inset: 0; background: rgba(0,0,0,0.6);
             display: none; align-items: center; justify-content: center;
-            color: white; font-weight: bold; cursor: pointer; z-index: 20; border-radius: inherit;
+            color: white; font-weight: bold; font-size: 1.2rem; z-index: 20; border-radius: inherit;
+            backdrop-filter: blur(2px);
         }
         body.admin-mode .editable:hover::after { display: flex; }
     </style>
@@ -119,21 +120,17 @@
     <!-- LOADING SCREEN -->
     <div id="loading" class="fixed inset-0 bg-white z-[100] flex flex-col items-center justify-center transition-opacity duration-500">
         <div class="w-16 h-16 border-4 border-slate-200 border-t-accent rounded-full animate-spin mb-4"></div>
-        <p class="text-slate-500 font-medium animate-pulse">Menghubungkan Database...</p>
+        <p class="text-slate-500 font-medium animate-pulse">Menyiapkan Data...</p>
     </div>
 
     <main class="pt-20">
         
         <!-- HERO & BANNER SLIDER -->
         <section id="beranda" class="relative w-full h-[500px] md:h-[650px] overflow-hidden bg-slate-900 group editable" onclick="if(isAdmin) openAdminModal('galeri')">
-            <div class="edit-overlay"><i class="fa-solid fa-pen mr-2"></i> Kelola Banner</div>
-            
-            <!-- Slider Container -->
             <div id="banner-slider" class="relative w-full h-full">
                 <!-- Slides injected by JS -->
             </div>
 
-            <!-- Overlay Content -->
             <div class="absolute inset-0 flex items-center justify-center z-20 text-center px-4">
                 <div class="max-w-4xl animate-fade-in-up">
                     <span class="inline-block py-1 px-4 rounded-full bg-white/20 text-white backdrop-blur-md border border-white/30 text-xs font-bold mb-6">OFFICIAL WEBSITE</span>
@@ -142,7 +139,7 @@
                          <p id="running-text-display" class="text-slate-200 text-lg">Selamat Datang...</p>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4 justify-center">
-                        <a href="#spmb-section" id="btn-hero-spmb" class="px-8 py-3 bg-green-500 text-white font-bold rounded-full hover:bg-green-600 transition shadow-lg shadow-green-500/30 flex items-center justify-center">
+                        <a href="#spmb-section" class="px-8 py-3 bg-green-500 text-white font-bold rounded-full hover:bg-green-600 transition shadow-lg shadow-green-500/30 flex items-center justify-center">
                             <i class="fa-solid fa-user-plus mr-2"></i> Info SPMB
                         </a>
                         <a href="#profil" class="px-8 py-3 bg-white text-slate-900 font-bold rounded-full hover:bg-slate-100 transition shadow-lg">
@@ -160,7 +157,6 @@
                     <div class="md:w-1/3 relative text-center md:text-left group editable" onclick="if(isAdmin) openAdminModal('guru')">
                         <div class="absolute inset-0 bg-accent/10 rounded-3xl rotate-6 transform hidden md:block"></div>
                         <img id="ks-foto" src="" class="relative rounded-3xl shadow-2xl w-full max-w-xs mx-auto md:max-w-full object-cover h-[450px] border-4 border-white bg-slate-200">
-                        <div class="edit-overlay rounded-3xl"><i class="fa-solid fa-pen mr-2"></i> Ganti Foto KS</div>
                     </div>
                     <div class="md:w-2/3 editable" onclick="if(isAdmin) openAdminModal('config')">
                         <span class="text-accent font-bold tracking-wider uppercase text-sm mb-2 block">Sambutan Kepala Sekolah</span>
@@ -170,7 +166,6 @@
                         </div>
                         <h4 id="ks-nama" class="font-bold text-lg text-primary">-</h4>
                         <p class="text-slate-500">NIP. <span id="ks-nip">-</span></p>
-                        <div class="edit-overlay"><i class="fa-solid fa-pen mr-2"></i> Edit Sambutan</div>
                     </div>
                 </div>
             </div>
@@ -178,7 +173,6 @@
 
         <!-- VISI MISI -->
         <section id="visi-misi" class="py-16 bg-slate-900 text-white relative editable" onclick="if(isAdmin) openAdminModal('config')">
-            <div class="edit-overlay"><i class="fa-solid fa-pen mr-2"></i> Edit Visi Misi</div>
             <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 relative z-10">
                 <div>
                     <h3 class="text-2xl font-bold text-white mb-6 border-b border-slate-700 pb-4"><i class="fa-solid fa-star text-yellow-400 mr-2"></i> Visi Sekolah</h3>
@@ -196,7 +190,7 @@
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl font-bold text-primary">Data Statistik Siswa</h2>
-                    <p class="text-slate-500 mt-2">Tahun Ajaran Aktif</p>
+                    <p class="text-slate-500 mt-2">Kondisi Siswa Saat Ini</p>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
@@ -220,7 +214,6 @@
 
                 <div class="grid md:grid-cols-3 gap-8">
                     <div class="md:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden relative editable" onclick="if(isAdmin) openAdminModal('siswa')">
-                         <div class="edit-overlay"><i class="fa-solid fa-pen mr-2"></i> Edit Data Siswa</div>
                         <div class="p-4 bg-slate-50 font-bold text-primary border-b">Rincian Per Kelas</div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm text-center">
@@ -232,7 +225,7 @@
                         </div>
                     </div>
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col items-center justify-center">
-                        <h4 class="font-bold text-sm mb-6 text-slate-500 uppercase">Gender Ratio</h4>
+                        <h4 class="font-bold text-sm mb-6 text-slate-500 uppercase">Perbandingan Gender</h4>
                         <div class="w-40 h-40 relative"><canvas id="genderChart"></canvas></div>
                     </div>
                 </div>
@@ -241,7 +234,6 @@
 
         <!-- MUTASI -->
         <section id="mutasi" class="py-16 bg-white border-y border-slate-100 relative editable" onclick="if(isAdmin) openAdminModal('mutasi')">
-            <div class="edit-overlay"><i class="fa-solid fa-pen mr-2"></i> Update Data Mutasi</div>
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex justify-between items-center mb-8">
                     <h2 class="text-2xl font-bold text-primary">Data Mutasi Siswa</h2>
@@ -279,7 +271,6 @@
                 
                 <!-- SOTK SECTION -->
                 <div id="sotk" class="mt-16 bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center relative editable" onclick="if(isAdmin) openAdminModal('galeri')">
-                    <div class="edit-overlay"><i class="fa-solid fa-image mr-2"></i> Ganti Gambar SOTK</div>
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-xl font-bold mx-auto">Struktur Organisasi (SOTK)</h3>
                     </div>
@@ -292,7 +283,6 @@
 
         <!-- FASILITAS -->
         <section id="fasilitas" class="py-20 bg-white relative editable" onclick="if(isAdmin) openAdminModal('fasilitas')">
-            <div class="edit-overlay"><i class="fa-solid fa-pen mr-2"></i> Kelola Fasilitas</div>
             <div class="max-w-7xl mx-auto px-4 text-center">
                  <h2 class="text-3xl font-bold text-primary mb-8">Fasilitas & Ekstrakurikuler</h2>
                  <div id="fasilitas-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
@@ -308,7 +298,7 @@
             </div>
         </section>
 
-        <!-- SPMB & DOWNLOAD WIDGET (SIDEBAR STYLE IN FOOTER/SEPARATE SECTION) -->
+        <!-- SPMB & DOWNLOAD WIDGET -->
         <section id="spmb-section" class="py-20 bg-gradient-to-br from-blue-50 to-white border-t border-slate-200">
             <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-12">
                 <!-- Downloads -->
@@ -350,7 +340,6 @@
 
         <!-- FOOTER -->
         <footer class="bg-primary text-white pt-16 pb-8 border-t-4 border-accent relative editable" onclick="if(isAdmin) openAdminModal('config')">
-            <div class="edit-overlay"><i class="fa-solid fa-pen mr-2"></i> Edit Kontak & Sosmed</div>
             <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
                 <div>
                     <h3 class="font-bold text-xl mb-4" id="footer-nama">SDN 4 Taman</h3>
@@ -400,7 +389,6 @@
                     <div id="tab-config" class="tab-content">
                         <h4 class="font-bold mb-4 border-b pb-2">Pengaturan Umum & SPMB</h4>
                         <form onsubmit="saveData(event, 'config')" class="space-y-4 max-w-xl">
-                            <!-- SPMB CONTROL -->
                             <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-6">
                                 <h5 class="font-bold text-accent mb-2">Kontrol Pendaftaran (SPMB)</h5>
                                 <div class="grid grid-cols-2 gap-4">
@@ -449,14 +437,16 @@
                         </table>
                     </div>
 
-                     <!-- Mutasi Tab -->
+                     <!-- Mutasi Tab (Fixed: Inputable) -->
                     <div id="tab-mutasi" class="tab-content hidden">
-                        <h4 class="font-bold mb-4">Data Mutasi</h4>
+                        <h4 class="font-bold mb-4">Data Mutasi (Edit Langsung)</h4>
                         <table class="w-full text-sm text-center border rounded">
-                            <thead class="bg-slate-100"><tr><th>Kelas</th><th>L Masuk</th><th>P Masuk</th><th>L Keluar</th><th>P Keluar</th></tr></thead>
+                            <thead class="bg-slate-100"><tr><th class="p-2">Kelas</th><th>L Masuk</th><th>P Masuk</th><th>L Keluar</th><th>P Keluar</th></tr></thead>
                             <tbody id="adm-list-mutasi"></tbody>
                         </table>
-                        <button onclick="alert('Data Mutasi tersimpan otomatis saat diedit di tabel')" class="mt-4 bg-primary text-white px-4 py-2 rounded text-sm">Simpan</button>
+                        <div class="mt-4 p-2 bg-yellow-50 text-xs text-yellow-800 rounded border border-yellow-200">
+                            Info: Ketik angka langsung di kolom, data otomatis tersimpan di memori sementara.
+                        </div>
                     </div>
 
                     <!-- Galeri Tab -->
@@ -518,107 +508,318 @@
     </div>
 
     <script>
-        // --- KONFIGURASI API ---
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec';
+        // --- 1. DATA DATABASE ASLI (PARSED FROM YOUR CSV) ---
+        // Note: Saya menggunakan fungsi parseCSV sederhana untuk menangani koma dalam tanda kutip.
         
-        // --- DATA AWAL (DARI FILE CSV USER) ---
-        // Digunakan untuk inisialisasi agar tampilan langsung muncul tanpa menunggu fetch
+        const CSV_CONFIG = `Key,Value
+NamaSekolah,SD Negeri 04 Taman
+LogoURL,https://i.postimg.cc/CxkhTg41/Whats-App-Image-2025-03-06-at-09-04-17-removebg-preview.png
+BannerURL,https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png
+RunningText,Selamat Datang di Website Resmi SD Negeri 04 Taman
+Admin,admin123
+Alamat,"Jalan Narasoma No.1, Taman, Kec.Taman, Kab. Pemalang, Jateng, 52361"
+EmailSekolah,sdn04taman@gmail.com
+GoogleMapsEmbed,https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.9217349990363!2d109.4007788!3d-6.8999636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6fdb7437a71bd5%3A0xbdf8c2aa130e3359!2sSDN%204%20Taman!5e0!3m2!1sid!2sid!4v1770707408965!5m2!1sid!2sid
+NoWaPPDB,62895357305031
+SPMB_Status,Buka
+SPMB_Info,Pendaftaran dibuka
+Visi,"Terwujudnya Peserta Didik yang Bertaqwa, Cerdas, Unggul dalam presasi dan Berdaya Guna serta berwawasan Lingkungan."
+Misi,"1. Melaksanakan pembelajaran aktif, inovatif, kreatif, efektif dan menyenangkan.
+2. Mengembangkan bakat dan minat siswa.
+3. Menanamkan nilai-nilai karakter."
+SambutanKS,"Pendidikan adalah senjata paling ampuh untuk mengubah dunia. Mari bersinergi membangun karakter anak bangsa."`;
+
+        const CSV_GURU = `ID,Username,Password,Nama,NIP,Mapel,Email,FotoURL
+1,kepalasekolah,12345@,"Tentrem Lestari, S.Pd.",,Kepala Sekolah,lestari@sekolah.sch.id,https://i.postimg.cc/Vs2v3Dcg/1-TENTREM-LESTARI-S-Pd.png
+2,gurukls1a,12345@,"Ita Khusnul Hidayah, S.Pd.",,Guru kelas 1A,ita@sekolah.sch.id,https://i.postimg.cc/VNTPdZgx/4-ITA-KHUSNUL-HIDAYAH-S-Pd.jpg
+3,gurukls1b,12345@,"Indri Nurmala sari, S.Pd.",,Guru Kelas 1B,indri@sekolah.sch.id,https://i.postimg.cc/wTVKhjF2/11-INDRI-NURMALASARI-S-Pd.jpg
+4,gurukls2a,12345@,"Uci Apriliyani, S.Pd.",,Guru Kelas 2A,uci@sekolah.sch.id,https://i.postimg.cc/Y065Dr7r/7-UCI-APRILIYANI-S-Pd.jpg
+5,gurukls2b,12345@,"Dina Nur Afiyah, S.Pd.",,Guru Kelas 2B,Dina@sekolah.sch.id,https://i.postimg.cc/PxWLyDCL/Whats-App-Image-2025-03-05-at-12-07-28-removebg-preview.png
+6,gurukls3a,12345@,"Kharis Budi Santoso, S.Pd.",,Guru Kelas 3A,kharis@sekolah.sch.id,https://i.postimg.cc/FFqSMMtg/Gemini-Generated-Image-z2460z2460z2460z.png
+7,gurukls3b,12345@,"Yenining Tiyas, S.Pd.",,Guru Kelas 3B,Yeni@sekolah.sch.id,https://i.postimg.cc/sxs6XpFB/6-YENINING-TIYAS-S-Pd.jpg
+8,gurukls4a,12345@,"Nuryasih, S.Pd.",,Guru Kelas 4A,Asih@sekolah.sch.id,https://i.postimg.cc/q7N9VX0V/2-NURYASIH-S-Pd.png
+9,gurukls4b,12345@,"Bayu Prahastian, S.Pd.",199601212025211014,Guru Kelas 4B,bayu@sekolah.sch.id,https://i.postimg.cc/XYRgqwdv/12-BAYU-PRAHASTIAN-S-Pd.jpg
+10,gurukls5a,12345@,"Idhi Agung Mulyawan, S.Pd.",,Guru Kelas 5A,idhi@sekolah.sch.id,https://i.postimg.cc/zfHPPzSJ/5-IDHI-AGUNG-MULYAWAN-S-Pd.jpg`;
+
+        const CSV_SISWA = `Kelas,L,P
+Kelas 1 A,15,13
+Kelas 1 B,15,13
+Kelas 2 A,19,15
+Kelas 2 B,19,15
+Kelas 3 A,14,12
+Kelas 3 B,14,13
+Kelas 4 A,17,12
+Kelas 4 B,18,11
+Kelas 5 A,11,13
+Kelas 5 B,13,11
+Kelas 6 A,17,12
+Kelas 6 B,19,12`;
+
+        const CSV_MUTASI = `Kelas,L_Masuk,P_Masuk,L_Keluar,P_Keluar
+Kelas 1,0,0,0,0
+Kelas 2,1,0,0,0
+Kelas 3,0,1,0,0
+Kelas 4,0,0,0,1
+Kelas 5,0,0,0,0
+Kelas 6,0,0,0,0`;
+
+        const CSV_FASILITAS = `Kategori,Nama,Keterangan,URL_Foto
+Sapras,8 Ruang kelas,,
+Sapras,1 Ruang guru,,
+Sapras,1 Ruang KS,,
+Sapras,1 Perpustakaan,,
+Sapras,1 Musolah,,
+Sapras,4 Wc siswa,,
+Sapras,2 Wc guru,,
+Sapras,1 Kantin,,
+Sapras,1 Tempat parkir,,
+Sapras,1 Uks,,
+Sapras,1 lapangan voli,,
+Ekstrakulikuler,Pramuka,,
+Ekstrakulikuler,Rebana,,
+Ekstrakulikuler,Tilawah,,
+Ekstrakulikuler,Karate,,`;
+
+        const CSV_GALERI = `Tipe,Judul,Link
+Banner,Banner Utama,https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png
+Banner,Banner Selamat Datang,https://via.placeholder.com/1200x600/0f172a/ffffff?text=Selamat+Datang+Siswa+Siswi+Baru
+Foto,Kegiatan Ekologi,https://drive.google.com/file/d/1Q8Rh37RCM7ULwx55jqfAQrxGYjXuZGgT/view?usp=sharing
+Foto,SOTK,https://via.placeholder.com/800x600?text=Upload+Gambar+SOTK+Disini`;
+
+        const CSV_BERITA = `Judul,Tanggal,Isi,FotoURL
+Selamat Datang,06/02/2026 22:47:26,Website resmi sekolah telah diluncurkan.,`;
+
+        const CSV_DOWNLOADS = `NamaFile,Link,Kategori
+Jadwal Pelajaran,,Akademik`;
+
+        // --- PARSER HELPER ---
+        function parseCSV(text) {
+            const rows = [];
+            let currentRow = [];
+            let currentField = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    currentRow.push(currentField.trim());
+                    currentField = '';
+                } else if ((char === '\n' || char === '\r') && !inQuotes) {
+                    if (currentField || currentRow.length > 0) currentRow.push(currentField.trim());
+                    if (currentRow.length > 0) rows.push(currentRow);
+                    currentRow = [];
+                    currentField = '';
+                } else {
+                    currentField += char;
+                }
+            }
+            if (currentField || currentRow.length > 0) currentRow.push(currentField.trim());
+            if (currentRow.length > 0) rows.push(currentRow);
+            return rows.slice(1); // Skip Header
+        }
+
+        function parseConfig(text) {
+            const rows = parseCSV(text);
+            const config = {};
+            rows.forEach(r => { if(r[0]) config[r[0]] = r[1]; });
+            return config;
+        }
+
+        // --- GLOBAL DATA STORE ---
         let rawData = {
-            config: {
-                NamaSekolah: "SD Negeri 04 Taman",
-                LogoURL: "https://i.postimg.cc/CxkhTg41/Whats-App-Image-2025-03-06-at-09-04-17-removebg-preview.png",
-                BannerURL: "https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png",
-                RunningText: "Selamat Datang di Website Resmi SD Negeri 04 Taman",
-                Admin: "admin",
-                AdminPassword: "admin123",
-                Alamat: "Jalan Narasoma No.1, Taman, Kec.Taman, Kab. Pemalang, Jateng, 52361",
-                EmailSekolah: "sdn04taman@gmail.com",
-                GoogleMapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.9217349990363!2d109.4007788!3d-6.8999636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6fdb7437a71bd5%3A0xbdf8c2aa130e3359!2sSDN%204%20Taman!5e0!3m2!1sid!2sid!4v1770707408965!5m2!1sid!2sid",
-                NoWaPPDB: "62895357305031",
-                SPMB_Status: "Buka", // Default Buka untuk tes (nanti di admin bisa diubah)
-                LMS_Link: "https://belajar.id",
-                Facebook: "https://facebook.com",
-                Instagram: "https://instagram.com",
-                Youtube: "https://youtube.com",
-                Visi: "Terwujudnya Peserta Didik yang Bertaqwa, Cerdas, Unggul dalam presasi dan Berdaya Guna serta berwawasan Lingkungan.",
-                Misi: "1. Melaksanakan pembelajaran aktif, inovatif, kreatif, efektif dan menyenangkan.\n2. Mengembangkan bakat dan minat siswa.\n3. Menanamkan nilai-nilai karakter.",
-                SambutanKS: "Pendidikan adalah senjata paling ampuh untuk mengubah dunia. Mari bersinergi membangun karakter anak bangsa."
-            },
-            guru: [
-                ["1","kepalasekolah","12345@","Tentrem Lestari, S.Pd.","","Kepala Sekolah","lestari@sekolah.sch.id","https://i.postimg.cc/Vs2v3Dcg/1-TENTREM-LESTARI-S-Pd.png"],
-                ["2","gurukls1a","12345@","Ita Khusnul Hidayah, S.Pd.","","Guru kelas 1A","ita@sekolah.sch.id","https://i.postimg.cc/VNTPdZgx/4-ITA-KHUSNUL-HIDAYAH-S-Pd.jpg"],
-                ["3","gurukls1b","12345@","Indri Nurmala sari, S.Pd.","","Guru Kelas 1B","indri@sekolah.sch.id","https://i.postimg.cc/wTVKhjF2/11-INDRI-NURMALASARI-S-Pd.jpg"],
-                ["4","gurukls2a","12345@","Uci Apriliyani, S.Pd.","","Guru Kelas 2A","uci@sekolah.sch.id","https://i.postimg.cc/Y065Dr7r/7-UCI-APRILIYANI-S-Pd.jpg"],
-                ["5","gurukls2b","12345@","Dina Nur Afiyah, S.Pd.","","Guru Kelas 2B","Dina@sekolah.sch.id","https://i.postimg.cc/PxWLyDCL/Whats-App-Image.jpg"],
-                ["6","gurukls3a","12345@","Kharis Budi Santoso, S.Pd.","","Guru Kelas 3A","kharis@sekolah.sch.id","https://i.postimg.cc/FFqSMMtg/Gemini-Generated-Image-z2460z2460z2460z.png"],
-                ["7","gurukls3b","12345@","Yenining Tiyas, S.Pd.","","Guru Kelas 3B","Yeni@sekolah.sch.id","https://i.postimg.cc/sxs6XpFB/6-YENINING-TIYAS-S-Pd.jpg"],
-                ["8","gurukls4a,12345@","Nuryasih, S.Pd.","","Guru Kelas 4A","Asih@sekolah.sch.id","https://i.postimg.cc/q7N9VX0V/2-NURYASIH-S-Pd.png"],
-                ["9","gurukls4b","12345@","Bayu Prahastian, S.Pd.","199601212025211014","Guru Kelas 4B","bayu@sekolah.sch.id","https://i.postimg.cc/XYRgqwdv/12-BAYU-PRAHASTIAN-S-Pd.jpg"],
-                ["10","gurukls5a","12345@","Idhi Agung Mulyawan, S.Pd.","","Guru Kelas 5A","idhi@sekolah.sch.id","https://i.postimg.cc/zfHPPzSJ/5-IDHI-AGUNG-MULYAWAN-S-Pd.jpg"],
-                // Placeholder untuk guru lainnya
-                ["11","gurukls5b","123","Tuti Alawiyah, S.Pd.","","Guru Kelas 5B","","https://via.placeholder.com/150"],
-                ["12","gurukls6a","123","Slamet Riyadi, S.Pd.","","Guru Kelas 6A","","https://via.placeholder.com/150"],
-                ["13","gurukls6b","123","Sri Wahyuni, S.Pd.","","Guru Kelas 6B","","https://via.placeholder.com/150"],
-                ["14","gurupai","123","Ahmad Fauzi, S.Pd.I","","Guru PAI","","https://via.placeholder.com/150"],
-                ["15","gurupjok","123","Rudi Hartono, S.Pd.","","Guru PJOK","","https://via.placeholder.com/150"],
-                ["16","pjg","123","Pak Budi","","Penjaga Sekolah","","https://via.placeholder.com/150"]
-            ],
-            siswa: [
-                ["Kelas 1 A",15,13], ["Kelas 1 B",15,13],
-                ["Kelas 2 A",19,15], ["Kelas 2 B",19,15],
-                ["Kelas 3 A",14,12], ["Kelas 3 B",14,13],
-                ["Kelas 4 A",17,12], ["Kelas 4 B",18,11],
-                ["Kelas 5 A",11,13], ["Kelas 5 B",13,11],
-                ["Kelas 6 A",17,12], ["Kelas 6 B",19,12]
-            ],
-            mutasi: [
-                ["Kelas 1",0,0,0,0], ["Kelas 2",1,0,0,0],
-                ["Kelas 3",0,1,0,0], ["Kelas 4",0,0,0,1],
-                ["Kelas 5",0,0,0,0], ["Kelas 6",0,0,0,0]
-            ],
-            fasilitas: [
-                ["Sapras","8 Ruang kelas","",""],
-                ["Sapras","1 Ruang guru","",""],
-                ["Sapras","1 Ruang KS","",""],
-                ["Sapras","1 Perpustakaan","",""],
-                ["Sapras","1 Musolah","",""],
-                ["Sapras","1 Kantin","",""],
-                ["Sapras","1 lapangan voli","",""],
-                ["Ekstrakulikuler","Pramuka","",""],
-                ["Ekstrakulikuler","Rebana","",""],
-                ["Ekstrakulikuler","Karate","",""]
-            ],
-            galeri: [
-                ["Banner", "Utama", "https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png"],
-                ["Banner", "Selamat Datang", "https://via.placeholder.com/1200x600/0f172a/ffffff?text=Selamat+Datang+di+SDN+4+Taman"], 
-                ["Video", "Profil Sekolah", ""],
-                ["Foto", "SOTK Struktur", "https://via.placeholder.com/800x600?text=Upload+Gambar+SOTK+di+Admin"]
-            ],
-            berita: [
-                ["Selamat Datang", "06/02/2026", "Website resmi sekolah telah diluncurkan.", ""]
-            ],
-            downloads: [
-                ["Jadwal Pelajaran", "https://...", "Akademik"]
-            ]
+            config: parseConfig(CSV_CONFIG),
+            guru: parseCSV(CSV_GURU),
+            siswa: parseCSV(CSV_SISWA),
+            mutasi: parseCSV(CSV_MUTASI),
+            fasilitas: parseCSV(CSV_FASILITAS),
+            galeri: parseCSV(CSV_GALERI),
+            berita: parseCSV(CSV_BERITA),
+            downloads: parseCSV(CSV_DOWNLOADS)
         };
 
-        // --- 2. LOGIC SISTEM ---
         let isAdmin = false;
 
+        // --- INIT ---
         window.addEventListener('load', () => {
             checkSession();
             renderAll(rawData);
             setTimeout(() => document.getElementById('loading').remove(), 800);
         });
 
-        // --- 3. SESSION SECURITY (30 MENIT) ---
+        // --- RENDER LOGIC ---
+        function renderAll(d) {
+            const c = d.config;
+
+            // Config General
+            if(c.LogoURL) {
+                document.getElementById('nav-logo').src = c.LogoURL;
+                document.getElementById('nav-logo').classList.remove('hidden');
+            }
+            document.getElementById('nav-nama-sekolah').innerText = c.NamaSekolah;
+            document.getElementById('footer-nama').innerText = c.NamaSekolah;
+            document.getElementById('hero-title').innerText = c.NamaSekolah.toUpperCase();
+            document.getElementById('running-text-display').innerText = c.RunningText;
+            document.getElementById('footer-alamat').innerText = c.Alamat;
+            if(c.GoogleMapsEmbed) document.getElementById('maps-container').innerHTML = `<iframe src="${c.GoogleMapsEmbed}" width="100%" height="100%" style="border:0;" loading="lazy"></iframe>`;
+
+            // Links (LMS & Medsos)
+            if(c.LMS_Link && c.LMS_Link !== '#') {
+                document.querySelectorAll('#btn-lms, #lms-mobile-link, #footer-lms').forEach(b => {
+                    b.href = c.LMS_Link;
+                    b.classList.remove('hidden');
+                });
+            }
+            document.getElementById('link-fb').href = c.Facebook || "#";
+            document.getElementById('link-ig').href = c.Instagram || "#";
+            document.getElementById('link-yt').href = c.Youtube || "#";
+
+            // SPMB Logic
+            const spmbStatus = c.SPMB_Status || 'Tutup';
+            const btnReg = document.getElementById('btn-spmb-register');
+            const btnHero = document.getElementById('btn-hero-spmb');
+            const badge = document.getElementById('spmb-status-badge');
+            
+            if(spmbStatus === 'Buka') {
+                badge.className = "px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-green-500 text-white shadow-sm";
+                badge.innerText = "✅ PENDAFTARAN DIBUKA";
+                btnReg.disabled = false;
+                btnReg.innerText = "Isi Formulir Pendaftaran";
+                btnReg.classList.remove('opacity-50', 'cursor-not-allowed');
+                btnHero.href = "#spmb-section";
+            } else {
+                badge.className = "px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-red-500 text-white shadow-sm";
+                badge.innerText = "⛔ PENDAFTARAN DITUTUP";
+                btnReg.disabled = true;
+                btnReg.innerText = "Pendaftaran Ditutup";
+                btnReg.classList.add('opacity-50', 'cursor-not-allowed');
+                btnHero.onclick = (e) => { e.preventDefault(); alert('Maaf, Pendaftaran SPMB Sedang Ditutup.'); };
+            }
+
+            if(c.NoWaPPDB) {
+                const url = `https://wa.me/${c.NoWaPPDB}`;
+                document.getElementById('btn-spmb-wa').href = url;
+                document.getElementById('footer-ppdb').href = url;
+                document.getElementById('footer-ppdb').classList.remove('hidden');
+            }
+
+            // Slider
+            const banners = d.galeri.filter(x => x[0] === 'Banner');
+            const slider = document.getElementById('banner-slider');
+            slider.innerHTML = banners.map((b, i) => `
+                <div class="slide-item ${i===0?'active':''} bg-cover bg-center absolute inset-0" style="background-image: url('${b[2]}');">
+                    <div class="absolute inset-0 bg-black/40"></div>
+                </div>
+            `).join('');
+            if(banners.length > 1) {
+                let curr = 0;
+                setInterval(() => {
+                    const items = document.querySelectorAll('.slide-item');
+                    items[curr].classList.remove('active');
+                    curr = (curr + 1) % items.length;
+                    items[curr].classList.add('active');
+                }, 5000);
+            }
+
+            // Guru & KS
+            // Logic: Cari yang jabatannya mengandung "Kepala Sekolah"
+            const ks = d.guru.find(g => g[5] && g[5].toLowerCase().includes('kepala')) || d.guru[0];
+            if(ks) {
+                document.getElementById('ks-nama').innerText = ks[3]; // Nama (Index 3 di CSV)
+                document.getElementById('ks-nip').innerText = ks[4] || '-';
+                document.getElementById('ks-foto').src = ks[7] || 'https://via.placeholder.com/300';
+            }
+            document.getElementById('ks-sambutan').innerText = `"${c.SambutanKS}"`;
+
+            // Grid Guru
+            document.getElementById('guru-grid').innerHTML = d.guru.map(g => `
+                <div class="bg-white rounded-xl p-4 text-center shadow-sm border border-slate-100 hover:shadow-md transition">
+                    <div class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-3 bg-slate-100">
+                        <img src="${g[7]||'https://via.placeholder.com/150'}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/150'">
+                    </div>
+                    <h5 class="font-bold text-sm text-primary leading-tight mb-1">${g[3]}</h5>
+                    <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-500 uppercase">${g[5]}</span>
+                </div>
+            `).join('');
+
+            // Visi Misi
+            document.getElementById('visi-text').innerText = c.Visi;
+            document.getElementById('misi-list').innerHTML = c.Misi.split('\n').map(m => `<li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>${m}</li>`).join('');
+
+            // Siswa Stats
+            let tL=0, tP=0;
+            const tbody = document.getElementById('siswa-tbody');
+            tbody.innerHTML = '';
+            d.siswa.forEach(s => {
+                const l = parseInt(s[1])||0, p = parseInt(s[2])||0;
+                tL+=l; tP+=p;
+                tbody.innerHTML += `<tr><td class="p-2 text-left font-medium">${s[0]}</td><td>${l}</td><td>${p}</td><td class="font-bold">${l+p}</td></tr>`;
+            });
+            document.getElementById('total-siswa').innerText = tL+tP;
+            document.getElementById('total-lk').innerText = tL;
+            document.getElementById('total-pr').innerText = tP;
+            document.getElementById('total-rombel').innerText = d.siswa.length;
+
+            new Chart(document.getElementById('genderChart'), {
+                type: 'doughnut',
+                data: { labels: ['L','P'], datasets:[{data:[tL, tP], backgroundColor:['#2563eb','#ec4899'], borderWidth:0}] },
+                options: { plugins: { legend: { display: false } }, cutout: '70%' }
+            });
+
+            // Mutasi
+            const mbody = document.getElementById('mutasi-tbody');
+            mbody.innerHTML = '';
+            d.mutasi.forEach(m => {
+                mbody.innerHTML += `<tr><td class="p-2 font-medium">${m[0]}</td>
+                <td class="bg-emerald-50 text-emerald-700 font-bold">${m[1]||0}</td><td class="bg-emerald-50 text-emerald-700 font-bold">${m[2]||0}</td>
+                <td class="bg-rose-50 text-rose-700 font-bold">${m[3]||0}</td><td class="bg-rose-50 text-rose-700 font-bold">${m[4]||0}</td></tr>`;
+            });
+
+            // SOTK
+            const sotk = d.galeri.find(g => g[1].toLowerCase().includes('sotk'));
+            if(sotk) document.getElementById('sotk-container').innerHTML = `<img src="${sotk[2]}" class="w-full h-auto object-contain">`;
+
+            // Fasilitas
+            document.getElementById('fasilitas-grid').innerHTML = d.fasilitas.map(f => `
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-50 text-accent flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="text-left">
+                        <h5 class="font-bold text-sm">${f[1]}</h5>
+                        <p class="text-xs text-slate-400 uppercase">${f[0]}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Berita
+            document.getElementById('berita-list').innerHTML = d.berita.map(b => `
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                    <span class="text-xs text-accent font-bold">${b[1] || 'Info'}</span>
+                    <h4 class="font-bold text-lg mt-1 mb-2">${b[0]}</h4>
+                    <p class="text-sm text-slate-500">${b[2]}</p>
+                </div>
+            `).join('');
+            
+            // Downloads
+            if(d.downloads.length > 0) {
+                document.getElementById('download-list').innerHTML = d.downloads.map(dl => `
+                    <li class="flex items-center gap-3 p-2 bg-slate-50 rounded hover:bg-slate-100 transition cursor-pointer">
+                        <i class="fa-solid fa-file-pdf text-red-500"></i>
+                        <div><p class="text-sm font-bold text-primary">${dl[0]}</p><p class="text-xs text-slate-400">${dl[2]}</p></div>
+                    </li>`).join('');
+            }
+        }
+
+        // --- ADMIN FUNCTIONS ---
         function checkSession() {
             const sess = localStorage.getItem('admin_session');
             if (sess) {
                 const data = JSON.parse(sess);
                 const now = new Date().getTime();
                 if (now - data.time > 1800000) { // 30 Menit
-                    alert("Sesi Admin Telah Habis. Silakan Login Kembali.");
+                    alert("Sesi Admin Telah Habis.");
                     logout();
                 } else {
                     localStorage.setItem('admin_session', JSON.stringify({ status: true, time: now }));
@@ -660,200 +861,53 @@
             else document.getElementById('modal-login').classList.remove('hidden');
         }
 
-        // --- 4. RENDER CONTENT ---
-        function renderAll(d) {
-            const c = d.config;
-
-            // Header & Config
-            if(c.LogoURL) {
-                document.getElementById('nav-logo').src = c.LogoURL;
-                document.getElementById('nav-logo').classList.remove('hidden');
-            }
-            document.getElementById('nav-nama-sekolah').innerText = c.NamaSekolah;
-            document.getElementById('hero-title').innerText = c.NamaSekolah.toUpperCase();
-            document.getElementById('running-text-display').innerText = c.RunningText;
-
-            // Link Penting
-            if(c.LMS_Link && c.LMS_Link !== '#') {
-                document.querySelectorAll('#btn-lms, #lms-mobile-link, #footer-lms').forEach(b => {
-                    b.href = c.LMS_Link;
-                    b.classList.remove('hidden');
-                });
-            }
-            
-            // LOGIK SPMB (BUKA/TUTUP)
-            const spmbStatus = c.SPMB_Status || 'Tutup';
-            const btnReg = document.getElementById('btn-spmb-register');
-            const badge = document.getElementById('spmb-status-badge');
-            
-            if(spmbStatus === 'Buka') {
-                badge.className = "px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-green-500 text-white shadow-sm";
-                badge.innerText = "✅ PENDAFTARAN DIBUKA";
-                btnReg.disabled = false;
-                btnReg.innerText = "Isi Formulir Pendaftaran";
-                btnReg.classList.remove('opacity-50', 'cursor-not-allowed');
-            } else {
-                badge.className = "px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-red-500 text-white shadow-sm";
-                badge.innerText = "⛔ PENDAFTARAN DITUTUP";
-                btnReg.disabled = true;
-                btnReg.innerText = "Pendaftaran Ditutup";
-                btnReg.classList.add('opacity-50', 'cursor-not-allowed');
-            }
-
-            if(c.NoWaPPDB) {
-                const url = `https://wa.me/${c.NoWaPPDB}`;
-                document.getElementById('btn-spmb-wa').href = url;
-                document.getElementById('footer-ppdb').href = url;
-                document.getElementById('footer-ppdb').classList.remove('hidden');
-            }
-
-            // Maps & Footer
-            if(c.GoogleMapsEmbed) document.getElementById('maps-container').innerHTML = `<iframe src="${c.GoogleMapsEmbed}" width="100%" height="100%" style="border:0;" loading="lazy"></iframe>`;
-            document.getElementById('footer-alamat').innerText = c.Alamat;
-            document.getElementById('footer-nama').innerText = c.NamaSekolah;
-
-            // BANNER SLIDER
-            const banners = d.galeri.filter(x => x[0] === 'Banner');
-            const slider = document.getElementById('banner-slider');
-            slider.innerHTML = banners.map((b, i) => `
-                <div class="slide-item ${i===0?'active':''} bg-cover bg-center" style="background-image: url('${b[2]}');">
-                    <div class="absolute inset-0 bg-black/40"></div>
-                </div>
-            `).join('');
-            
-            if(banners.length > 1) {
-                let curr = 0;
-                setInterval(() => {
-                    const items = document.querySelectorAll('.slide-item');
-                    items[curr].classList.remove('active');
-                    curr = (curr + 1) % items.length;
-                    items[curr].classList.add('active');
-                }, 5000);
-            }
-
-            // PROFIL KS
-            const ks = d.guru.find(g => g[5].toLowerCase().includes('kepala')) || d.guru[0];
-            document.getElementById('ks-nama').innerText = ks[3];
-            document.getElementById('ks-nip').innerText = ks[4] || '-';
-            document.getElementById('ks-foto').src = ks[7] || 'https://via.placeholder.com/300';
-            document.getElementById('ks-sambutan').innerText = `"${c.SambutanKS}"`;
-
-            // VISI MISI
-            document.getElementById('visi-text').innerText = c.Visi;
-            document.getElementById('misi-list').innerHTML = c.Misi.split('\n').map(m => `<li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>${m}</li>`).join('');
-
-            // DATA SISWA
-            let tL=0, tP=0;
-            const tbody = document.getElementById('siswa-tbody');
-            tbody.innerHTML = '';
-            d.siswa.forEach(s => {
-                const l = parseInt(s[1]), p = parseInt(s[2]);
-                tL+=l; tP+=p;
-                tbody.innerHTML += `<tr><td class="p-2 text-left font-medium">${s[0]}</td><td>${l}</td><td>${p}</td><td class="font-bold">${l+p}</td></tr>`;
-            });
-            document.getElementById('total-siswa').innerText = tL+tP;
-            document.getElementById('total-lk').innerText = tL;
-            document.getElementById('total-pr').innerText = tP;
-            document.getElementById('total-rombel').innerText = d.siswa.length;
-
-            new Chart(document.getElementById('genderChart'), {
-                type: 'doughnut',
-                data: { labels: ['L','P'], datasets:[{data:[tL, tP], backgroundColor:['#2563eb','#ec4899'], borderWidth:0}] },
-                options: { plugins: { legend: { display: false } }, cutout: '70%' }
-            });
-
-            // MUTASI
-            const mbody = document.getElementById('mutasi-tbody');
-            mbody.innerHTML = '';
-            d.mutasi.forEach(m => {
-                mbody.innerHTML += `<tr><td class="p-2 font-medium">${m[0]}</td>
-                <td class="bg-emerald-50 text-emerald-700">${m[1]||0}</td><td class="bg-emerald-50 text-emerald-700">${m[2]||0}</td>
-                <td class="bg-rose-50 text-rose-700">${m[3]||0}</td><td class="bg-rose-50 text-rose-700">${m[4]||0}</td></tr>`;
-            });
-
-            // GURU GRID
-            document.getElementById('guru-grid').innerHTML = d.guru.map(g => `
-                <div class="bg-white rounded-xl p-4 text-center shadow-sm border border-slate-100 hover:shadow-md transition">
-                    <div class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-3 bg-slate-100">
-                        <img src="${g[7]||'https://via.placeholder.com/150'}" class="w-full h-full object-cover">
-                    </div>
-                    <h5 class="font-bold text-sm text-primary leading-tight mb-1">${g[3]}</h5>
-                    <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-500 uppercase">${g[5]}</span>
-                </div>
-            `).join('');
-
-            // SOTK IMAGE
-            const sotk = d.galeri.find(g => g[1].toLowerCase().includes('sotk') || g[1].toLowerCase().includes('struktur'));
-            if(sotk) document.getElementById('sotk-container').innerHTML = `<img src="${sotk[2]}" class="w-full h-auto object-contain">`;
-
-            // FASILITAS
-            document.getElementById('fasilitas-grid').innerHTML = d.fasilitas.map(f => `
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-blue-50 text-accent flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
-                    <div class="text-left">
-                        <h5 class="font-bold text-sm">${f[1]}</h5>
-                        <p class="text-xs text-slate-400 uppercase">${f[0]}</p>
-                    </div>
-                </div>
-            `).join('');
-
-            // DOWNLOADS
-            if(d.downloads && d.downloads.length > 0) {
-                document.getElementById('download-list').innerHTML = d.downloads.map(dl => `
-                    <li class="flex items-center gap-3 p-2 bg-slate-50 rounded hover:bg-slate-100 transition cursor-pointer">
-                        <i class="fa-solid fa-file-pdf text-red-500"></i>
-                        <div>
-                            <p class="text-sm font-bold text-primary">${dl[0]}</p>
-                            <p class="text-xs text-slate-400">${dl[2]}</p>
-                        </div>
-                    </li>
-                `).join('');
-            }
-        }
-
-        // --- 5. ADMIN ACTIONS ---
         function closeModal() { document.getElementById('modal-admin').classList.add('hidden'); }
         function openAdminModal(tab) {
              document.getElementById('modal-admin').classList.remove('hidden');
              switchTab(tab);
         }
-        
+
         function switchTab(t) {
             document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden'));
             document.getElementById(`tab-${t}`).classList.remove('hidden');
             
+            // Populate Data
             if(t==='config') {
                 document.getElementById('adm-nama').value = rawData.config.NamaSekolah;
                 document.getElementById('adm-running').value = rawData.config.RunningText;
                 document.getElementById('adm-lms').value = rawData.config.LMS_Link;
                 document.getElementById('adm-wa').value = rawData.config.NoWaPPDB;
-                document.getElementById('adm-spmb-status').value = rawData.config.SPMB_Status || 'Tutup';
+                document.getElementById('adm-spmb-status').value = rawData.config.SPMB_Status;
                 document.getElementById('adm-fb').value = rawData.config.Facebook || '';
             }
+            if(t==='mutasi') {
+                // RENDER INPUT MUTASI YANG BISA DIKETIK
+                document.getElementById('adm-list-mutasi').innerHTML = rawData.mutasi.map((m, i) => `
+                    <tr>
+                        <td class="p-2 font-bold bg-slate-50">${m[0]}</td>
+                        <td class="p-2"><input type="number" value="${m[1]||0}" class="w-12 border p-1 rounded text-center" onchange="updateMutasi(${i}, 1, this.value)"></td>
+                        <td class="p-2"><input type="number" value="${m[2]||0}" class="w-12 border p-1 rounded text-center" onchange="updateMutasi(${i}, 2, this.value)"></td>
+                        <td class="p-2"><input type="number" value="${m[3]||0}" class="w-12 border p-1 rounded text-center" onchange="updateMutasi(${i}, 3, this.value)"></td>
+                        <td class="p-2"><input type="number" value="${m[4]||0}" class="w-12 border p-1 rounded text-center" onchange="updateMutasi(${i}, 4, this.value)"></td>
+                    </tr>
+                `).join('');
+            }
             if(t==='guru') {
-                document.getElementById('adm-list-guru').innerHTML = rawData.guru.map(g => `
-                    <div class="flex justify-between items-center border-b pb-2 text-sm">
-                        <div>
-                            <p class="font-bold">${g[3]}</p>
-                            <p class="text-xs text-slate-500">${g[5]}</p>
-                        </div>
-                        <button onclick="deleteItem('guru', '${g[0]}')" class="text-red-500 hover:text-red-700 text-xs px-2 py-1 rounded bg-red-50">Hapus</button>
-                    </div>`).join('');
+                document.getElementById('adm-list-guru').innerHTML = rawData.guru.map(g => `<div class="border-b pb-2 mb-2 flex justify-between"><div><b>${g[3]}</b><br><small>${g[5]}</small></div><button class="text-red-500 text-xs">Hapus</button></div>`).join('');
             }
             if(t==='galeri') {
-                document.getElementById('adm-list-galeri').innerHTML = rawData.galeri.map(g => `
-                    <div class="relative group border rounded overflow-hidden h-24">
-                        <img src="${g[2]}" class="w-full h-full object-cover">
-                        <span class="absolute top-0 right-0 bg-black/50 text-white text-[10px] px-1">${g[0]}</span>
-                        <div class="absolute bottom-0 left-0 w-full bg-black/50 text-white text-[10px] p-1 truncate">${g[1]}</div>
-                        <button class="absolute top-1 left-1 bg-red-600 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition" onclick="deleteItem('galeri', '${g[1]}')">x</button>
-                    </div>`).join('');
+                document.getElementById('adm-list-galeri').innerHTML = rawData.galeri.map(g => `<div class="relative group border rounded h-20 overflow-hidden"><img src="${g[2]}" class="w-full h-full object-cover"><div class="absolute bottom-0 bg-black/50 text-white text-[10px] w-full p-1">${g[0]}</div></div>`).join('');
             }
         }
-        
-        async function saveData(e, type) {
+
+        // --- UPDATE DATA HELPERS ---
+        function updateMutasi(rowIndex, colIndex, val) {
+            rawData.mutasi[rowIndex][colIndex] = val;
+            console.log("Mutasi updated:", rawData.mutasi);
+            renderAll(rawData); // Update frontend real-time
+        }
+
+        function saveData(e, type) {
             e.preventDefault();
             if(type === 'config') {
                 rawData.config.NamaSekolah = document.getElementById('adm-nama').value;
@@ -861,27 +915,20 @@
                 rawData.config.LMS_Link = document.getElementById('adm-lms').value;
                 rawData.config.NoWaPPDB = document.getElementById('adm-wa').value;
                 rawData.config.SPMB_Status = document.getElementById('adm-spmb-status').value;
-                
-                alert("Konfigurasi disimpan!");
-                renderAll(rawData); // Update UI Instan
+                alert("Konfigurasi Disimpan!");
+                renderAll(rawData);
                 closeModal();
             }
         }
 
         async function kirimSPMB(e) {
             e.preventDefault();
-            if(rawData.config.SPMB_Status !== 'Buka') {
-                alert("Maaf, pendaftaran sedang ditutup!");
-                return;
-            }
             const btn = e.target.querySelector('button');
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Mengirim...';
-            
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
             setTimeout(() => {
                 alert("Pendaftaran Berhasil Dikirim!");
-                btn.innerHTML = 'Kirim Pendaftaran';
                 document.getElementById('modal-spmb').classList.add('hidden');
-                e.target.reset();
+                btn.innerHTML = "Kirim Pendaftaran";
             }, 1500);
         }
 
