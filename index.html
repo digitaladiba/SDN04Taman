@@ -39,7 +39,7 @@
         .group:hover .group-hover\:block { display: block; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans selection:bg-accent selection:text-white">
+<body class="bg-slate-50 text-slate-800 font-sans selection:bg-accent selection:text-white relative">
 
     <!-- NAVBAR -->
     <nav class="fixed w-full z-50 glass-nav border-b border-slate-200 shadow-sm" id="navbar">
@@ -54,13 +54,13 @@
                     </div>
                 </div>
                 
-                <!-- DESKTOP MENU -->
+                <!-- DESKTOP MENU (Hidden on Mobile) -->
                 <div class="hidden lg:flex space-x-6 items-center">
                     <a href="#beranda" class="nav-item text-sm font-bold text-slate-700 hover:text-accent">BERANDA</a>
                     
                     <!-- Profil Sekolah -->
                     <div class="relative group h-20 flex items-center">
-                        <button class="nav-item text-sm font-bold text-slate-700 hover:text-accent flex items-center gap-1">PROFIL SEKOLAH <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                        <button class="nav-item text-sm font-bold text-slate-700 hover:text-accent flex items-center gap-1">PROFIL <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
                         <div class="absolute top-16 left-0 w-56 bg-white border-t-4 border-accent shadow-xl rounded-b-lg hidden group-hover:block p-2 animate-fade-in">
                             <a href="#visi-misi" class="block px-4 py-2 text-sm hover:bg-slate-50 text-slate-600 font-medium rounded">Visi & Misi</a>
                             <a href="#sambutan" class="block px-4 py-2 text-sm hover:bg-slate-50 text-slate-600 font-medium rounded">Sambutan KS</a>
@@ -107,42 +107,8 @@
                     </button>
                 </div>
 
-                <!-- HAMBURGER BUTTON -->
-                <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 flex items-center justify-center text-slate-600 text-xl border rounded hover:bg-slate-100"><i class="fa-solid fa-bars"></i></button>
-            </div>
-        </div>
-        
-        <!-- MOBILE MENU DRAWER -->
-        <div id="mobile-menu" class="hidden fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm" onclick="toggleMobileMenu()">
-            <div class="absolute right-0 top-0 h-full w-72 bg-white shadow-2xl p-4 overflow-y-auto transform transition-transform" onclick="event.stopPropagation()">
-                <div class="flex justify-between items-center mb-6 border-b pb-4">
-                    <h3 class="font-bold text-primary text-lg">Menu Utama</h3>
-                    <button onclick="toggleMobileMenu()" class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-times text-2xl"></i></button>
-                </div>
-                <div class="space-y-1">
-                    <a href="#beranda" class="block p-3 hover:bg-slate-50 rounded font-bold text-slate-700">Beranda</a>
-                    
-                    <div class="mt-4 mb-2 px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Profil Sekolah</div>
-                    <a href="#visi-misi" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Visi & Misi</a>
-                    <a href="#sambutan" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Sambutan KS</a>
-                    <a href="#guru" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Guru & Staf</a>
-                    <a href="#fasilitas" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Fasilitas & Eskul</a>
-                    <a href="#footer" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Alamat</a>
-
-                    <div class="mt-4 mb-2 px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Kesiswaan</div>
-                    <a href="#data-siswa" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Data & Statistik</a>
-                    <a href="#spmb-section" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">SPMB Online</a>
-
-                    <div class="mt-4 mb-2 px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Akademik</div>
-                    <a href="#" id="mob-lms" target="_blank" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">LMS / E-Learning</a>
-                    <a href="#galeri-kegiatan" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Galeri Kegiatan</a>
-
-                    <div class="mt-4 mb-2 px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Kontak</div>
-                    <a href="#" id="mob-wa" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">WhatsApp</a>
-                    <a href="#" id="mob-ig" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Instagram</a>
-                    
-                    <button onclick="handleLoginButton()" class="w-full mt-8 bg-primary text-white py-3 rounded-lg font-bold text-sm shadow-lg">Login Admin</button>
-                </div>
+                <!-- HAMBURGER BUTTON (VISIBLE ONLY ON MOBILE) -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 flex items-center justify-center text-slate-600 text-xl border rounded hover:bg-slate-100 z-[60] relative"><i class="fa-solid fa-bars"></i></button>
             </div>
         </div>
     </nav>
@@ -151,12 +117,13 @@
     <div id="db-status" class="fixed bottom-4 left-4 z-[90] bg-white border border-slate-200 shadow-lg rounded-lg px-4 py-3 text-xs font-medium text-slate-600 flex flex-col gap-1 transition-all w-64">
         <div class="flex items-center gap-2">
             <span class="w-3 h-3 rounded-full bg-yellow-400 animate-pulse" id="db-indicator"></span>
-            <span id="db-text" class="font-bold">Menghubungkan Database...</span>
+            <span id="db-text" class="font-bold">Menghubungkan...</span>
         </div>
         <button id="btn-retry" onclick="location.reload()" class="hidden mt-2 bg-slate-100 text-accent px-2 py-1.5 rounded border border-slate-200 w-full">Coba Lagi</button>
     </div>
 
     <main class="pt-20">
+        
         <!-- HERO -->
         <section id="beranda" class="relative w-full h-[500px] md:h-[650px] overflow-hidden bg-slate-900 group">
             <div id="hero-background" class="absolute inset-0 bg-cover bg-center transition-all duration-1000" style="background-image: url('https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png');">
@@ -177,8 +144,8 @@
             </div>
         </section>
 
-        <!-- BANNER SLIDER -->
-        <section class="bg-primary relative overflow-hidden h-[250px] md:h-[400px]">
+        <!-- BANNER SLIDER (Clean Focus) -->
+        <section class="bg-primary relative overflow-hidden h-[250px] md:h-[450px]">
             <button onclick="openForm('Galeri')" class="admin-only absolute top-4 right-4 bg-white/10 text-white text-xs px-3 py-1 rounded hover:bg-white/20 z-20"><i class="fa-solid fa-plus"></i> Edit Banner</button>
             <div class="relative w-full h-full overflow-hidden">
                 <div id="banner-track" class="flex h-full w-full overflow-x-auto no-scrollbar snap-x snap-mandatory" style="scroll-behavior: smooth;">
@@ -245,7 +212,7 @@
                 <div class="text-center mb-12"><h2 class="text-3xl font-bold text-primary">Guru dan Staf</h2></div>
                 <div id="guru-container" class="flex gap-6 overflow-x-auto pb-8 px-4 snap-x custom-scroll"></div>
                 <!-- SOTK -->
-                <div id="sotk" class="mt-16 bg-white p-8 rounded-2xl shadow-sm border text-center relative"><button onclick="openAdminModal('config')" class="admin-only absolute top-4 right-4 text-xs bg-slate-100 px-2 py-1 rounded">Edit</button><h3 class="text-xl font-bold mb-6">Struktur Organisasi</h3><div id="sotk-container" class="flex justify-center"><p class="text-slate-400">Memuat SOTK...</p></div></div>
+                <div id="sotk" class="mt-16 bg-white p-8 rounded-2xl shadow-sm border text-center relative"><button onclick="openAdminModal('config')" class="admin-only absolute top-4 right-4 text-xs bg-slate-100 px-2 py-1 rounded">Edit di Config</button><h3 class="text-xl font-bold mb-6">Struktur Organisasi</h3><div id="sotk-container" class="flex justify-center"><p class="text-slate-400">Memuat SOTK...</p></div></div>
             </div>
         </section>
 
@@ -258,7 +225,7 @@
             </div>
         </section>
 
-        <!-- GALERI KEGIATAN -->
+        <!-- GALERI KEGIATAN (Below Fasilitas) -->
         <section id="galeri-kegiatan" class="py-20 bg-slate-50 border-t relative">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex justify-between items-center mb-8">
@@ -327,6 +294,40 @@
             <div class="text-center text-xs text-slate-500 pt-8 border-t border-slate-800">&copy; 2026 SDN 4 Taman.</div>
         </footer>
     </main>
+
+    <!-- MOBILE MENU DRAWER (MOVED OUTSIDE NAV) -->
+    <div id="mobile-menu" class="hidden fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm" onclick="toggleMobileMenu()">
+        <div class="absolute right-0 top-0 h-full w-72 bg-white shadow-2xl p-4 overflow-y-auto transform transition-transform" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <h3 class="font-bold text-primary text-lg">Menu Utama</h3>
+                <button onclick="toggleMobileMenu()" class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-times text-2xl"></i></button>
+            </div>
+            <div class="space-y-1 pb-20">
+                <a href="#beranda" onclick="toggleMobileMenu()" class="block p-3 hover:bg-slate-50 rounded font-bold text-slate-700">Beranda</a>
+                
+                <div class="mt-4 mb-2 px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Profil Sekolah</div>
+                <a href="#visi-misi" onclick="toggleMobileMenu()" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Visi & Misi</a>
+                <a href="#sambutan" onclick="toggleMobileMenu()" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Sambutan KS</a>
+                <a href="#guru" onclick="toggleMobileMenu()" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Guru & Staf</a>
+                <a href="#fasilitas" onclick="toggleMobileMenu()" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Fasilitas & Eskul</a>
+                <a href="#footer" onclick="toggleMobileMenu()" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Alamat</a>
+
+                <div class="mt-4 mb-2 px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Kesiswaan</div>
+                <a href="#data-siswa" onclick="toggleMobileMenu()" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Data & Statistik</a>
+                <a href="#spmb-section" onclick="toggleMobileMenu()" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">SPMB Online</a>
+
+                <div class="mt-4 mb-2 px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Akademik</div>
+                <a href="#" id="mob-lms" target="_blank" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">LMS / E-Learning</a>
+                <a href="#galeri-kegiatan" onclick="toggleMobileMenu()" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Galeri Kegiatan</a>
+
+                <div class="mt-4 mb-2 px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Kontak</div>
+                <a href="#" id="mob-wa" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">WhatsApp</a>
+                <a href="#" id="mob-ig" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Instagram</a>
+                
+                <button onclick="toggleMobileMenu(); handleLoginButton();" class="w-full mt-8 bg-primary text-white py-3 rounded-lg font-bold text-sm shadow-lg">Login Admin</button>
+            </div>
+        </div>
+    </div>
 
     <!-- ADMIN MODAL -->
     <div id="modal-admin" class="fixed inset-0 bg-black/50 hidden z-[70] flex items-center justify-center p-4 backdrop-blur-sm">
@@ -424,6 +425,8 @@
         function safeSetText(id, val) { const el = document.getElementById(id); if(el) el.innerText = val || ''; }
         function safeSetAttr(id, attr, val) { const el = document.getElementById(id); if(el && val) el.setAttribute(attr, val); }
 
+        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+
         window.onload = function() { initApp(); startBannerScroll(); };
 
         async function initApp() {
@@ -480,7 +483,6 @@
             safeSetHtml('siswa-tbody', siswas.map(s => `<tr><td class="p-2 text-left font-medium border-b">${s[0]}</td><td class="border-b font-bold text-blue-600">${s[1]}</td><td class="border-b font-bold text-pink-500">${s[2]}</td><td class="border-b font-bold bg-slate-50">${parseInt(s[1])+parseInt(s[2])}</td></tr>`).join(''));
             safeSetHtml('mutasi-tbody', (d.mutasi||[]).map(m => `<tr><td class="p-2 border-r text-left">${m[0]}</td><td class="bg-green-50 text-green-700 font-bold border-r">${m[1]||0}</td><td class="bg-green-50 text-green-700 font-bold border-r">${m[2]||0}</td><td class="bg-red-50 text-red-700 font-bold border-r">${m[3]||0}</td><td class="bg-red-50 text-red-700 font-bold">${m[4]||0}</td></tr>`).join(''));
             
-            // Berita with Link
             safeSetHtml('berita-list', (d.berita||[]).slice(0,4).map(b => {
                 const link = b[5] ? `href="${b[5]}" target="_blank"` : '';
                 const cursor = b[5] ? 'cursor-pointer hover:shadow-lg' : '';
@@ -498,7 +500,6 @@
             safeSetHtml('fasilitas-grid', (d.fasilitas||[]).map(f => `<div class="bg-white p-4 rounded-lg shadow-sm border flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600"><i class="fa-solid fa-check"></i></div><div><h5 class="font-bold text-sm text-slate-700">${f[2]}</h5><span class="text-[10px] text-slate-400 uppercase">${f[1]}</span></div></div>`).join(''));
             safeSetHtml('download-list', (d.downloads||[]).map(f => `<li class="flex items-center gap-2 border-b pb-2 last:border-0"><i class="fa-solid fa-file-pdf text-red-500"></i> <a href="${f[3]}" target="_blank" class="text-slate-600 hover:text-accent font-medium flex-1 truncate">${f[1]}</a></li>`).join(''));
             
-            // BANNER VS GALERI SPLIT (Banner with Link)
             const banners = (d.galeri||[]).filter(g => String(g[1]).toLowerCase() === 'banner');
             safeSetHtml('banner-track', banners.length ? banners.map(b => {
                 const link = b[4] ? `onclick="window.open('${b[4]}', '_blank')"` : '';
@@ -584,7 +585,6 @@
         async function send(pl) { try { await fetch(API_URL, {method:'POST', body:JSON.stringify(pl)}); } catch(e){alert("Gagal Simpan (Offline)");} }
         async function refreshData() { await initApp(); const t=document.querySelector('.tab-content:not(.hidden)'); if(t) renderAdminData(t.id.replace('tab-','')); }
         function handleLoginButton() { if(isAdmin) doLogout(); else document.getElementById('modal-login').classList.remove('hidden'); }
-        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
         function startBannerScroll() { const c=document.getElementById('banner-track'); setInterval(()=>{ if(c&&c.scrollWidth) { if(c.scrollLeft + c.clientWidth >= c.scrollWidth) c.scrollTo({left:0, behavior:'smooth'}); else c.scrollBy({left:c.clientWidth,behavior:'smooth'}); } },4000); }
     </script>
 </body>
