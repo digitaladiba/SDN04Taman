@@ -57,11 +57,25 @@
         }
         body.admin-mode .editable:hover::after { display: flex; }
 
-        /* Guru Slider Scrollbar */
-        .guru-scroll::-webkit-scrollbar { height: 8px; }
-        .guru-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
-        .guru-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .guru-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        /* Custom Scrollbar for Guru Slider */
+        .guru-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #f1f5f9;
+        }
+        .guru-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        .guru-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .guru-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .guru-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans selection:bg-accent selection:text-white">
@@ -127,20 +141,13 @@
         <div class="w-16 h-16 border-4 border-slate-200 border-t-accent rounded-full animate-spin mb-4"></div>
         <p class="text-slate-500 font-medium animate-pulse">Menyiapkan Data Sekolah...</p>
     </div>
-    
-    <!-- SAFETY SCRIPT: Paksa Hapus Loading setelah 3 detik jika macet -->
     <script>setTimeout(()=>{const l=document.getElementById('loading');if(l)l.remove()},3000);</script>
 
     <main class="pt-20">
         
         <!-- HERO & BANNER SLIDER -->
         <section id="beranda" class="relative w-full h-[500px] md:h-[650px] overflow-hidden bg-slate-900 group editable" onclick="if(isAdmin) openAdminModal('galeri')">
-            <!-- Slider Container -->
-            <div id="banner-slider" class="relative w-full h-full">
-                <!-- Slides injected by JS -->
-            </div>
-
-            <!-- Overlay Content -->
+            <div id="banner-slider" class="relative w-full h-full"></div>
             <div class="absolute inset-0 flex items-center justify-center z-20 text-center px-4">
                 <div class="max-w-4xl animate-fade-in-up">
                     <span class="inline-block py-1 px-4 rounded-full bg-white/20 text-white backdrop-blur-md border border-white/30 text-xs font-bold mb-6">OFFICIAL WEBSITE</span>
@@ -226,6 +233,7 @@
 
                 <div class="grid md:grid-cols-3 gap-8">
                     <div class="md:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden relative editable" onclick="if(isAdmin) openAdminModal('siswa')">
+                        <div class="edit-overlay"><i class="fa-solid fa-pen mr-2"></i> Edit Data Siswa</div>
                         <div class="p-4 bg-slate-50 font-bold text-primary border-b">Rincian Per Kelas</div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm text-center">
@@ -238,6 +246,7 @@
                     </div>
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col items-center justify-center w-full">
                         <h4 class="font-bold text-sm mb-6 text-slate-500 uppercase">Perbandingan Gender</h4>
+                        <!-- CHART DIAGRAM BATANG -->
                         <div class="w-full h-64 relative"><canvas id="genderChart"></canvas></div>
                     </div>
                 </div>
@@ -271,7 +280,7 @@
             </div>
         </section>
 
-        <!-- GURU -->
+        <!-- GURU (SLIDER) -->
         <section id="guru" class="py-20 bg-slate-50 relative">
             <button onclick="openAdminModal('guru')" class="admin-only absolute top-8 right-8 bg-accent text-white px-4 py-2 rounded shadow"><i class="fa-solid fa-plus mr-2"></i> Kelola Guru</button>
             <div class="max-w-7xl mx-auto px-4">
@@ -280,17 +289,17 @@
                     <p class="text-slate-500">Pendidik Profesional SDN 4 Taman</p>
                 </div>
                 
-                <!-- GURU SLIDER -->
+                <!-- SLIDER CONTAINER -->
                 <div class="relative group">
                     <div id="guru-container" class="flex gap-6 overflow-x-auto pb-8 px-4 snap-x guru-scroll">
-                        <!-- Guru items injected via JS -->
+                        <!-- Items guru akan dimasukkan di sini oleh JS -->
                     </div>
                     
-                    <!-- Slider Controls -->
-                    <button onclick="scrollGuru('left')" class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-primary z-10 -ml-4 hover:bg-slate-50 transition"><i class="fa-solid fa-chevron-left"></i></button>
-                    <button onclick="scrollGuru('right')" class="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-primary z-10 -mr-4 hover:bg-slate-50 transition"><i class="fa-solid fa-chevron-right"></i></button>
+                    <!-- Tombol Navigasi Slider -->
+                    <button onclick="scrollGuru('left')" class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-primary z-10 -ml-4 hover:bg-slate-50 transition hidden md:flex"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button onclick="scrollGuru('right')" class="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-primary z-10 -mr-4 hover:bg-slate-50 transition hidden md:flex"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
-                
+
                 <!-- SOTK SECTION -->
                 <div id="sotk" class="mt-16 bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center relative editable" onclick="if(isAdmin) openAdminModal('galeri')">
                     <div class="flex justify-between items-center mb-6">
@@ -320,7 +329,7 @@
             </div>
         </section>
 
-        <!-- SPMB & DOWNLOAD WIDGET -->
+        <!-- SPMB & DOWNLOAD -->
         <section id="spmb-section" class="py-20 bg-gradient-to-br from-blue-50 to-white border-t border-slate-200">
             <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-12">
                 <!-- Downloads -->
@@ -338,14 +347,11 @@
                         <div class="relative z-10">
                             <h3 class="font-bold text-3xl mb-2">SPMB Online</h3>
                             <p class="text-blue-100 mb-6">Sistem Penerimaan Murid Baru Tahun Ajaran 2026/2027</p>
-                            
-                            <!-- Status Indicator -->
                             <div class="flex items-center gap-4 mb-6">
                                 <span id="spmb-status-badge" class="px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-500 text-white shadow-sm">
                                     Memuat Status...
                                 </span>
                             </div>
-
                             <div class="flex gap-4 flex-wrap">
                                 <button id="btn-spmb-register" onclick="document.getElementById('modal-spmb').classList.remove('hidden')" class="px-6 py-3 bg-white text-accent font-bold rounded-lg hover:bg-blue-50 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
                                     Isi Formulir Pendaftaran
@@ -445,34 +451,31 @@
                     <!-- Guru Tab -->
                     <div id="tab-guru" class="tab-content hidden">
                          <div class="flex justify-between items-center mb-4">
-                            <h4 class="font-bold">Data Guru</h4>
+                            <h4 class="font-bold">Data Guru & Staf</h4>
                             <button onclick="addItem('guru')" class="bg-accent text-white px-3 py-1 rounded text-xs">+ Tambah</button>
                         </div>
                         <div id="adm-list-guru" class="space-y-2"></div>
                     </div>
 
-                    <!-- Siswa Tab (Inputable) -->
+                    <!-- Siswa Tab (Edit Langsung) -->
                     <div id="tab-siswa" class="tab-content hidden">
-                        <h4 class="font-bold mb-4">Data Siswa Per Kelas (Input)</h4>
+                        <h4 class="font-bold mb-4">Input Data Siswa Per Kelas</h4>
                         <table class="w-full text-sm text-center border rounded">
-                            <thead class="bg-slate-100"><tr><th class="p-2">Kelas</th><th>Laki-Laki</th><th>Perempuan</th></tr></thead>
+                            <thead class="bg-slate-100"><tr><th class="p-2">Kelas</th><th>Laki-Laki (L)</th><th>Perempuan (P)</th></tr></thead>
                             <tbody id="adm-list-siswa"></tbody>
                         </table>
                         <div class="mt-4 p-2 bg-yellow-50 text-xs text-yellow-800 rounded border border-yellow-200">
-                            Info: Edit angka langsung di kolom, data tersimpan otomatis.
+                            Info: Edit angka langsung di kolom input, data otomatis tersimpan.
                         </div>
                     </div>
 
-                     <!-- Mutasi Tab (Fixed: Inputable) -->
+                     <!-- Mutasi Tab -->
                     <div id="tab-mutasi" class="tab-content hidden">
                         <h4 class="font-bold mb-4">Data Mutasi (Edit Langsung)</h4>
                         <table class="w-full text-sm text-center border rounded">
                             <thead class="bg-slate-100"><tr><th class="p-2">Kelas</th><th>L Masuk</th><th>P Masuk</th><th>L Keluar</th><th>P Keluar</th></tr></thead>
                             <tbody id="adm-list-mutasi"></tbody>
                         </table>
-                        <div class="mt-4 p-2 bg-yellow-50 text-xs text-yellow-800 rounded border border-yellow-200">
-                            Info: Ketik angka langsung di kolom, data otomatis tersimpan di memori sementara.
-                        </div>
                     </div>
 
                     <!-- Galeri Tab -->
@@ -536,7 +539,6 @@
 
     <script>
         // --- 1. DATA DATABASE ASLI (PARSED FROM YOUR CSV) ---
-        // Note: Saya menggunakan fungsi parseCSV sederhana untuk menangani koma dalam tanda kutip.
         
         const CSV_CONFIG = `Key,Value
 NamaSekolah,SD Negeri 04 Taman
@@ -745,7 +747,7 @@ Jadwal Pelajaran,,Akademik`;
                 document.getElementById('footer-ppdb').classList.remove('hidden');
             }
 
-            // Slider
+            // Slider Banner
             const banners = d.galeri.filter(x => x[0] === 'Banner');
             const slider = document.getElementById('banner-slider');
             slider.innerHTML = banners.map((b, i) => `
@@ -772,7 +774,7 @@ Jadwal Pelajaran,,Akademik`;
             }
             document.getElementById('ks-sambutan').innerText = `"${c.SambutanKS}"`;
 
-            // Grid Guru (Exclude KS & Show All in Slider)
+            // SLIDER GURU (SHOW ALL EXCEPT KS)
             const gurus = d.guru.filter(g => !g[5].toLowerCase().includes('kepala'));
             document.getElementById('guru-container').innerHTML = gurus.map(g => `
                 <div class="snap-center shrink-0 w-64 bg-white rounded-xl p-4 text-center shadow-sm border border-slate-100 hover:shadow-md transition">
@@ -802,7 +804,10 @@ Jadwal Pelajaran,,Akademik`;
             document.getElementById('total-pr').innerText = tP;
             document.getElementById('total-rombel').innerText = d.siswa.length;
 
-            new Chart(document.getElementById('genderChart'), {
+            // Bar Chart (Diagram Batang)
+            const ctx = document.getElementById('genderChart');
+            if(window.myChart) window.myChart.destroy(); // Hancurkan chart lama jika ada
+            window.myChart = new Chart(ctx, {
                 type: 'bar',
                 data: { 
                     labels: ['Laki-Laki', 'Perempuan'], 
@@ -810,12 +815,15 @@ Jadwal Pelajaran,,Akademik`;
                         label: 'Jumlah Siswa',
                         data:[tL, tP], 
                         backgroundColor:['#2563eb','#ec4899'], 
-                        borderRadius: 5
+                        borderRadius: 8,
+                        barThickness: 50
                     }] 
                 },
                 options: { 
                     plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true } }
+                    scales: { y: { beginAtZero: true } },
+                    responsive: true,
+                    maintainAspectRatio: false
                 }
             });
 
@@ -864,7 +872,7 @@ Jadwal Pelajaran,,Akademik`;
             }
         }
 
-        // --- GURU SCROLL ---
+        // --- GURU SCROLL CONTROL ---
         function scrollGuru(direction) {
             const container = document.getElementById('guru-container');
             const scrollAmount = 300;
@@ -903,13 +911,16 @@ Jadwal Pelajaran,,Akademik`;
             e.preventDefault();
             const u = e.target.user.value.trim();
             const p = e.target.pass.value.trim();
-            // Fixing string comparison issue by trimming
-            if(u === 'admin' && p === rawData.config.AdminPassword) {
+            
+            // FIXED: Menggunakan key 'Admin' sesuai header CSV, bukan AdminPassword
+            const correctPass = rawData.config.Admin || 'admin123'; 
+            
+            if(u === 'admin' && p === correctPass) {
                 const now = new Date().getTime();
                 localStorage.setItem('admin_session', JSON.stringify({ status: true, time: now }));
                 location.reload();
             } else {
-                alert("Password Salah! Pastikan user: admin dan pass sesuai config.");
+                alert("Password Salah! Coba periksa config.");
             }
         }
 
