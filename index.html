@@ -30,12 +30,8 @@
     <style>
         .glass-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
         html { scroll-behavior: smooth; }
-        
-        /* Admin Controls */
         .admin-only { display: none !important; }
         body.admin-mode .admin-only { display: inline-flex !important; }
-        
-        /* Edit Overlay */
         .editable { position: relative; cursor: pointer; }
         .editable:hover::after {
             content: '✏️ Kelola';
@@ -44,16 +40,10 @@
             color: white; font-weight: bold; font-size: 1.2rem; z-index: 20; border-radius: inherit;
         }
         body.admin-mode .editable:hover::after { display: flex; }
-
-        /* Custom Scrollbar */
         .custom-scroll::-webkit-scrollbar { height: 8px; width: 8px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Loading Spinner */
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans selection:bg-accent selection:text-white">
@@ -74,12 +64,6 @@
                     <a href="#beranda" class="nav-item text-sm font-semibold text-slate-600 hover:text-accent">Beranda</a>
                     <a href="#guru" class="nav-item text-sm font-semibold text-slate-600 hover:text-accent">Guru</a>
                     <a href="#data-siswa" class="nav-item text-sm font-semibold text-slate-600 hover:text-accent">Siswa</a>
-                    <a href="#fasilitas" class="nav-item text-sm font-semibold text-slate-600 hover:text-accent">Fasilitas</a>
-                    
-                    <a href="#" id="btn-lms" target="_blank" class="px-4 py-2 bg-orange-500 text-white text-sm font-bold rounded-lg hover:bg-orange-600 hidden">
-                        <i class="fa-solid fa-laptop-code"></i> LMS
-                    </a>
-
                     <button onclick="handleLoginButton()" id="btn-login" class="w-10 h-10 rounded-full bg-slate-100 hover:bg-accent hover:text-white flex items-center justify-center transition shadow-sm border border-slate-200">
                         <i class="fa-solid fa-lock text-xs"></i>
                     </button>
@@ -97,24 +81,22 @@
         </div>
     </nav>
 
-    <!-- STATUS BAR DIAGNOSTIK -->
+    <!-- STATUS BAR -->
     <div id="db-status" class="fixed bottom-4 left-4 z-[90] bg-white border border-slate-200 shadow-2xl rounded-lg px-4 py-3 text-xs font-medium text-slate-600 flex flex-col gap-1 transition-all w-64">
         <div class="flex items-center gap-2">
             <span class="w-3 h-3 rounded-full bg-yellow-400 animate-pulse" id="db-indicator"></span>
-            <span id="db-text" class="font-bold">Menghubungkan Database...</span>
+            <span id="db-text" class="font-bold">Menghubungkan...</span>
         </div>
-        <div id="db-detail" class="text-[10px] text-slate-400 break-words leading-tight">Sedang mengambil data dari Google Sheets...</div>
-        <button id="btn-retry" onclick="location.reload()" class="hidden mt-2 bg-slate-100 text-accent px-2 py-1.5 rounded border border-slate-200 hover:bg-slate-200 w-full font-bold">Refresh Halaman</button>
+        <div id="db-detail" class="text-[10px] text-slate-400 break-words leading-tight">Menunggu server...</div>
+        <button id="btn-retry" onclick="initApp()" class="hidden mt-2 bg-slate-100 text-accent px-2 py-1.5 rounded border border-slate-200 hover:bg-slate-200 w-full font-bold">Coba Lagi</button>
     </div>
 
     <main class="pt-20">
-        
         <!-- HERO -->
         <section id="beranda" class="relative w-full h-[450px] md:h-[600px] overflow-hidden bg-slate-900 group editable" onclick="if(isAdmin) openAdminModal('config')">
             <div id="hero-background" class="absolute inset-0 bg-cover bg-center transition-all duration-1000" style="background-image: url('https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png');">
                 <div class="absolute inset-0 bg-black/50"></div>
             </div>
-            
             <div class="absolute inset-0 flex items-center justify-center z-20 text-center px-4">
                 <div class="max-w-4xl">
                     <span class="inline-block py-1 px-4 rounded-full bg-white/20 text-white backdrop-blur-md border border-white/30 text-xs font-bold mb-6">OFFICIAL WEBSITE</span>
@@ -123,9 +105,7 @@
                          <p id="running-text-display" class="text-slate-200 text-lg">Selamat Datang...</p>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4 justify-center">
-                        <a href="#spmb-section" id="btn-hero-spmb" class="px-8 py-3 bg-green-500 text-white font-bold rounded-full hover:bg-green-600 shadow-lg shadow-green-500/30">
-                            Info SPMB
-                        </a>
+                        <a href="#spmb-section" id="btn-hero-spmb" class="px-8 py-3 bg-green-500 text-white font-bold rounded-full hover:bg-green-600 shadow-lg shadow-green-500/30">Info SPMB</a>
                     </div>
                 </div>
             </div>
@@ -181,7 +161,6 @@
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-8">
-                    <!-- Rombel -->
                     <div class="bg-white rounded-2xl shadow-sm border p-4 editable" onclick="if(isAdmin) openAdminModal('siswa')">
                          <div class="flex justify-between items-center mb-4">
                             <h4 class="font-bold text-primary">Data Rombel</h4>
@@ -194,7 +173,6 @@
                             </table>
                         </div>
                     </div>
-                    <!-- Mutasi -->
                     <div class="bg-white rounded-2xl shadow-sm border p-4 editable" onclick="if(isAdmin) openAdminModal('mutasi')">
                         <div class="flex justify-between items-center mb-4">
                             <h4 class="font-bold text-primary">Data Mutasi</h4>
@@ -222,12 +200,6 @@
                     <p class="text-slate-500">Pendidik Profesional SDN 4 Taman</p>
                 </div>
                 <div id="guru-container" class="flex gap-6 overflow-x-auto pb-8 px-4 snap-x custom-scroll"></div>
-                
-                <!-- SOTK -->
-                <div id="sotk" class="mt-16 bg-white p-8 rounded-2xl shadow-sm border text-center editable" onclick="if(isAdmin) openAdminModal('galeri')">
-                    <h3 class="text-xl font-bold mb-6">Struktur Organisasi</h3>
-                    <div id="sotk-container" class="flex justify-center"><p class="text-slate-400">Memuat SOTK...</p></div>
-                </div>
             </div>
         </section>
 
@@ -252,14 +224,11 @@
         <!-- SPMB & DOWNLOAD -->
         <section id="spmb-section" class="py-20 bg-blue-50 border-t border-slate-200">
             <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-12">
-                <!-- Downloads -->
                 <div class="md:col-span-1 bg-white p-6 rounded-2xl shadow-sm border h-fit relative">
                     <button onclick="openAdminModal('downloads')" class="admin-only absolute top-2 right-2 text-xs bg-slate-100 px-2 py-1 rounded">Edit</button>
                     <h3 class="font-bold text-primary mb-4 flex items-center border-b pb-2"><i class="fa-solid fa-download mr-2 text-emerald-500"></i> Download Area</h3>
                     <ul id="download-list" class="space-y-3 text-sm"></ul>
                 </div>
-
-                <!-- SPMB -->
                 <div class="md:col-span-2 bg-gradient-to-br from-accent to-blue-600 rounded-2xl p-8 text-white shadow-xl relative overflow-hidden">
                     <div class="relative z-10">
                         <h3 class="font-bold text-3xl mb-2">SPMB Online</h3>
@@ -301,300 +270,131 @@
         </footer>
     </main>
 
-    <!-- === ADMIN DASHBOARD MODAL === -->
+    <!-- ADMIN MODAL -->
     <div id="modal-admin" class="fixed inset-0 bg-black/50 hidden z-[70] flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-xl w-full max-w-6xl h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-            <!-- Header -->
             <div class="p-4 border-b flex justify-between items-center bg-slate-50">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center"><i class="fa-solid fa-user-gear"></i></div>
-                    <h3 class="font-bold text-lg text-primary">Admin Dashboard</h3>
-                </div>
+                <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center"><i class="fa-solid fa-user-gear"></i></div><h3 class="font-bold text-lg text-primary">Admin Dashboard</h3></div>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-red-500 text-xl"><i class="fa-solid fa-times"></i></button>
             </div>
-            
             <div class="flex flex-1 overflow-hidden">
-                <!-- Sidebar -->
                 <div class="w-64 bg-slate-50 border-r p-4 space-y-1 overflow-y-auto hidden md:block">
-                    <button onclick="switchTab('config')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition flex items-center gap-2"><i class="fa-solid fa-cogs w-5"></i> Konfigurasi</button>
-                    <button onclick="switchTab('guru')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition flex items-center gap-2"><i class="fa-solid fa-chalkboard-user w-5"></i> Data Guru</button>
-                    <button onclick="switchTab('siswa')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition flex items-center gap-2"><i class="fa-solid fa-users w-5"></i> Siswa & Mutasi</button>
-                    <button onclick="switchTab('berita')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition flex items-center gap-2"><i class="fa-solid fa-newspaper w-5"></i> Berita</button>
-                    <button onclick="switchTab('fasilitas')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition flex items-center gap-2"><i class="fa-solid fa-building w-5"></i> Fasilitas</button>
-                    <button onclick="switchTab('galeri')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition flex items-center gap-2"><i class="fa-solid fa-images w-5"></i> Galeri & Banner</button>
-                    <button onclick="switchTab('downloads')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition flex items-center gap-2"><i class="fa-solid fa-download w-5"></i> File Download</button>
-                    <button onclick="doLogout()" class="w-full text-left px-4 py-3 rounded-lg text-sm font-bold text-red-600 hover:bg-red-50 mt-8 flex items-center gap-2"><i class="fa-solid fa-sign-out-alt w-5"></i> Logout</button>
+                    <button onclick="switchTab('config')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition">⚙️ Konfigurasi</button>
+                    <button onclick="switchTab('guru')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition">👨‍🏫 Data Guru</button>
+                    <button onclick="switchTab('siswa')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition">🎓 Siswa & Mutasi</button>
+                    <button onclick="switchTab('berita')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition">📰 Berita</button>
+                    <button onclick="switchTab('fasilitas')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition">🏫 Fasilitas</button>
+                    <button onclick="switchTab('galeri')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition">📷 Galeri & Banner</button>
+                    <button onclick="switchTab('downloads')" class="admin-tab w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white hover:shadow-sm transition">📥 File Download</button>
+                    <button onclick="doLogout()" class="w-full text-left px-4 py-3 rounded-lg text-sm font-bold text-red-600 hover:bg-red-50 mt-8">🚪 Logout</button>
                 </div>
-
-                <!-- Content Area -->
                 <div class="flex-1 p-6 overflow-y-auto bg-white" id="modal-content">
-                    
-                    <!-- TAB CONFIG -->
-                    <div id="tab-config" class="tab-content">
-                        <h4 class="font-bold text-xl mb-6 pb-2 border-b">Pengaturan Umum</h4>
-                        <form onsubmit="saveData(event, 'config')" class="grid md:grid-cols-2 gap-6">
-                            <div class="space-y-4">
-                                <h5 class="font-bold text-accent text-sm uppercase">Identitas Sekolah</h5>
-                                <div><label class="label">Nama Sekolah</label><input id="adm-NamaSekolah" class="input-field"></div>
-                                <div><label class="label">Running Text</label><input id="adm-RunningText" class="input-field"></div>
-                                <div><label class="label">Alamat Footer</label><textarea id="adm-Alamat" class="input-field h-24"></textarea></div>
-                                <div><label class="label">Foto Utama (URL)</label><input id="adm-MainImage" class="input-field" placeholder="https://..."></div>
-                            </div>
-                            <div class="space-y-4">
-                                <h5 class="font-bold text-accent text-sm uppercase">Kepala Sekolah & Sosmed</h5>
-                                <div><label class="label">Sambutan KS</label><textarea id="adm-SambutanKS" class="input-field h-24"></textarea></div>
-                                <div><label class="label">Link Facebook</label><input id="adm-Facebook" class="input-field"></div>
-                                <div><label class="label">Link Instagram</label><input id="adm-Instagram" class="input-field"></div>
-                                <div><label class="label">SPMB Status</label>
-                                    <select id="adm-SPMB_Status" class="input-field">
-                                        <option value="Buka">Buka</option><option value="Tutup">Tutup</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-bold mt-4">Simpan Konfigurasi</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- TAB GURU -->
-                    <div id="tab-guru" class="tab-content hidden">
-                        <div class="flex justify-between mb-4">
-                            <h4 class="font-bold text-xl">Data Guru</h4>
-                            <button onclick="openForm('Guru')" class="btn-add">+ Tambah Guru</button>
-                        </div>
-                        <div class="overflow-x-auto border rounded-lg"><table class="w-full text-sm text-left"><thead class="bg-slate-50 border-b"><tr><th class="p-3">Nama</th><th class="p-3">Jabatan</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="list-Guru"></tbody></table></div>
-                    </div>
-
-                    <!-- TAB SISWA -->
-                    <div id="tab-siswa" class="tab-content hidden">
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <div>
-                                <h4 class="font-bold text-lg mb-4">Data Siswa (Per Kelas)</h4>
-                                <table class="w-full text-sm text-center border rounded-lg mb-4">
-                                    <thead class="bg-slate-100"><tr><th class="p-2">Kelas</th><th>L</th><th>P</th></tr></thead>
-                                    <tbody id="list-Siswa"></tbody>
-                                </table>
-                                <button onclick="saveBulk('Siswa')" class="btn-save w-full">Simpan Data Siswa</button>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg mb-4">Data Mutasi</h4>
-                                <table class="w-full text-sm text-center border rounded-lg mb-4">
-                                    <thead class="bg-slate-100"><tr><th class="p-2">Kelas</th><th>L In</th><th>P In</th><th>L Out</th><th>P Out</th></tr></thead>
-                                    <tbody id="list-Mutasi"></tbody>
-                                </table>
-                                <button onclick="saveBulk('Mutasi')" class="btn-save w-full">Simpan Data Mutasi</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TAB BERITA -->
-                    <div id="tab-berita" class="tab-content hidden">
-                        <div class="flex justify-between mb-4">
-                            <h4 class="font-bold text-xl">Berita Sekolah</h4>
-                            <button onclick="openForm('Berita')" class="btn-add">+ Tulis Berita</button>
-                        </div>
-                        <div class="grid grid-cols-1 gap-4" id="list-Berita"></div>
-                    </div>
-
-                    <!-- TAB GALERI -->
-                    <div id="tab-galeri" class="tab-content hidden">
-                         <div class="flex justify-between mb-4">
-                            <h4 class="font-bold text-xl">Galeri, Banner & SOTK</h4>
-                            <button onclick="openForm('Galeri')" class="btn-add">+ Upload Gambar</button>
-                        </div>
-                        <div class="bg-blue-50 p-3 text-sm rounded mb-4">Tips: Untuk Slider Depan pilih tipe <b>Banner</b>. Untuk SOTK, isi judul dengan <b>SOTK</b>.</div>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="list-Galeri"></div>
-                    </div>
-
-                    <!-- TAB FASILITAS -->
-                    <div id="tab-fasilitas" class="tab-content hidden">
-                         <div class="flex justify-between mb-4">
-                            <h4 class="font-bold text-xl">Fasilitas & Ekskul</h4>
-                            <button onclick="openForm('Fasilitas')" class="btn-add">+ Tambah</button>
-                        </div>
-                        <div class="overflow-x-auto border rounded-lg"><table class="w-full text-sm text-left"><thead class="bg-slate-50 border-b"><tr><th class="p-3">Kategori</th><th class="p-3">Nama</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="list-Fasilitas"></tbody></table></div>
-                    </div>
-
-                    <!-- TAB DOWNLOADS -->
-                    <div id="tab-downloads" class="tab-content hidden">
-                        <div class="flex justify-between mb-4">
-                           <h4 class="font-bold text-xl">File Downloads</h4>
-                           <button onclick="openForm('Downloads')" class="btn-add">+ Tambah File</button>
-                       </div>
-                       <div class="overflow-x-auto border rounded-lg"><table class="w-full text-sm text-left"><thead class="bg-slate-50 border-b"><tr><th class="p-3">Nama File</th><th class="p-3">Link</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="list-Downloads"></tbody></table></div>
-                   </div>
-
+                    <div id="tab-config" class="tab-content"><h4 class="font-bold text-xl mb-6 border-b pb-2">Pengaturan Umum</h4><form onsubmit="saveData(event, 'config')" class="grid md:grid-cols-2 gap-6"><div class="space-y-4"><div><label class="label">Nama Sekolah</label><input id="adm-NamaSekolah" class="input-field"></div><div><label class="label">Running Text</label><input id="adm-RunningText" class="input-field"></div><div><label class="label">Alamat</label><textarea id="adm-Alamat" class="input-field h-24"></textarea></div></div><div class="space-y-4"><div><label class="label">Sambutan KS</label><textarea id="adm-SambutanKS" class="input-field h-24"></textarea></div><div><label class="label">Status SPMB</label><select id="adm-SPMB_Status" class="input-field"><option value="Buka">Buka</option><option value="Tutup">Tutup</option></select></div><button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-bold mt-4">Simpan</button></div></form></div>
+                    <div id="tab-guru" class="tab-content hidden"><div class="flex justify-between mb-4"><h4 class="font-bold text-xl">Data Guru</h4><button onclick="openForm('Guru')" class="btn-add">+ Guru</button></div><div class="overflow-x-auto border rounded-lg"><table class="w-full text-sm text-left"><thead class="bg-slate-50 border-b"><tr><th class="p-3">Nama</th><th class="p-3">Jabatan</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="list-Guru"></tbody></table></div></div>
+                    <div id="tab-siswa" class="tab-content hidden"><div class="grid md:grid-cols-2 gap-8"><div><h4 class="font-bold text-lg mb-4">Siswa</h4><table class="w-full text-sm text-center border rounded-lg mb-4"><thead class="bg-slate-100"><tr><th class="p-2">Kelas</th><th>L</th><th>P</th></tr></thead><tbody id="list-Siswa"></tbody></table><button onclick="saveBulk('Siswa')" class="btn-save w-full">Simpan Siswa</button></div><div><h4 class="font-bold text-lg mb-4">Mutasi</h4><table class="w-full text-sm text-center border rounded-lg mb-4"><thead class="bg-slate-100"><tr><th class="p-2">Kelas</th><th>L In</th><th>P In</th><th>L Out</th><th>P Out</th></tr></thead><tbody id="list-Mutasi"></tbody></table><button onclick="saveBulk('Mutasi')" class="btn-save w-full">Simpan Mutasi</button></div></div></div>
+                    <div id="tab-berita" class="tab-content hidden"><div class="flex justify-between mb-4"><h4 class="font-bold text-xl">Berita</h4><button onclick="openForm('Berita')" class="btn-add">+ Berita</button></div><div class="grid grid-cols-1 gap-4" id="list-Berita"></div></div>
+                    <div id="tab-galeri" class="tab-content hidden"><div class="flex justify-between mb-4"><h4 class="font-bold text-xl">Galeri</h4><button onclick="openForm('Galeri')" class="btn-add">+ Upload</button></div><div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="list-Galeri"></div></div>
+                    <div id="tab-fasilitas" class="tab-content hidden"><div class="flex justify-between mb-4"><h4 class="font-bold text-xl">Fasilitas</h4><button onclick="openForm('Fasilitas')" class="btn-add">+ Fasilitas</button></div><div class="overflow-x-auto border rounded-lg"><table class="w-full text-sm text-left"><thead class="bg-slate-50 border-b"><tr><th class="p-3">Nama</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="list-Fasilitas"></tbody></table></div></div>
+                    <div id="tab-downloads" class="tab-content hidden"><div class="flex justify-between mb-4"><h4 class="font-bold text-xl">Download</h4><button onclick="openForm('Downloads')" class="btn-add">+ File</button></div><div class="overflow-x-auto border rounded-lg"><table class="w-full text-sm text-left"><thead class="bg-slate-50 border-b"><tr><th class="p-3">Nama File</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="list-Downloads"></tbody></table></div></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- === UNIVERSAL FORM MODAL === -->
+    <!-- FORM MODAL -->
     <div id="modal-form" class="fixed inset-0 bg-black/60 hidden z-[80] flex items-center justify-center p-4">
         <div class="bg-white rounded-xl w-full max-w-md p-6 shadow-2xl relative">
             <button onclick="closeForm()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500"><i class="fa-solid fa-times"></i></button>
             <h3 id="form-title" class="text-xl font-bold text-primary mb-4">Edit Data</h3>
             <form id="dynamic-form" onsubmit="submitForm(event)" class="space-y-3">
-                <input type="hidden" id="f-id">
-                <input type="hidden" id="f-type">
+                <input type="hidden" id="f-id"><input type="hidden" id="f-type">
                 <div id="form-fields" class="space-y-3"></div>
                 <button type="submit" class="w-full bg-accent text-white font-bold py-3 rounded-lg mt-4 hover:bg-blue-600">Simpan Data</button>
             </form>
         </div>
     </div>
 
-    <!-- LOGIN MODAL -->
-    <div id="modal-login" class="fixed inset-0 bg-black/80 hidden z-[80] flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-sm w-full p-6 relative">
-            <button onclick="document.getElementById('modal-login').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-times"></i></button>
-            <h3 class="text-xl font-bold text-primary mb-4">Login Admin</h3>
-            <form onsubmit="doLogin(event)">
-                <input type="text" name="user" placeholder="Username" class="input-field mb-3" required>
-                <input type="password" name="pass" placeholder="Password" class="input-field mb-4" required>
-                <button type="submit" class="w-full bg-primary text-white font-bold py-3 rounded-lg">Masuk</button>
-            </form>
-        </div>
-    </div>
+    <!-- LOGIN & SPMB MODALS -->
+    <div id="modal-login" class="fixed inset-0 bg-black/80 hidden z-[80] flex items-center justify-center p-4"><div class="bg-white rounded-xl max-w-sm w-full p-6 relative"><button onclick="document.getElementById('modal-login').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-times"></i></button><h3 class="text-xl font-bold text-primary mb-4">Login Admin</h3><form onsubmit="doLogin(event)"><input type="text" name="user" placeholder="Username" class="input-field mb-3" required><input type="password" name="pass" placeholder="Password" class="input-field mb-4" required><button type="submit" class="w-full bg-primary text-white font-bold py-3 rounded-lg">Masuk</button></form></div></div>
+    <div id="modal-spmb" class="fixed inset-0 bg-black/80 hidden z-[90] flex items-center justify-center p-4"><div class="bg-white rounded-xl max-w-md w-full p-6 relative"><button onclick="document.getElementById('modal-spmb').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-times"></i></button><h3 class="text-xl font-bold text-primary mb-1">Formulir SPMB</h3><form onsubmit="kirimSPMB(event)" class="space-y-3"><input type="text" name="nama" placeholder="Nama Lengkap" class="input-field" required><input type="text" name="nik" placeholder="NIK" class="input-field" required><input type="text" name="hp" placeholder="No WA" class="input-field" required><button type="submit" class="w-full bg-green-500 text-white font-bold py-3 rounded hover:bg-green-600">Kirim</button></form></div></div>
 
-    <!-- SPMB FORM -->
-    <div id="modal-spmb" class="fixed inset-0 bg-black/80 hidden z-[90] flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-md w-full p-6 relative">
-            <button onclick="document.getElementById('modal-spmb').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-times"></i></button>
-            <h3 class="text-xl font-bold text-primary mb-1">Formulir SPMB</h3>
-            <p class="text-sm text-slate-500 mb-4">Data Calon Murid Baru</p>
-            <form onsubmit="kirimSPMB(event)" class="space-y-3">
-                <input type="text" name="nama" placeholder="Nama Lengkap Siswa" class="input-field" required>
-                <input type="text" name="nik" placeholder="NIK" class="input-field" required>
-                <input type="text" name="hp" placeholder="No HP Orang Tua (WA)" class="input-field" required>
-                <button type="submit" class="w-full bg-green-500 text-white font-bold py-3 rounded hover:bg-green-600">Kirim Pendaftaran</button>
-            </form>
-        </div>
-    </div>
-
-    <style>
-        .input-field { width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; font-size: 0.875rem; }
-        .label { font-size: 0.75rem; font-weight: 700; color: #64748b; margin-bottom: 0.25rem; display: block; }
-        .btn-add { background: #2563eb; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; }
-        .btn-save { background: #0f172a; color: white; padding: 0.5rem; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; }
-        .action-btn { padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; margin: 0 0.1rem; }
-    </style>
+    <style>.input-field{width:100%;padding:0.5rem;border:1px solid #cbd5e1;border-radius:0.5rem}.label{font-size:0.75rem;font-weight:700;color:#64748b}.btn-add{background:#2563eb;color:white;padding:0.5rem 1rem;border-radius:0.5rem;font-size:0.875rem}.btn-save{background:#0f172a;color:white;padding:0.5rem;border-radius:0.5rem;font-weight:600;font-size:0.875rem}.action-btn{padding:0.25rem 0.5rem;border-radius:0.25rem;font-size:0.75rem;margin:0 0.1rem}</style>
 
     <script>
-        // =========================================================================================
-        // PENTING: GANTI URL DI BAWAH INI DENGAN URL 'WEB APP' BARU DARI GOOGLE APPS SCRIPT ANDA
-        // CARANYA: DEPLOY -> NEW DEPLOYMENT -> WEB APP -> ACCESS: ANYONE -> COPY URL
-        // =========================================================================================
+        // ===========================================
+        // GANTI URL DI BAWAH DENGAN URL DEPLOY TERBARU ANDA
+        // ===========================================
         const API_URL = "https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec"; 
         
+        // DATA CADANGAN (OFFLINE)
+        const FALLBACK_DATA = {
+            config: { NamaSekolah: "SDN 4 Taman", RunningText: "Selamat Datang (Mode Offline - Database belum terhubung)" },
+            guru: [["1","u","p","Tentrem Lestari, S.Pd.","123","Kepala Sekolah","",""]],
+            siswa: [["Kelas 1",10,10],["Kelas 6",15,12]],
+            berita: [["1","Website Sedang Maintenance","01/01/2026","Mohon maaf database sedang tidak merespon.",""]],
+            galeri: [["1","Banner","Banner 1","https://via.placeholder.com/800x400"]],
+            fasilitas: [], downloads: [], mutasi: []
+        };
+
         let rawData = {}; 
         let isAdmin = false;
 
-        // INIT
-        window.onload = function() {
-            initApp();
-            startBannerScroll();
-        };
+        window.onload = function() { initApp(); startBannerScroll(); };
 
         async function initApp() {
             const statusEl = document.getElementById('db-text');
-            const detailEl = document.getElementById('db-detail');
             const indicatorEl = document.getElementById('db-indicator');
-            const btnRetry = document.getElementById('btn-retry');
-
-            // Reset Status UI
-            indicatorEl.className = "w-3 h-3 rounded-full bg-yellow-400 animate-pulse";
-            statusEl.innerText = "Menghubungkan...";
-            detailEl.innerText = "Mengontak Google Script...";
-            btnRetry.classList.add('hidden');
+            const detailEl = document.getElementById('db-detail');
 
             try {
-                // Timeout 15 detik jika script tidur
+                // Timeout 7 detik: Jika kelamaan, langsung pakai data offline
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 15000);
+                const timeoutId = setTimeout(() => controller.abort(), 7000);
 
                 const res = await fetch(API_URL + '?action=getPublicData', { signal: controller.signal });
                 clearTimeout(timeoutId);
-
-                // Cek apakah respon HTML (Biasanya Error Permission/Google Login)
-                const contentType = res.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") === -1) {
-                    const text = await res.text();
-                    if(text.includes("Google Accounts") || text.includes("Sign in")) {
-                        throw new Error("Izin Script Ditolak. Pastikan Deploy sebagai 'Anyone' (Siapa Saja)!");
-                    } else {
-                        throw new Error("Respon server bukan JSON. Cek Deployment URL.");
-                    }
-                }
-
+                
                 const json = await res.json();
                 
                 if(json.status === 'success') {
-                    // SUKSES
                     rawData = json;
                     renderPublicUI(rawData);
-                    
                     indicatorEl.className = "w-3 h-3 rounded-full bg-green-500";
-                    statusEl.innerText = "Terhubung";
-                    detailEl.innerText = "Data berhasil dimuat.";
-                    
-                    // Sembunyikan status setelah 2 detik
-                    setTimeout(() => {
-                        document.getElementById('db-status').classList.add('opacity-0', 'pointer-events-none');
-                    }, 2000);
-
-                } else { 
-                    throw new Error(json.message || "Gagal memuat data"); 
-                }
+                    statusEl.innerText = "Online";
+                    detailEl.innerText = "";
+                    setTimeout(() => document.getElementById('db-status').classList.add('opacity-0'), 2000);
+                } else { throw new Error(json.message); }
 
             } catch(e) {
-                // ERROR HANDLING
-                console.error(e);
-                indicatorEl.className = "w-3 h-3 rounded-full bg-red-500";
-                statusEl.innerText = "Gagal Terhubung";
+                console.log("Menggunakan Data Offline:", e);
+                // Gagal connect? Pakai FALLBACK DATA agar tidak blank!
+                rawData = FALLBACK_DATA;
+                renderPublicUI(FALLBACK_DATA);
                 
-                if(e.name === 'AbortError') {
-                    detailEl.innerText = "Koneksi Timeout. Server Google sibuk.";
-                } else {
-                    detailEl.innerText = e.message;
-                }
-                btnRetry.classList.remove('hidden');
-                document.getElementById('db-status').classList.remove('opacity-0', 'pointer-events-none');
+                indicatorEl.className = "w-3 h-3 rounded-full bg-red-500";
+                statusEl.innerText = "Mode Offline";
+                detailEl.innerText = "Gagal koneksi server. Menampilkan data arsip.";
             }
         }
 
-        // --- RENDER UI PUBLIK ---
+        // --- RENDER LOGIC ---
         function renderPublicUI(d) {
             const c = d.config || {};
-            // Text Config
             setText('nav-nama-sekolah', c.NamaSekolah);
-            setText('footer-nama', c.NamaSekolah);
             setText('hero-title', c.NamaSekolah ? c.NamaSekolah.toUpperCase() : null);
             setText('running-text-display', c.RunningText);
-            setText('footer-alamat', c.Alamat);
             setText('ks-sambutan', c.SambutanKS ? `"${c.SambutanKS}"` : null);
             
-            // Images
-            if(c.MainImage) document.getElementById('hero-background').style.backgroundImage = `url('${c.MainImage}')`;
-            
-            // Guru (Public)
             const gurus = (d.guru || []).filter(g => !String(g[5]).toLowerCase().includes('kepala'));
             const ks = (d.guru || []).find(g => String(g[5]).toLowerCase().includes('kepala'));
-            
-            if(ks) {
-                setText('ks-nama', ks[3]);
-                if(ks[7]) document.getElementById('ks-foto').src = ks[7];
-            }
+            if(ks) { setText('ks-nama', ks[3]); if(ks[7]) document.getElementById('ks-foto').src = ks[7]; }
             
             document.getElementById('guru-container').innerHTML = gurus.map(g => `
                 <div class="snap-center shrink-0 w-64 bg-white rounded-xl p-4 text-center shadow-sm border border-slate-100">
-                    <div class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-3 bg-slate-100">
-                        <img src="${g[7] || 'https://via.placeholder.com/150'}" class="w-full h-full object-cover">
-                    </div>
-                    <h5 class="font-bold text-sm text-primary truncate">${g[3]}</h5>
-                    <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-500">${g[5]}</span>
-                </div>
-            `).join('');
+                    <div class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-3 bg-slate-100"><img src="${g[7] || 'https://via.placeholder.com/150'}" class="w-full h-full object-cover"></div>
+                    <h5 class="font-bold text-sm text-primary truncate">${g[3]}</h5><span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-500">${g[5]}</span>
+                </div>`).join('');
 
-            // Siswa
             let tL=0, tP=0;
             document.getElementById('siswa-tbody').innerHTML = (d.siswa||[]).map(s => {
                 const l=parseInt(s[1])||0, p=parseInt(s[2])||0; tL+=l; tP+=p;
@@ -602,359 +402,81 @@
             }).join('');
             setText('total-siswa', tL+tP); setText('total-lk', tL); setText('total-pr', tP);
 
-            // Mutasi
-            document.getElementById('mutasi-tbody').innerHTML = (d.mutasi||[]).map(m => `
-                <tr><td class="p-2 border-r text-left">${m[0]}</td><td class="bg-green-50 text-green-700 font-bold border-r">${m[1]||0}</td><td class="bg-green-50 text-green-700 font-bold border-r">${m[2]||0}</td><td class="bg-red-50 text-red-700 font-bold border-r">${m[3]||0}</td><td class="bg-red-50 text-red-700 font-bold">${m[4]||0}</td></tr>
-            `).join('');
-
-            // Berita
-            document.getElementById('berita-list').innerHTML = (d.berita||[]).slice(0,4).map(b => `
-                <div class="bg-white p-4 rounded-xl shadow-sm border">
-                    <div class="flex gap-4">
-                        <img src="${b[4] || 'https://via.placeholder.com/100'}" class="w-20 h-20 rounded object-cover bg-slate-200 shrink-0">
-                        <div>
-                            <span class="text-xs text-accent font-bold">${b[2] || '-'}</span>
-                            <h4 class="font-bold mt-1 line-clamp-2">${b[1]}</h4>
-                            <p class="text-xs text-slate-500 mt-1 line-clamp-2">${b[3]}</p>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            // Fasilitas
-            document.getElementById('fasilitas-grid').innerHTML = (d.fasilitas||[]).map(f => `
-                <div class="bg-white p-4 rounded-xl shadow-sm border flex items-center gap-3">
-                    <img src="${f[3]||'https://via.placeholder.com/50'}" class="w-10 h-10 rounded object-cover bg-slate-100">
-                    <div class="text-left"><h5 class="font-bold text-sm">${f[2]}</h5><p class="text-xs text-slate-400">${f[1]}</p></div>
-                </div>
-            `).join('');
-
-            // Downloads
-            document.getElementById('download-list').innerHTML = (d.downloads||[]).map(f => `
-                <li class="flex items-center gap-2 border-b pb-2 last:border-0"><i class="fa-solid fa-file-pdf text-red-500"></i> <a href="${f[3]}" target="_blank" class="text-slate-600 hover:text-accent font-medium flex-1 truncate">${f[1]}</a></li>
-            `).join('');
-
-            // Galeri / Banner / SOTK
-            const sotk = (d.galeri||[]).find(g => String(g[2]).toLowerCase().includes('sotk'));
-            if(sotk && sotk[3]) document.getElementById('sotk-container').innerHTML = `<img src="${sotk[3]}" class="w-full rounded-lg shadow">`;
-
+            document.getElementById('mutasi-tbody').innerHTML = (d.mutasi||[]).map(m => `<tr><td class="p-2 border-r text-left">${m[0]}</td><td class="bg-green-50 text-green-700 font-bold border-r">${m[1]||0}</td><td class="bg-green-50 text-green-700 font-bold border-r">${m[2]||0}</td><td class="bg-red-50 text-red-700 font-bold border-r">${m[3]||0}</td><td class="bg-red-50 text-red-700 font-bold">${m[4]||0}</td></tr>`).join('');
+            document.getElementById('berita-list').innerHTML = (d.berita||[]).slice(0,4).map(b => `<div class="bg-white p-4 rounded-xl shadow-sm border"><div class="flex gap-4"><img src="${b[4] || 'https://via.placeholder.com/100'}" class="w-20 h-20 rounded object-cover bg-slate-200 shrink-0"><div><span class="text-xs text-accent font-bold">${b[2] || '-'}</span><h4 class="font-bold mt-1 line-clamp-2">${b[1]}</h4><p class="text-xs text-slate-500 mt-1 line-clamp-2">${b[3]}</p></div></div></div>`).join('');
+            document.getElementById('fasilitas-grid').innerHTML = (d.fasilitas||[]).map(f => `<div class="bg-white p-4 rounded-xl shadow-sm border flex items-center gap-3"><img src="${f[3]||'https://via.placeholder.com/50'}" class="w-10 h-10 rounded object-cover bg-slate-100"><div class="text-left"><h5 class="font-bold text-sm">${f[2]}</h5><p class="text-xs text-slate-400">${f[1]}</p></div></div>`).join('');
+            document.getElementById('download-list').innerHTML = (d.downloads||[]).map(f => `<li class="flex items-center gap-2 border-b pb-2 last:border-0"><i class="fa-solid fa-file-pdf text-red-500"></i> <a href="${f[3]}" target="_blank" class="text-slate-600 hover:text-accent font-medium flex-1 truncate">${f[1]}</a></li>`).join('');
+            
             const banners = (d.galeri||[]).filter(g => String(g[1]).toLowerCase() === 'banner');
-            document.getElementById('banner-track').innerHTML = banners.length ? banners.map(b => `
-                 <div class="shrink-0 snap-center w-[300px] h-[180px] rounded-xl overflow-hidden relative group">
-                    <img src="${b[3]}" class="w-full h-full object-cover">
-                    <div class="absolute bottom-0 w-full bg-black/50 p-2 text-white text-xs truncate">${b[2]}</div>
-                 </div>`).join('') : '<div class="w-full text-center text-white/50 py-4">Belum ada banner</div>';
-
-            // SPMB
-            const status = c.SPMB_Status || 'Tutup';
+            document.getElementById('banner-track').innerHTML = banners.length ? banners.map(b => `<div class="shrink-0 snap-center w-[300px] h-[180px] rounded-xl overflow-hidden relative group"><img src="${b[3]}" class="w-full h-full object-cover"><div class="absolute bottom-0 w-full bg-black/50 p-2 text-white text-xs truncate">${b[2]}</div></div>`).join('') : '<div class="w-full text-center text-white/50 py-4">Belum ada banner</div>';
+            
             const badge = document.getElementById('spmb-status-badge');
-            badge.innerText = status === 'Buka' ? '✅ PENDAFTARAN DIBUKA' : '⛔ DITUTUP';
-            badge.className = `px-4 py-1 rounded-full text-xs font-bold uppercase ${status === 'Buka' ? 'bg-green-500' : 'bg-red-500'} text-white`;
+            const st = c.SPMB_Status || 'Tutup';
+            badge.innerText = st === 'Buka' ? '✅ DIBUKA' : '⛔ DITUTUP'; badge.className = `px-4 py-1 rounded-full text-xs font-bold uppercase ${st === 'Buka' ? 'bg-green-500' : 'bg-red-500'} text-white`;
         }
 
         function setText(id, val) { if(val && document.getElementById(id)) document.getElementById(id).innerText = val; }
 
-        // --- ADMIN & CRUD LOGIC ---
-        async function doLogin(e) {
-            e.preventDefault();
-            const u = e.target.user.value;
-            const p = e.target.pass.value;
-            try {
-                const res = await fetch(`${API_URL}?action=login&user=${u}&pass=${p}`);
-                const json = await res.json();
-                if(json.status === 'success') {
-                    isAdmin = true;
-                    document.body.classList.add('admin-mode');
-                    document.getElementById('modal-login').classList.add('hidden');
-                    alert("Login Berhasil!");
-                } else { alert("Password Salah"); }
-            } catch(e) { alert("Error Login: " + e.message); }
+        // --- ADMIN & CRUD ---
+        async function doLogin(e) { e.preventDefault();
+            const u = e.target.user.value; const p = e.target.pass.value;
+            try { const res = await fetch(`${API_URL}?action=login&user=${u}&pass=${p}`); const json = await res.json();
+                if(json.status === 'success') { isAdmin=true; document.body.classList.add('admin-mode'); document.getElementById('modal-login').classList.add('hidden'); } else alert("Password Salah");
+            } catch(e) { alert("Offline Mode: Login Gagal"); }
         }
-
         function doLogout() { location.reload(); }
         function openAdminModal(tab) { document.getElementById('modal-admin').classList.remove('hidden'); switchTab(tab); }
         function closeModal() { document.getElementById('modal-admin').classList.add('hidden'); }
+        function switchTab(tab) { document.querySelectorAll('.tab-content').forEach(el=>el.classList.add('hidden')); document.getElementById(`tab-${tab}`).classList.remove('hidden'); renderAdminData(tab); }
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`tab-${tab}`).classList.remove('hidden');
-            renderAdminData(tab);
-        }
-
-        // --- RENDER DATA DI ADMIN ---
         function renderAdminData(tab) {
-            // Render Config
-            if(tab === 'config') {
-                const c = rawData.config || {};
-                Object.keys(c).forEach(k => {
-                    const el = document.getElementById(`adm-${k}`);
-                    if(el) el.value = c[k];
-                });
+            if(tab==='config') { const c = rawData.config||{}; Object.keys(c).forEach(k=>{ const el=document.getElementById(`adm-${k}`); if(el) el.value=c[k]; }); }
+            if(tab==='guru') document.getElementById('list-Guru').innerHTML = (rawData.guru||[]).map(i=>`<tr class="border-b"><td class="p-3">${i[3]}<br><span class="text-xs text-slate-400">${i[5]}</span></td><td class="p-3 text-center"><button onclick='openForm("Guru", ${JSON.stringify(i)})' class="action-btn bg-yellow-400">✏️</button> <button onclick='deleteItem("Guru","${i[0]}")' class="action-btn bg-red-500">🗑️</button></td></tr>`).join('');
+            if(tab==='siswa') {
+                document.getElementById('list-Siswa').innerHTML=(rawData.siswa||[]).map((s,i)=>`<tr><td class="p-2 border">${s[0]}</td><td class="p-1 border"><input value="${s[1]}" id="sis-l-${i}" class="w-12 text-center border"></td><td class="p-1 border"><input value="${s[2]}" id="sis-p-${i}" class="w-12 text-center border"></td></tr>`).join('');
+                document.getElementById('list-Mutasi').innerHTML=(rawData.mutasi||[]).map((m,i)=>`<tr><td class="p-2 border">${m[0]}</td><td class="p-1 border"><input value="${m[1]}" id="mut-1-${i}" class="w-8 border"></td><td class="p-1 border"><input value="${m[2]}" id="mut-2-${i}" class="w-8 border"></td><td class="p-1 border"><input value="${m[3]}" id="mut-3-${i}" class="w-8 border"></td><td class="p-1 border"><input value="${m[4]}" id="mut-4-${i}" class="w-8 border"></td></tr>`).join('');
             }
-            // Render Guru
-            if(tab === 'guru') {
-                const tbody = document.getElementById('list-Guru');
-                tbody.innerHTML = (rawData.guru||[]).map(item => `
-                    <tr class="border-b hover:bg-slate-50">
-                        <td class="p-3">${item[3]}</td>
-                        <td class="p-3 text-slate-500 text-xs">${item[5]}</td>
-                        <td class="p-3 text-center">
-                            <button onclick='openForm("Guru", ${JSON.stringify(item)})' class="action-btn bg-yellow-400 text-white"><i class="fa-solid fa-pen"></i></button>
-                            <button onclick='deleteItem("Guru", "${item[0]}")' class="action-btn bg-red-500 text-white"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-            // Render Siswa (Bulk Input)
-            if(tab === 'siswa') {
-                const sBody = document.getElementById('list-Siswa');
-                sBody.innerHTML = (rawData.siswa||[]).map((s,i) => `
-                    <tr><td class="p-2 border font-bold bg-slate-50">${s[0]}</td>
-                    <td class="p-1 border"><input value="${s[1]}" id="sis-l-${i}" class="w-12 text-center border rounded"></td>
-                    <td class="p-1 border"><input value="${s[2]}" id="sis-p-${i}" class="w-12 text-center border rounded"></td></tr>
-                `).join('');
-                
-                const mBody = document.getElementById('list-Mutasi');
-                mBody.innerHTML = (rawData.mutasi||[]).map((m,i) => `
-                    <tr><td class="p-2 border font-bold bg-slate-50">${m[0]}</td>
-                    <td class="p-1 border"><input value="${m[1]}" id="mut-1-${i}" class="w-8 text-center border rounded bg-green-50"></td>
-                    <td class="p-1 border"><input value="${m[2]}" id="mut-2-${i}" class="w-8 text-center border rounded bg-green-50"></td>
-                    <td class="p-1 border"><input value="${m[3]}" id="mut-3-${i}" class="w-8 text-center border rounded bg-red-50"></td>
-                    <td class="p-1 border"><input value="${m[4]}" id="mut-4-${i}" class="w-8 text-center border rounded bg-red-50"></td></tr>
-                `).join('');
-            }
-            // Render Berita
-            if(tab === 'berita') {
-                document.getElementById('list-Berita').innerHTML = (rawData.berita||[]).map(b => `
-                    <div class="border rounded-lg p-3 flex justify-between items-center bg-slate-50">
-                        <div><h5 class="font-bold text-sm">${b[1]}</h5><p class="text-xs text-slate-400">${b[2]}</p></div>
-                        <div class="flex">
-                            <button onclick='openForm("Berita", ${JSON.stringify(b)})' class="action-btn bg-yellow-400 text-white"><i class="fa-solid fa-pen"></i></button>
-                            <button onclick='deleteItem("Berita", "${b[0]}")' class="action-btn bg-red-500 text-white"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>`).join('');
-            }
-            // Render Galeri
-            if(tab === 'galeri') {
-                document.getElementById('list-Galeri').innerHTML = (rawData.galeri||[]).map(g => `
-                    <div class="relative group border rounded overflow-hidden h-32">
-                        <img src="${g[3]}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/60 hidden group-hover:flex flex-col items-center justify-center text-white">
-                            <span class="text-xs mb-2">${g[1]}</span>
-                            <div>
-                                <button onclick='openForm("Galeri", ${JSON.stringify(g)})' class="bg-yellow-400 p-1 rounded text-xs"><i class="fa-solid fa-pen"></i></button>
-                                <button onclick='deleteItem("Galeri", "${g[0]}")' class="bg-red-500 p-1 rounded text-xs"><i class="fa-solid fa-trash"></i></button>
-                            </div>
-                        </div>
-                    </div>`).join('');
-            }
-            // Render Fasilitas
-            if(tab === 'fasilitas') {
-                document.getElementById('list-Fasilitas').innerHTML = (rawData.fasilitas||[]).map(f => `
-                    <tr class="border-b"><td class="p-3">${f[1]}</td><td class="p-3 font-bold">${f[2]}</td>
-                    <td class="p-3 text-center"><button onclick='openForm("Fasilitas", ${JSON.stringify(f)})' class="action-btn bg-yellow-400 text-white"><i class="fa-solid fa-pen"></i></button><button onclick='deleteItem("Fasilitas", "${f[0]}")' class="action-btn bg-red-500 text-white"><i class="fa-solid fa-trash"></i></button></td></tr>
-                `).join('');
-            }
-             // Render Downloads
-             if(tab === 'downloads') {
-                document.getElementById('list-Downloads').innerHTML = (rawData.downloads||[]).map(d => `
-                    <tr class="border-b"><td class="p-3">${d[1]}</td><td class="p-3 text-blue-500 truncate max-w-[150px]">${d[3]}</td>
-                    <td class="p-3 text-center"><button onclick='openForm("Downloads", ${JSON.stringify(d)})' class="action-btn bg-yellow-400 text-white"><i class="fa-solid fa-pen"></i></button><button onclick='deleteItem("Downloads", "${d[0]}")' class="action-btn bg-red-500 text-white"><i class="fa-solid fa-trash"></i></button></td></tr>
-                `).join('');
-            }
+            if(tab==='berita') document.getElementById('list-Berita').innerHTML = (rawData.berita||[]).map(b=>`<div class="border rounded p-2 flex justify-between"><div><b>${b[1]}</b><br><small>${b[2]}</small></div><div><button onclick='openForm("Berita",${JSON.stringify(b)})' class="action-btn bg-yellow-400">✏️</button><button onclick='deleteItem("Berita","${b[0]}")' class="action-btn bg-red-500">🗑️</button></div></div>`).join('');
+            if(tab==='galeri') document.getElementById('list-Galeri').innerHTML = (rawData.galeri||[]).map(g=>`<div class="border rounded p-1 text-center"><img src="${g[3]}" class="h-20 w-full object-cover mb-1"><button onclick='deleteItem("Galeri","${g[0]}")' class="text-xs text-red-500">Hapus</button></div>`).join('');
+            if(tab==='fasilitas') document.getElementById('list-Fasilitas').innerHTML = (rawData.fasilitas||[]).map(f=>`<tr class="border-b"><td class="p-3">${f[2]}</td><td class="p-3 text-center"><button onclick='openForm("Fasilitas", ${JSON.stringify(f)})' class="action-btn bg-yellow-400">✏️</button> <button onclick='deleteItem("Fasilitas","${f[0]}")' class="action-btn bg-red-500">🗑️</button></td></tr>`).join('');
+            if(tab==='downloads') document.getElementById('list-Downloads').innerHTML = (rawData.downloads||[]).map(d=>`<tr class="border-b"><td class="p-3">${d[1]}</td><td class="p-3 text-center"><button onclick='openForm("Downloads", ${JSON.stringify(d)})' class="action-btn bg-yellow-400">✏️</button> <button onclick='deleteItem("Downloads","${d[0]}")' class="action-btn bg-red-500">🗑️</button></td></tr>`).join('');
         }
 
-        // --- FORM LOGIC (DINAMIS) ---
-        function openForm(type, data = null) {
-            document.getElementById('modal-form').classList.remove('hidden');
-            document.getElementById('form-title').innerText = data ? `Edit ${type}` : `Tambah ${type}`;
-            document.getElementById('f-type').value = type;
-            document.getElementById('f-id').value = data ? data[0] : `ID-${Date.now()}`; // Auto Gen ID
+        // --- FORM & SAVE ---
+        function openForm(type, d=null) {
+            document.getElementById('modal-form').classList.remove('hidden'); document.getElementById('f-type').value=type; document.getElementById('f-id').value=d?d[0]:`ID-${Date.now()}`;
+            const c = document.getElementById('form-fields'); c.innerHTML='';
+            const inp = (l,n,v,t='text')=> t==='tx'?`<div><label class="label">${l}</label><textarea name="${n}" class="input-field h-24">${v||''}</textarea></div>` : `<div><label class="label">${l}</label><input name="${n}" value="${v||''}" class="input-field"></div>`;
             
-            const container = document.getElementById('form-fields');
-            container.innerHTML = '';
-
-            const createInp = (lbl, name, val, ph='', type='text') => {
-                if(type === 'textarea') return `<div><label class="label">${lbl}</label><textarea name="${name}" class="input-field h-24">${val||''}</textarea></div>`;
-                if(type === 'select') return `<div><label class="label">${lbl}</label><select name="${name}" class="input-field">${val}</select></div>`;
-                return `<div><label class="label">${lbl}</label><input name="${name}" value="${val||''}" placeholder="${ph}" class="input-field"></div>`;
-            };
-
-            if(type === 'Guru') {
-                // 0:ID, 1:User, 2:Pass, 3:Nama, 4:NIP, 5:Jabatan, 6:Email, 7:Foto
-                container.innerHTML += createInp("Nama Lengkap", "f3", data?.[3]);
-                container.innerHTML += createInp("NIP", "f4", data?.[4]);
-                container.innerHTML += createInp("Jabatan", "f5", data?.[5], "Contoh: Guru Kelas 1A");
-                container.innerHTML += createInp("URL Foto", "f7", data?.[7], "https://...");
-            } else if(type === 'Berita') {
-                // 0:ID, 1:Judul, 2:Tgl, 3:Isi, 4:Foto
-                container.innerHTML += createInp("Judul Berita", "f1", data?.[1]);
-                container.innerHTML += createInp("Isi Berita", "f3", data?.[3], "", "textarea");
-                container.innerHTML += createInp("URL Foto", "f4", data?.[4]);
-            } else if(type === 'Galeri') {
-                 // 0:ID, 1:Tipe, 2:Judul, 3:Link
-                const opts = `<option value="Foto" ${data?.[1]=='Foto'?'selected':''}>Foto Biasa</option><option value="Banner" ${data?.[1]=='Banner'?'selected':''}>Banner Slider</option>`;
-                container.innerHTML += createInp("Tipe", "f1", opts, "", "select");
-                container.innerHTML += createInp("Judul/Keterangan", "f2", data?.[2]);
-                container.innerHTML += createInp("URL Gambar", "f3", data?.[3]);
-            } else if(type === 'Fasilitas') {
-                // 0:ID, 1:Kategori, 2:Nama, 3:Foto
-                container.innerHTML += createInp("Kategori", "f1", data?.[1], "Sapras / Ekstrakulikuler");
-                container.innerHTML += createInp("Nama Fasilitas", "f2", data?.[2]);
-                container.innerHTML += createInp("URL Foto/Ikon", "f3", data?.[3]);
-            } else if(type === 'Downloads') {
-                // 0:ID, 1:Nama, 2:Kategori, 3:Link
-                container.innerHTML += createInp("Nama File", "f1", data?.[1]);
-                container.innerHTML += createInp("Link Download", "f3", data?.[3]);
-                container.innerHTML += createInp("Kategori", "f2", data?.[2], "Umum");
-            }
+            if(type==='Guru') c.innerHTML = inp("Nama","f3",d?.[3])+inp("NIP","f4",d?.[4])+inp("Jabatan","f5",d?.[5])+inp("Foto URL","f7",d?.[7]);
+            if(type==='Berita') c.innerHTML = inp("Judul","f1",d?.[1])+inp("Isi","f3",d?.[3],'tx')+inp("Foto URL","f4",d?.[4]);
+            if(type==='Galeri') c.innerHTML = `<div><label class="label">Tipe</label><select name="f1" class="input-field"><option value="Foto">Foto</option><option value="Banner">Banner Slider</option></select></div>`+inp("Judul","f2",d?.[2])+inp("URL","f3",d?.[3]);
+            if(type==='Fasilitas'||type==='Downloads') c.innerHTML = inp("Kategori","f1",d?.[1])+inp("Nama","f2",d?.[2])+inp("URL/Link","f3",d?.[3]);
         }
-
         function closeForm() { document.getElementById('modal-form').classList.add('hidden'); }
 
-        async function submitForm(e) {
-            e.preventDefault();
-            const form = e.target;
-            const type = form.querySelector('#f-type').value;
-            const id = form.querySelector('#f-id').value;
-            
-            // Susun Data Array berdasarkan Tipe
-            let newData = [];
-            if(type === 'Guru') {
-                newData = [id, "user", "pass", form.f3.value, form.f4.value, form.f5.value, "", form.f7.value];
-            } else if(type === 'Berita') {
-                const tgl = new Date().toLocaleDateString('id-ID');
-                newData = [id, form.f1.value, tgl, form.f3.value, form.f4.value];
-            } else if(type === 'Galeri') {
-                newData = [id, form.f1.value, form.f2.value, form.f3.value];
-            } else if(type === 'Fasilitas') {
-                newData = [id, form.f1.value, form.f2.value, form.f3.value];
-            } else if(type === 'Downloads') {
-                newData = [id, form.f1.value, form.f2.value, form.f3.value];
-            }
-
-            const btn = form.querySelector('button');
-            const originalText = btn.innerText;
-            btn.innerText = "Menyimpan...";
-            btn.disabled = true;
-            
-            await sendToBackend({ action: 'saveGeneral', sheet: type, id: id, data: newData });
-            closeForm();
-            btn.innerText = originalText;
-            btn.disabled = false;
-            refreshData();
+        async function submitForm(e) { e.preventDefault(); const f=e.target, t=f.querySelector('#f-type').value, id=f.querySelector('#f-id').value;
+            let d=[];
+            if(t==='Guru') d=[id,"u","p",f.f3.value,f.f4.value,f.f5.value,"",f.f7.value];
+            if(t==='Berita') d=[id,f.f1.value,new Date().toLocaleDateString(),f.f3.value,f.f4.value];
+            if(t==='Galeri') d=[id,f.f1.value,f.f2.value,f.f3.value];
+            if(t==='Fasilitas'||t==='Downloads') d=[id,f.f1.value,f.f2.value,f.f3.value];
+            await send({action:'saveGeneral', sheet:t, id:id, data:d}); closeForm(); refreshData();
         }
-
-        // --- SAVE FUNCTIONS ---
-        async function saveData(e, type) {
-            e.preventDefault();
-            if(type === 'config') {
-                const data = {};
-                document.querySelectorAll('[id^="adm-"]').forEach(el => {
-                    const key = el.id.replace('adm-', '');
-                    data[key] = el.value;
-                });
-                await sendToBackend({ action: 'saveConfig', data: data });
-            }
+        async function saveData(e,t) { e.preventDefault(); const d={}; document.querySelectorAll('[id^="adm-"]').forEach(el=>d[el.id.replace('adm-','')] = el.value); await send({action:'saveConfig', data:d}); }
+        async function saveBulk(s) {
+            let d=[];
+            if(s==='Siswa') document.getElementById('list-Siswa').querySelectorAll('tr').forEach((r,i)=>d.push([r.cells[0].innerText, document.getElementById(`sis-l-${i}`).value, document.getElementById(`sis-p-${i}`).value]));
+            if(s==='Mutasi') document.getElementById('list-Mutasi').querySelectorAll('tr').forEach((r,i)=>d.push([r.cells[0].innerText, document.getElementById(`mut-1-${i}`).value, document.getElementById(`mut-2-${i}`).value, document.getElementById(`mut-3-${i}`).value, document.getElementById(`mut-4-${i}`).value]));
+            await send({action:'saveBulk', sheet:s, data:d}); refreshData();
         }
-
-        async function saveBulk(sheet) {
-            let data = [];
-            if(sheet === 'Siswa') {
-                 const rows = document.getElementById('list-Siswa').querySelectorAll('tr');
-                 rows.forEach((r, i) => {
-                     const k = r.cells[0].innerText;
-                     const l = document.getElementById(`sis-l-${i}`).value;
-                     const p = document.getElementById(`sis-p-${i}`).value;
-                     data.push([k, l, p]);
-                 });
-            } else if(sheet === 'Mutasi') {
-                 const rows = document.getElementById('list-Mutasi').querySelectorAll('tr');
-                 rows.forEach((r, i) => {
-                     const k = r.cells[0].innerText;
-                     data.push([
-                         k, 
-                         document.getElementById(`mut-1-${i}`).value,
-                         document.getElementById(`mut-2-${i}`).value,
-                         document.getElementById(`mut-3-${i}`).value,
-                         document.getElementById(`mut-4-${i}`).value
-                     ]);
-                 });
-            }
-            await sendToBackend({ action: 'saveBulk', sheet: sheet, data: data });
-            refreshData();
-        }
-
-        async function deleteItem(sheet, id) {
-            if(confirm("Hapus data ini permanen?")) {
-                await sendToBackend({ action: 'deleteGeneral', sheet: sheet, id: id });
-                refreshData();
-            }
-        }
-
-        async function kirimSPMB(e) {
-            e.preventDefault();
-            const d = {
-                nama: e.target.nama.value,
-                nik: e.target.nik.value,
-                hp: e.target.hp.value
-            };
-            const btn = e.target.querySelector('button');
-            btn.innerText = "Mengirim...";
-            btn.disabled = true;
-            
-            await sendToBackend({ action: 'submitSPMB', data: d });
-            alert("Pendaftaran Terkirim!");
-            document.getElementById('modal-spmb').classList.add('hidden');
-            btn.innerText = "Kirim Pendaftaran";
-            btn.disabled = false;
-        }
-
-        // --- BACKEND HELPER ---
-        async function sendToBackend(payload) {
-            try {
-                // Tampilkan loading di status bar
-                const statusEl = document.getElementById('db-text');
-                const indicatorEl = document.getElementById('db-indicator');
-                document.getElementById('db-status').classList.remove('opacity-0', 'pointer-events-none');
-                statusEl.innerText = "Menyimpan...";
-                indicatorEl.className = "w-3 h-3 rounded-full bg-blue-500 animate-pulse";
-
-                await fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-                
-                statusEl.innerText = "Tersimpan";
-                indicatorEl.className = "w-3 h-3 rounded-full bg-green-500";
-                setTimeout(() => document.getElementById('db-status').classList.add('opacity-0', 'pointer-events-none'), 2000);
-
-            } catch(e) {
-                alert("Gagal koneksi ke server: " + e.message);
-                document.getElementById('db-text').innerText = "Gagal Simpan";
-                document.getElementById('db-indicator').classList.replace('bg-blue-500', 'bg-red-500');
-            }
-        }
-
-        async function refreshData() {
-            await initApp();
-            // Kembalikan ke tab aktif
-            const activeTab = document.querySelector('.tab-content:not(.hidden)');
-            if(activeTab) renderAdminData(activeTab.id.replace('tab-',''));
-        }
-
+        async function deleteItem(s,id) { if(confirm("Hapus?")) { await send({action:'deleteGeneral', sheet:s, id:id}); refreshData(); } }
+        async function kirimSPMB(e) { e.preventDefault(); await send({action:'submitSPMB', data:{nama:e.target.nama.value, nik:e.target.nik.value, hp:e.target.hp.value}}); alert("Terkirim"); document.getElementById('modal-spmb').classList.add('hidden'); }
+        async function send(pl) { try { await fetch(API_URL, {method:'POST', body:JSON.stringify(pl)}); } catch(e){alert("Gagal Simpan (Offline)");} }
+        async function refreshData() { await initApp(); const t=document.querySelector('.tab-content:not(.hidden)'); if(t) renderAdminData(t.id.replace('tab-','')); }
         function handleLoginButton() { if(isAdmin) doLogout(); else document.getElementById('modal-login').classList.remove('hidden'); }
         function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
-        
-        function startBannerScroll() {
-            const c = document.getElementById('banner-track');
-            setInterval(() => {
-                if(c && c.scrollWidth) {
-                     if (c.scrollLeft + c.clientWidth >= c.scrollWidth - 10) c.scrollTo({ left: 0, behavior: 'smooth' });
-                     else c.scrollBy({ left: 300, behavior: 'smooth' });
-                }
-            }, 4000);
-        }
+        function startBannerScroll() { const c=document.getElementById('banner-track'); setInterval(()=>{ if(c&&c.scrollWidth) c.scrollBy({left:300,behavior:'smooth'}); },4000); }
     </script>
 </body>
 </html>
