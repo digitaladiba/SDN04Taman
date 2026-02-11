@@ -34,7 +34,6 @@
         /* Admin Controls */
         .admin-only { display: none !important; }
         body.admin-mode .admin-only { display: inline-flex !important; }
-        body.admin-mode .admin-block { display: block !important; }
         
         /* Edit Overlay */
         .editable { position: relative; cursor: pointer; }
@@ -51,6 +50,10 @@
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Loading Spinner */
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans selection:bg-accent selection:text-white">
@@ -72,7 +75,6 @@
                     <a href="#guru" class="nav-item text-sm font-semibold text-slate-600 hover:text-accent">Guru</a>
                     <a href="#data-siswa" class="nav-item text-sm font-semibold text-slate-600 hover:text-accent">Siswa</a>
                     <a href="#fasilitas" class="nav-item text-sm font-semibold text-slate-600 hover:text-accent">Fasilitas</a>
-                    <a href="#berita" class="nav-item text-sm font-semibold text-slate-600 hover:text-accent">Berita</a>
                     
                     <a href="#" id="btn-lms" target="_blank" class="px-4 py-2 bg-orange-500 text-white text-sm font-bold rounded-lg hover:bg-orange-600 hidden">
                         <i class="fa-solid fa-laptop-code"></i> LMS
@@ -88,22 +90,21 @@
         </div>
         
         <!-- MOBILE MENU -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t p-4 space-y-3 shadow-xl max-h-[80vh] overflow-y-auto">
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t p-4 space-y-3 shadow-xl max-h-[80vh] overflow-y-auto pt-24">
             <a href="#beranda" class="block font-medium text-slate-600 p-2">Beranda</a>
             <a href="#guru" class="block font-medium text-slate-600 p-2">Guru</a>
-            <a href="#data-siswa" class="block font-medium text-slate-600 p-2">Data Siswa</a>
             <button onclick="handleLoginButton()" id="btn-login-mobile" class="w-full text-center font-bold text-slate-500 p-2 border border-slate-200 rounded mt-2">Login Admin</button>
         </div>
     </nav>
 
-    <!-- STATUS BAR -->
-    <div id="db-status" class="fixed bottom-4 left-4 z-[90] bg-white border border-slate-200 shadow-lg rounded-lg px-4 py-3 text-xs font-medium text-slate-600 flex flex-col gap-1 transition-all">
+    <!-- STATUS BAR DIAGNOSTIK -->
+    <div id="db-status" class="fixed bottom-4 left-4 z-[90] bg-white border border-slate-200 shadow-2xl rounded-lg px-4 py-3 text-xs font-medium text-slate-600 flex flex-col gap-1 transition-all w-64">
         <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse" id="db-indicator"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-400 animate-pulse" id="db-indicator"></span>
             <span id="db-text" class="font-bold">Menghubungkan Database...</span>
         </div>
-        <div id="db-detail" class="text-[10px] text-slate-400">Mohon tunggu sebentar...</div>
-        <button id="btn-retry" onclick="initApp()" class="hidden mt-1 bg-slate-100 text-accent px-2 py-1 rounded border border-slate-200">Coba Lagi</button>
+        <div id="db-detail" class="text-[10px] text-slate-400 break-words leading-tight">Sedang mengambil data dari Google Sheets...</div>
+        <button id="btn-retry" onclick="location.reload()" class="hidden mt-2 bg-slate-100 text-accent px-2 py-1.5 rounded border border-slate-200 hover:bg-slate-200 w-full font-bold">Refresh Halaman</button>
     </div>
 
     <main class="pt-20">
@@ -135,7 +136,7 @@
             <div class="max-w-7xl mx-auto px-4 flex items-center gap-2 mb-2">
                 <span class="w-2 h-8 bg-gold rounded-full"></span>
                 <h3 class="text-white font-bold text-lg uppercase tracking-wider">Info & Banner</h3>
-                <button onclick="openAdminModal('galeri')" class="admin-only ml-auto bg-white/10 text-white text-xs px-2 py-1 rounded hover:bg-white/20"><i class="fa-solid fa-pen"></i> Edit</button>
+                <button onclick="openAdminModal('galeri')" class="admin-only ml-auto bg-white/10 text-white text-xs px-2 py-1 rounded hover:bg-white/20"><i class="fa-solid fa-pen"></i> Kelola</button>
             </div>
             <div class="relative w-full overflow-hidden mt-2">
                 <div id="banner-track" class="flex gap-4 px-4 overflow-x-auto no-scrollbar snap-x snap-mandatory py-2">
@@ -478,6 +479,10 @@
     </style>
 
     <script>
+        // =========================================================================================
+        // PENTING: GANTI URL DI BAWAH INI DENGAN URL 'WEB APP' BARU DARI GOOGLE APPS SCRIPT ANDA
+        // CARANYA: DEPLOY -> NEW DEPLOYMENT -> WEB APP -> ACCESS: ANYONE -> COPY URL
+        // =========================================================================================
         const API_URL = "https://script.google.com/macros/s/AKfycbyoK8WJlSqQf5F1coGww4AjtY5jB1PToCwuePPGn2mmXkadb3figgON9EnozYJL5In3UQ/exec"; 
         
         let rawData = {}; 
@@ -490,18 +495,69 @@
         };
 
         async function initApp() {
+            const statusEl = document.getElementById('db-text');
+            const detailEl = document.getElementById('db-detail');
+            const indicatorEl = document.getElementById('db-indicator');
+            const btnRetry = document.getElementById('btn-retry');
+
+            // Reset Status UI
+            indicatorEl.className = "w-3 h-3 rounded-full bg-yellow-400 animate-pulse";
+            statusEl.innerText = "Menghubungkan...";
+            detailEl.innerText = "Mengontak Google Script...";
+            btnRetry.classList.add('hidden');
+
             try {
-                const res = await fetch(API_URL + '?action=getPublicData');
+                // Timeout 15 detik jika script tidur
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+                const res = await fetch(API_URL + '?action=getPublicData', { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                // Cek apakah respon HTML (Biasanya Error Permission/Google Login)
+                const contentType = res.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") === -1) {
+                    const text = await res.text();
+                    if(text.includes("Google Accounts") || text.includes("Sign in")) {
+                        throw new Error("Izin Script Ditolak. Pastikan Deploy sebagai 'Anyone' (Siapa Saja)!");
+                    } else {
+                        throw new Error("Respon server bukan JSON. Cek Deployment URL.");
+                    }
+                }
+
                 const json = await res.json();
+                
                 if(json.status === 'success') {
+                    // SUKSES
                     rawData = json;
                     renderPublicUI(rawData);
-                    document.getElementById('db-status').classList.add('opacity-0', 'pointer-events-none');
-                } else { throw new Error(json.message); }
+                    
+                    indicatorEl.className = "w-3 h-3 rounded-full bg-green-500";
+                    statusEl.innerText = "Terhubung";
+                    detailEl.innerText = "Data berhasil dimuat.";
+                    
+                    // Sembunyikan status setelah 2 detik
+                    setTimeout(() => {
+                        document.getElementById('db-status').classList.add('opacity-0', 'pointer-events-none');
+                    }, 2000);
+
+                } else { 
+                    throw new Error(json.message || "Gagal memuat data"); 
+                }
+
             } catch(e) {
-                document.getElementById('db-text').innerText = "Mode Offline / Error";
-                document.getElementById('db-indicator').classList.replace('bg-yellow-400','bg-red-500');
+                // ERROR HANDLING
                 console.error(e);
+                indicatorEl.className = "w-3 h-3 rounded-full bg-red-500";
+                statusEl.innerText = "Gagal Terhubung";
+                
+                if(e.name === 'AbortError') {
+                    detailEl.innerText = "Koneksi Timeout. Server Google sibuk.";
+                } else {
+                    detailEl.innerText = e.message;
+                }
+                btnRetry.classList.remove('hidden');
+                document.getElementById('db-status').classList.remove('opacity-0', 'pointer-events-none');
             }
         }
 
@@ -612,7 +668,7 @@
                     document.getElementById('modal-login').classList.add('hidden');
                     alert("Login Berhasil!");
                 } else { alert("Password Salah"); }
-            } catch(e) { alert("Error Login"); }
+            } catch(e) { alert("Error Login: " + e.message); }
         }
 
         function doLogout() { location.reload(); }
@@ -778,11 +834,14 @@
             }
 
             const btn = form.querySelector('button');
+            const originalText = btn.innerText;
             btn.innerText = "Menyimpan...";
+            btn.disabled = true;
             
             await sendToBackend({ action: 'saveGeneral', sheet: type, id: id, data: newData });
             closeForm();
-            btn.innerText = "Simpan Data";
+            btn.innerText = originalText;
+            btn.disabled = false;
             refreshData();
         }
 
@@ -791,7 +850,6 @@
             e.preventDefault();
             if(type === 'config') {
                 const data = {};
-                // Ambil semua input id^="adm-"
                 document.querySelectorAll('[id^="adm-"]').forEach(el => {
                     const key = el.id.replace('adm-', '');
                     data[key] = el.value;
@@ -803,7 +861,6 @@
         async function saveBulk(sheet) {
             let data = [];
             if(sheet === 'Siswa') {
-                 // Ambil dari table inputs
                  const rows = document.getElementById('list-Siswa').querySelectorAll('tr');
                  rows.forEach((r, i) => {
                      const k = r.cells[0].innerText;
@@ -844,33 +901,46 @@
             };
             const btn = e.target.querySelector('button');
             btn.innerText = "Mengirim...";
+            btn.disabled = true;
+            
             await sendToBackend({ action: 'submitSPMB', data: d });
             alert("Pendaftaran Terkirim!");
             document.getElementById('modal-spmb').classList.add('hidden');
             btn.innerText = "Kirim Pendaftaran";
+            btn.disabled = false;
         }
 
         // --- BACKEND HELPER ---
         async function sendToBackend(payload) {
             try {
+                // Tampilkan loading di status bar
+                const statusEl = document.getElementById('db-text');
+                const indicatorEl = document.getElementById('db-indicator');
+                document.getElementById('db-status').classList.remove('opacity-0', 'pointer-events-none');
+                statusEl.innerText = "Menyimpan...";
+                indicatorEl.className = "w-3 h-3 rounded-full bg-blue-500 animate-pulse";
+
                 await fetch(API_URL, {
                     method: 'POST',
                     body: JSON.stringify(payload)
                 });
-                // alert("Berhasil disimpan!"); 
+                
+                statusEl.innerText = "Tersimpan";
+                indicatorEl.className = "w-3 h-3 rounded-full bg-green-500";
+                setTimeout(() => document.getElementById('db-status').classList.add('opacity-0', 'pointer-events-none'), 2000);
+
             } catch(e) {
-                alert("Gagal koneksi ke server.");
+                alert("Gagal koneksi ke server: " + e.message);
+                document.getElementById('db-text').innerText = "Gagal Simpan";
+                document.getElementById('db-indicator').classList.replace('bg-blue-500', 'bg-red-500');
             }
         }
 
         async function refreshData() {
             await initApp();
-            // Re-render tab yang aktif
-            document.querySelectorAll('.admin-tab').forEach(b => {
-                 // Logic check active tab simpel aja, reload UI admin
-            });
-            const activeTab = document.querySelector('.tab-content:not(.hidden)').id.replace('tab-','');
-            renderAdminData(activeTab);
+            // Kembalikan ke tab aktif
+            const activeTab = document.querySelector('.tab-content:not(.hidden)');
+            if(activeTab) renderAdminData(activeTab.id.replace('tab-',''));
         }
 
         function handleLoginButton() { if(isAdmin) doLogout(); else document.getElementById('modal-login').classList.remove('hidden'); }
