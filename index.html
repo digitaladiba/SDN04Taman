@@ -177,7 +177,7 @@
             </div>
         </section>
 
-        <!-- DATA SISWA & STATISTIK (FIXED SCROLL) -->
+        <!-- DATA SISWA & STATISTIK -->
         <section id="data-siswa" class="py-20 bg-slate-50">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
@@ -191,11 +191,11 @@
                          <div class="flex justify-between items-center mb-4"><h4 class="font-bold text-primary">Data Rombel</h4><button onclick="openAdminModal('siswa')" class="admin-only text-xs bg-slate-100 px-2 py-1 rounded">Edit</button></div>
                         <div class="overflow-x-auto"><table class="w-full text-sm text-center"><thead class="bg-slate-100 text-xs uppercase font-bold"><tr><th class="p-2 text-left">Kelas</th><th>L</th><th>P</th><th>JML</th></tr></thead><tbody id="siswa-tbody" class="divide-y"></tbody></table></div>
                     </div>
-                    <!-- DIAGRAM BATANG (FIXED SCROLL MOBILE) -->
+                    <!-- DIAGRAM BATANG (SCROLLABLE MOBILE) -->
                     <div class="bg-white rounded-2xl shadow-sm border p-4 relative flex flex-col justify-center">
                         <h4 class="font-bold text-primary mb-4">Statistik Siswa</h4>
                         <div class="w-full overflow-x-auto pb-2">
-                            <div class="h-64 min-w-[500px]"> <!-- FIX: Min-width forces scroll on mobile -->
+                            <div class="h-64 min-w-[500px]"> <!-- Scroll Fix -->
                                 <canvas id="siswaChart"></canvas>
                             </div>
                         </div>
@@ -297,7 +297,7 @@
         </footer>
     </main>
 
-    <!-- MOBILE MENU DRAWER (FIXED LAYOUT) -->
+    <!-- MOBILE MENU DRAWER (FIXED) -->
     <div id="mobile-menu" class="hidden fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm" onclick="toggleMobileMenu()">
         <div class="absolute right-0 top-0 h-full w-72 bg-white shadow-2xl flex flex-col transform transition-transform" onclick="event.stopPropagation()">
             <!-- HEADER -->
@@ -306,7 +306,7 @@
                 <button onclick="toggleMobileMenu()" class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-times text-2xl"></i></button>
             </div>
             
-            <!-- SCROLLABLE CONTENT (Middle) -->
+            <!-- CONTENT -->
             <div class="flex-1 overflow-y-auto p-4 space-y-1">
                 <a href="#beranda" onclick="toggleMobileMenu()" class="block p-3 hover:bg-slate-50 rounded font-bold text-slate-700">Beranda</a>
                 
@@ -330,7 +330,7 @@
                 <a href="#" id="mob-ig" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Instagram</a>
             </div>
 
-            <!-- FOOTER (Bottom) -->
+            <!-- FOOTER -->
             <div class="p-4 border-t bg-slate-50 flex-none">
                 <button onclick="toggleMobileMenu(); handleLoginButton();" class="w-full bg-primary text-white py-3 rounded-lg font-bold text-sm shadow-lg hover:bg-slate-800 transition">Login Admin</button>
                 <div class="text-center text-[10px] text-slate-400 mt-2">© 2026 SDN 4 Taman</div>
@@ -362,8 +362,9 @@
                         <h4 class="font-bold text-xl mb-6 border-b pb-2">Pengaturan Umum & Tautan</h4>
                         <form onsubmit="saveData(event, 'config')" class="grid md:grid-cols-2 gap-6">
                             <div class="space-y-4">
-                                <h5 class="font-bold text-accent text-sm uppercase border-b pb-1">Identitas</h5>
+                                <h5 class="font-bold text-accent text-sm uppercase border-b pb-1">Identitas & Keamanan</h5>
                                 <div><label class="label">Nama Sekolah</label><input id="adm-NamaSekolah" class="input-field"></div>
+                                <div><label class="label">Password Admin (Login)</label><input id="adm-AdminPass" class="input-field" placeholder="Ganti password disini..."></div>
                                 <div><label class="label">Running Text</label><input id="adm-RunningText" class="input-field"></div>
                                 <div><label class="label">Alamat</label><textarea id="adm-Alamat" class="input-field h-24"></textarea></div>
                                 <div><label class="label">Foto Utama URL</label><input id="adm-MainImage" class="input-field"></div>
@@ -385,7 +386,7 @@
                                 </div>
                                 <h5 class="font-bold text-accent text-sm uppercase border-b pb-1 mt-4">Kepala Sekolah</h5>
                                 <div><label class="label">Sambutan KS</label><textarea id="adm-SambutanKS" class="input-field h-20"></textarea></div>
-                                <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-bold mt-4">Simpan</button>
+                                <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-bold mt-4">Simpan Konfigurasi</button>
                             </div>
                         </form>
                     </div>
@@ -594,7 +595,6 @@
         async function send(pl) { try { await fetch(API_URL, {method:'POST', body:JSON.stringify(pl)}); } catch(e){alert("Gagal Simpan (Offline)");} }
         async function refreshData() { await initApp(); const t=document.querySelector('.tab-content:not(.hidden)'); if(t) renderAdminData(t.id.replace('tab-','')); }
         function handleLoginButton() { if(isAdmin) doLogout(); else document.getElementById('modal-login').classList.remove('hidden'); }
-        
         function startBannerScroll() { const c=document.getElementById('banner-track'); setInterval(()=>{ if(c&&c.scrollWidth) { if(c.scrollLeft + c.clientWidth >= c.scrollWidth) c.scrollTo({left:0, behavior:'smooth'}); else c.scrollBy({left:c.clientWidth,behavior:'smooth'}); } },4000); }
     </script>
 </body>
