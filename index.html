@@ -54,11 +54,10 @@
                     </div>
                 </div>
                 
-                <!-- DESKTOP MENU (Hidden on Mobile) -->
+                <!-- DESKTOP MENU -->
                 <div class="hidden lg:flex space-x-6 items-center">
                     <a href="#beranda" class="nav-item text-sm font-bold text-slate-700 hover:text-accent">BERANDA</a>
                     
-                    <!-- Profil Sekolah -->
                     <div class="relative group h-20 flex items-center">
                         <button class="nav-item text-sm font-bold text-slate-700 hover:text-accent flex items-center gap-1">PROFIL <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
                         <div class="absolute top-16 left-0 w-56 bg-white border-t-4 border-accent shadow-xl rounded-b-lg hidden group-hover:block p-2 animate-fade-in">
@@ -70,7 +69,6 @@
                         </div>
                     </div>
 
-                    <!-- Siswa -->
                     <div class="relative group h-20 flex items-center">
                         <button class="nav-item text-sm font-bold text-slate-700 hover:text-accent flex items-center gap-1">SISWA <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
                         <div class="absolute top-16 left-0 w-56 bg-white border-t-4 border-accent shadow-xl rounded-b-lg hidden group-hover:block p-2">
@@ -80,7 +78,6 @@
                         </div>
                     </div>
 
-                    <!-- Akademik -->
                     <div class="relative group h-20 flex items-center">
                         <button class="nav-item text-sm font-bold text-slate-700 hover:text-accent flex items-center gap-1">AKADEMIK <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
                         <div class="absolute top-16 left-0 w-56 bg-white border-t-4 border-accent shadow-xl rounded-b-lg hidden group-hover:block p-2">
@@ -89,7 +86,6 @@
                         </div>
                     </div>
 
-                    <!-- Kontak -->
                     <div class="relative group h-20 flex items-center">
                         <button class="nav-item text-sm font-bold text-slate-700 hover:text-accent flex items-center gap-1">KONTAK <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
                         <div class="absolute top-16 right-0 w-48 bg-white border-t-4 border-accent shadow-xl rounded-b-lg hidden group-hover:block p-2">
@@ -107,7 +103,7 @@
                     </button>
                 </div>
 
-                <!-- HAMBURGER BUTTON (VISIBLE ONLY ON MOBILE) -->
+                <!-- HAMBURGER BUTTON -->
                 <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 flex items-center justify-center text-slate-600 text-xl border rounded hover:bg-slate-100 z-[60] relative"><i class="fa-solid fa-bars"></i></button>
             </div>
         </div>
@@ -123,7 +119,6 @@
     </div>
 
     <main class="pt-20">
-        
         <!-- HERO -->
         <section id="beranda" class="relative w-full h-[500px] md:h-[650px] overflow-hidden bg-slate-900 group">
             <div id="hero-background" class="absolute inset-0 bg-cover bg-center transition-all duration-1000" style="background-image: url('https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png');">
@@ -144,7 +139,7 @@
             </div>
         </section>
 
-        <!-- BANNER SLIDER (Clean Focus) -->
+        <!-- BANNER SLIDER -->
         <section class="bg-primary relative overflow-hidden h-[250px] md:h-[450px]">
             <button onclick="openForm('Galeri')" class="admin-only absolute top-4 right-4 bg-white/10 text-white text-xs px-3 py-1 rounded hover:bg-white/20 z-20"><i class="fa-solid fa-plus"></i> Edit Banner</button>
             <div class="relative w-full h-full overflow-hidden">
@@ -182,7 +177,7 @@
             </div>
         </section>
 
-        <!-- DATA SISWA -->
+        <!-- DATA SISWA & STATISTIK (FIXED SCROLL) -->
         <section id="data-siswa" class="py-20 bg-slate-50">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
@@ -196,7 +191,15 @@
                          <div class="flex justify-between items-center mb-4"><h4 class="font-bold text-primary">Data Rombel</h4><button onclick="openAdminModal('siswa')" class="admin-only text-xs bg-slate-100 px-2 py-1 rounded">Edit</button></div>
                         <div class="overflow-x-auto"><table class="w-full text-sm text-center"><thead class="bg-slate-100 text-xs uppercase font-bold"><tr><th class="p-2 text-left">Kelas</th><th>L</th><th>P</th><th>JML</th></tr></thead><tbody id="siswa-tbody" class="divide-y"></tbody></table></div>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm border p-4 relative flex flex-col justify-center"><h4 class="font-bold text-primary mb-4">Statistik Siswa</h4><div class="w-full h-64"><canvas id="siswaChart"></canvas></div></div>
+                    <!-- DIAGRAM BATANG (FIXED SCROLL MOBILE) -->
+                    <div class="bg-white rounded-2xl shadow-sm border p-4 relative flex flex-col justify-center">
+                        <h4 class="font-bold text-primary mb-4">Statistik Siswa</h4>
+                        <div class="w-full overflow-x-auto pb-2">
+                            <div class="h-64 min-w-[500px]"> <!-- FIX: Min-width forces scroll on mobile -->
+                                <canvas id="siswaChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="bg-white rounded-2xl shadow-sm border p-4 relative">
                     <div class="flex justify-between items-center mb-4"><h4 class="font-bold text-primary">Data Mutasi Bulan Ini</h4><button onclick="openAdminModal('mutasi')" class="admin-only text-xs bg-slate-100 px-2 py-1 rounded">Edit</button></div>
@@ -211,7 +214,6 @@
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12"><h2 class="text-3xl font-bold text-primary">Guru dan Staf</h2></div>
                 <div id="guru-container" class="flex gap-6 overflow-x-auto pb-8 px-4 snap-x custom-scroll"></div>
-                <!-- SOTK -->
                 <div id="sotk" class="mt-16 bg-white p-8 rounded-2xl shadow-sm border text-center relative"><button onclick="openAdminModal('config')" class="admin-only absolute top-4 right-4 text-xs bg-slate-100 px-2 py-1 rounded">Edit di Config</button><h3 class="text-xl font-bold mb-6">Struktur Organisasi</h3><div id="sotk-container" class="flex justify-center"><p class="text-slate-400">Memuat SOTK...</p></div></div>
             </div>
         </section>
@@ -225,7 +227,7 @@
             </div>
         </section>
 
-        <!-- GALERI KEGIATAN (Below Fasilitas) -->
+        <!-- GALERI KEGIATAN -->
         <section id="galeri-kegiatan" class="py-20 bg-slate-50 border-t relative">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex justify-between items-center mb-8">
@@ -295,14 +297,17 @@
         </footer>
     </main>
 
-    <!-- MOBILE MENU DRAWER (MOVED OUTSIDE NAV) -->
+    <!-- MOBILE MENU DRAWER (FIXED LAYOUT) -->
     <div id="mobile-menu" class="hidden fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm" onclick="toggleMobileMenu()">
-        <div class="absolute right-0 top-0 h-full w-72 bg-white shadow-2xl p-4 overflow-y-auto transform transition-transform" onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <div class="absolute right-0 top-0 h-full w-72 bg-white shadow-2xl flex flex-col transform transition-transform" onclick="event.stopPropagation()">
+            <!-- HEADER -->
+            <div class="p-4 border-b flex justify-between items-center bg-slate-50 flex-none">
                 <h3 class="font-bold text-primary text-lg">Menu Utama</h3>
                 <button onclick="toggleMobileMenu()" class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-times text-2xl"></i></button>
             </div>
-            <div class="space-y-1 pb-20">
+            
+            <!-- SCROLLABLE CONTENT (Middle) -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-1">
                 <a href="#beranda" onclick="toggleMobileMenu()" class="block p-3 hover:bg-slate-50 rounded font-bold text-slate-700">Beranda</a>
                 
                 <div class="mt-4 mb-2 px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Profil Sekolah</div>
@@ -323,8 +328,12 @@
                 <div class="mt-4 mb-2 px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Kontak</div>
                 <a href="#" id="mob-wa" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">WhatsApp</a>
                 <a href="#" id="mob-ig" class="block p-2 pl-6 text-sm text-slate-600 hover:text-accent border-l-2 border-transparent hover:border-accent">Instagram</a>
-                
-                <button onclick="toggleMobileMenu(); handleLoginButton();" class="w-full mt-8 bg-primary text-white py-3 rounded-lg font-bold text-sm shadow-lg">Login Admin</button>
+            </div>
+
+            <!-- FOOTER (Bottom) -->
+            <div class="p-4 border-t bg-slate-50 flex-none">
+                <button onclick="toggleMobileMenu(); handleLoginButton();" class="w-full bg-primary text-white py-3 rounded-lg font-bold text-sm shadow-lg hover:bg-slate-800 transition">Login Admin</button>
+                <div class="text-center text-[10px] text-slate-400 mt-2">© 2026 SDN 4 Taman</div>
             </div>
         </div>
     </div>
@@ -518,7 +527,7 @@
             myChart = new Chart(ctx, {
                 type: 'bar',
                 data: { labels: labels, datasets: [{ label: 'Laki-laki', data: dataL, backgroundColor: '#2563eb' }, { label: 'Perempuan', data: dataP, backgroundColor: '#f43f5e' }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+                options: { responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { autoSkip: false } }, y: { beginAtZero: true } } }
             });
         }
 
@@ -585,6 +594,7 @@
         async function send(pl) { try { await fetch(API_URL, {method:'POST', body:JSON.stringify(pl)}); } catch(e){alert("Gagal Simpan (Offline)");} }
         async function refreshData() { await initApp(); const t=document.querySelector('.tab-content:not(.hidden)'); if(t) renderAdminData(t.id.replace('tab-','')); }
         function handleLoginButton() { if(isAdmin) doLogout(); else document.getElementById('modal-login').classList.remove('hidden'); }
+        
         function startBannerScroll() { const c=document.getElementById('banner-track'); setInterval(()=>{ if(c&&c.scrollWidth) { if(c.scrollLeft + c.clientWidth >= c.scrollWidth) c.scrollTo({left:0, behavior:'smooth'}); else c.scrollBy({left:c.clientWidth,behavior:'smooth'}); } },4000); }
     </script>
 </body>
