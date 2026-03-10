@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sistem Informasi Digital SDN 4 Taman - Edisi Ramadhan</title>
+    <title>Sistem Informasi Digital SDN 4 Taman</title>
     
     <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,46 +11,97 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- MESIN TEMA OTOMATIS BERDASARKAN KALENDER -->
     <script>
+        const d = new Date();
+        const m = d.getMonth(); // 0 = Jan, 1 = Feb, ..., 11 = Des
+        
+        let currentTheme = 'default';
+        
+        // Logika Penentuan Tema Otomatis
+        if (m === 2 || m === 3) currentTheme = 'ramadhan';        // Maret - April
+        else if (m === 4 || m === 10) currentTheme = 'pendidikan';// Mei (Hardiknas) & Nov (Hari Guru)
+        else if (m === 7) currentTheme = 'kemerdekaan';           // Agustus
+        else if (m === 9) currentTheme = 'batik';                 // Oktober
+        else if (m === 11) currentTheme = 'hariibu';              // Desember
+        
+        // Konfigurasi Detail Setiap Tema
+        const themes = {
+            default: { 
+                primary: '#0f172a', accent: '#2563eb', bg: '#f8fafc', gold: '#fbbf24', 
+                badge: 'OFFICIAL WEBSITE', icon: 'fa-school',
+                ornaments: '' 
+            },
+            ramadhan: { 
+                primary: '#064e3b', accent: '#d97706', bg: '#fffbeb', gold: '#fbbf24', 
+                badge: 'MARHABAN YA RAMADHAN', icon: 'fa-mosque',
+                ornaments: '<div class="absolute top-10 left-10 md:top-20 md:left-20 text-gold/20 text-6xl md:text-8xl float-slow"><i class="fa-solid fa-moon"></i></div><div class="absolute bottom-20 right-10 md:bottom-32 md:right-32 text-gold/20 text-5xl md:text-7xl pulse-slow"><i class="fa-solid fa-star-and-crescent"></i></div>' 
+            },
+            kemerdekaan: { 
+                primary: '#b91c1c', accent: '#ef4444', bg: '#fef2f2', gold: '#f87171', 
+                badge: 'DIRGAHAYU INDONESIA', icon: 'fa-flag',
+                ornaments: '<div class="absolute top-10 left-10 md:top-20 md:left-20 text-gold/20 text-6xl md:text-8xl float-slow"><i class="fa-solid fa-flag"></i></div>' 
+            },
+            batik: { 
+                primary: '#4a2311', accent: '#b45309', bg: '#fef3c7', gold: '#d97706', 
+                badge: 'HARI BATIK NASIONAL', icon: 'fa-leaf',
+                ornaments: '<div class="absolute top-10 left-10 md:top-20 md:left-20 text-gold/20 text-6xl md:text-8xl float-slow"><i class="fa-solid fa-fan"></i></div>' 
+            },
+            pendidikan: { 
+                primary: '#1e40af', accent: '#3b82f6', bg: '#eff6ff', gold: '#60a5fa', 
+                badge: 'BULAN PENDIDIKAN', icon: 'fa-book-open-reader',
+                ornaments: '<div class="absolute top-10 left-10 md:top-20 md:left-20 text-gold/20 text-6xl md:text-8xl float-slow"><i class="fa-solid fa-graduation-cap"></i></div>' 
+            },
+            hariibu: { 
+                primary: '#831843', accent: '#db2777', bg: '#fdf2f8', gold: '#f472b6', 
+                badge: 'SELAMAT HARI IBU', icon: 'fa-heart',
+                ornaments: '<div class="absolute top-10 left-10 md:top-20 md:left-20 text-gold/20 text-6xl md:text-8xl float-slow"><i class="fa-solid fa-heart"></i></div>' 
+            }
+        };
+
+        const activeTheme = themes[currentTheme];
+
+        // Terapkan ke Tailwind
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
                     colors: { 
-                        // TEMA RAMADHAN: Hijau Gelap & Emas
-                        primary: '#064e3b',   // Emerald 900 (Hijau Islami Gelap)
-                        accent: '#d97706',    // Amber 600 (Emas/Oranye Gelap)
-                        gold: '#fbbf24',      // Amber 400 (Kuning Emas Terang)
+                        primary: activeTheme.primary, 
+                        accent: activeTheme.accent, 
+                        gold: activeTheme.gold, 
+                        pagebg: activeTheme.bg,
                         emerald: '#10b981', 
-                        rose: '#f43f5e',
-                        ramadhanbg: '#fffbeb' // Kuning sangat pucat/krem untuk background
+                        rose: '#f43f5e'
                     }
                 }
             }
         }
     </script>
+
     <style>
-        .glass-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .glass-nav { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); }
         html { scroll-behavior: smooth; }
         .admin-only { display: none !important; }
         body.admin-mode .admin-only { display: inline-flex !important; }
+        /* Scrollbar dinamis menyesuaikan tema (menggunakan warna accent) */
         .custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #d97706; border-radius: 3px; } /* Scrollbar emas */
+        .custom-scroll::-webkit-scrollbar-thumb { border-radius: 3px; background-color: var(--scrollbar-color, #cbd5e1); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .group:hover .group-hover\:block { display: block; }
         
-        /* Animasi Ornamen Ramadhan */
+        /* Animasi Ornamen */
         .float-slow { animation: float 6s ease-in-out infinite; }
         .pulse-slow { animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         @keyframes float {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-15px); }
             100% { transform: translateY(0px); }
         }
     </style>
 </head>
-<body class="bg-ramadhanbg text-slate-800 font-sans selection:bg-accent selection:text-white relative">
+<body class="bg-pagebg text-slate-800 font-sans selection:bg-accent selection:text-white relative">
 
     <!-- NAVBAR -->
     <nav class="fixed w-full z-50 glass-nav border-b border-gold/30 shadow-sm" id="navbar">
@@ -72,28 +123,28 @@
                     <div class="relative group h-20 flex items-center">
                         <button class="nav-item text-sm font-bold text-primary hover:text-accent transition-colors flex items-center gap-1">PROFIL <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
                         <div class="absolute top-16 left-0 w-56 bg-white border-t-4 border-accent shadow-xl rounded-b-lg hidden group-hover:block p-2 animate-fade-in">
-                            <a href="#visi-misi" class="block px-4 py-2 text-sm hover:bg-amber-50 text-primary font-medium rounded">Visi & Misi</a>
-                            <a href="#sambutan" class="block px-4 py-2 text-sm hover:bg-amber-50 text-primary font-medium rounded">Sambutan KS</a>
-                            <a href="#guru" class="block px-4 py-2 text-sm hover:bg-amber-50 text-primary font-medium rounded">Data Guru & Staf</a>
-                            <a href="#fasilitas" class="block px-4 py-2 text-sm hover:bg-amber-50 text-primary font-medium rounded">Fasilitas & Eskul</a>
-                            <a href="#footer" class="block px-4 py-2 text-sm hover:bg-amber-50 text-primary font-medium rounded">Alamat Sekolah</a>
+                            <a href="#visi-misi" class="block px-4 py-2 text-sm hover:bg-pagebg text-primary font-medium rounded">Visi & Misi</a>
+                            <a href="#sambutan" class="block px-4 py-2 text-sm hover:bg-pagebg text-primary font-medium rounded">Sambutan KS</a>
+                            <a href="#guru" class="block px-4 py-2 text-sm hover:bg-pagebg text-primary font-medium rounded">Data Guru & Staf</a>
+                            <a href="#fasilitas" class="block px-4 py-2 text-sm hover:bg-pagebg text-primary font-medium rounded">Fasilitas & Eskul</a>
+                            <a href="#footer" class="block px-4 py-2 text-sm hover:bg-pagebg text-primary font-medium rounded">Alamat Sekolah</a>
                         </div>
                     </div>
 
                     <div class="relative group h-20 flex items-center">
                         <button class="nav-item text-sm font-bold text-primary hover:text-accent transition-colors flex items-center gap-1">SISWA <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
                         <div class="absolute top-16 left-0 w-56 bg-white border-t-4 border-accent shadow-xl rounded-b-lg hidden group-hover:block p-2">
-                            <a href="#data-siswa" class="block px-4 py-2 text-sm hover:bg-amber-50 text-primary font-medium rounded">Statistik Siswa</a>
-                            <a href="#data-siswa" class="block px-4 py-2 text-sm hover:bg-amber-50 text-primary font-medium rounded">Data Mutasi</a>
-                            <a href="#spmb-section" class="block px-4 py-2 text-sm hover:bg-amber-50 text-primary font-medium rounded">Info SPMB</a>
+                            <a href="#data-siswa" class="block px-4 py-2 text-sm hover:bg-pagebg text-primary font-medium rounded">Statistik Siswa</a>
+                            <a href="#data-siswa" class="block px-4 py-2 text-sm hover:bg-pagebg text-primary font-medium rounded">Data Mutasi</a>
+                            <a href="#spmb-section" class="block px-4 py-2 text-sm hover:bg-pagebg text-primary font-medium rounded">Info SPMB</a>
                         </div>
                     </div>
 
                     <div class="relative group h-20 flex items-center">
                         <button class="nav-item text-sm font-bold text-primary hover:text-accent transition-colors flex items-center gap-1">AKADEMIK <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
                         <div class="absolute top-16 left-0 w-56 bg-white border-t-4 border-accent shadow-xl rounded-b-lg hidden group-hover:block p-2">
-                            <a href="#" id="nav-lms" target="_blank" class="block px-4 py-2 text-sm hover:bg-amber-50 text-primary font-medium rounded">LMS / E-Learning</a>
-                            <a href="#galeri-kegiatan" class="block px-4 py-2 text-sm hover:bg-amber-50 text-primary font-medium rounded">Galeri Kegiatan</a>
+                            <a href="#" id="nav-lms" target="_blank" class="block px-4 py-2 text-sm hover:bg-pagebg text-primary font-medium rounded">LMS / E-Learning</a>
+                            <a href="#galeri-kegiatan" class="block px-4 py-2 text-sm hover:bg-pagebg text-primary font-medium rounded">Galeri Kegiatan</a>
                         </div>
                     </div>
 
@@ -102,20 +153,20 @@
                         <div class="absolute top-16 right-0 w-48 bg-white border-t-4 border-accent shadow-xl rounded-b-lg hidden group-hover:block p-2">
                             <a href="#" id="nav-wa" target="_blank" class="block px-4 py-2 text-sm hover:bg-green-50 text-primary font-medium rounded flex items-center gap-2"><i class="fa-brands fa-whatsapp text-green-600"></i> WhatsApp</a>
                             <a href="#" id="nav-email" target="_blank" class="block px-4 py-2 text-sm hover:bg-red-50 text-primary font-medium rounded flex items-center gap-2"><i class="fa-solid fa-envelope text-red-500"></i> Email</a>
-                            <div class="border-t my-1 border-amber-100"></div>
+                            <div class="border-t my-1 border-slate-100"></div>
                             <a href="#" id="nav-fb" target="_blank" class="block px-4 py-2 text-sm hover:bg-blue-50 text-primary font-medium rounded flex items-center gap-2"><i class="fa-brands fa-facebook text-blue-600"></i> Facebook</a>
                             <a href="#" id="nav-ig" target="_blank" class="block px-4 py-2 text-sm hover:bg-pink-50 text-primary font-medium rounded flex items-center gap-2"><i class="fa-brands fa-instagram text-pink-600"></i> Instagram</a>
                             <a href="#" id="nav-yt" target="_blank" class="block px-4 py-2 text-sm hover:bg-red-50 text-primary font-medium rounded flex items-center gap-2"><i class="fa-brands fa-youtube text-red-600"></i> Youtube</a>
                         </div>
                     </div>
 
-                    <button onclick="handleLoginButton()" id="btn-login" class="w-10 h-10 rounded-full bg-amber-100 text-accent hover:bg-primary hover:text-gold flex items-center justify-center transition-all shadow-sm border border-gold/50">
+                    <button onclick="handleLoginButton()" id="btn-login" class="w-10 h-10 rounded-full bg-pagebg text-accent hover:bg-primary hover:text-gold flex items-center justify-center transition-all shadow-sm border border-gold/50">
                         <i class="fa-solid fa-lock text-xs"></i>
                     </button>
                 </div>
 
                 <!-- HAMBURGER BUTTON -->
-                <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 flex items-center justify-center text-primary text-xl border border-gold/50 rounded hover:bg-amber-100 z-[60] relative"><i class="fa-solid fa-bars"></i></button>
+                <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 flex items-center justify-center text-primary text-xl border border-gold/50 rounded hover:bg-pagebg z-[60] relative"><i class="fa-solid fa-bars"></i></button>
             </div>
         </div>
     </nav>
@@ -126,28 +177,27 @@
             <span class="w-3 h-3 rounded-full bg-gold animate-pulse" id="db-indicator"></span>
             <span id="db-text" class="font-bold">Menghubungkan...</span>
         </div>
-        <button id="btn-retry" onclick="location.reload()" class="hidden mt-2 bg-amber-100 text-accent px-2 py-1.5 rounded border border-gold/30 w-full font-bold">Coba Lagi</button>
+        <button id="btn-retry" onclick="location.reload()" class="hidden mt-2 bg-pagebg text-accent px-2 py-1.5 rounded border border-gold/30 w-full font-bold">Coba Lagi</button>
     </div>
 
     <main class="pt-20">
-        <!-- HERO TEMA RAMADHAN -->
+        <!-- HERO TEMA DINAMIS -->
         <section id="beranda" class="relative w-full h-[500px] md:h-[650px] overflow-hidden bg-primary group">
             <div id="hero-background" class="absolute inset-0 bg-cover bg-center transition-all duration-1000" style="background-image: url('https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png');">
-                <!-- Overlay Gradien Hijau/Emas -->
+                <!-- Overlay Gradien yang menyesuaikan tema -->
                 <div class="absolute inset-0 bg-gradient-to-b from-primary/60 to-primary/90 mix-blend-multiply"></div>
             </div>
             
-            <!-- Ornamen Dekorasi -->
-            <div class="absolute top-10 left-10 md:top-20 md:left-20 text-gold/20 text-6xl md:text-8xl float-slow"><i class="fa-solid fa-moon"></i></div>
-            <div class="absolute bottom-20 right-10 md:bottom-32 md:right-32 text-gold/20 text-5xl md:text-7xl pulse-slow"><i class="fa-solid fa-star-and-crescent"></i></div>
+            <!-- Ornamen Dekorasi Dinamis -->
+            <div id="dynamic-ornaments" class="absolute inset-0 pointer-events-none z-10 overflow-hidden"></div>
 
             <div class="absolute inset-0 flex items-center justify-center z-20 text-center px-4">
                 <div class="max-w-4xl">
-                    <div class="flex justify-center mb-4"><i class="fa-solid fa-mosque text-gold text-4xl mb-2"></i></div>
-                    <span class="inline-block py-1 px-5 rounded-full bg-gold/20 text-gold backdrop-blur-md border border-gold/40 text-xs font-bold mb-4 tracking-widest uppercase">MARHABAN YA RAMADHAN</span>
+                    <div class="flex justify-center mb-4"><i id="hero-icon" class="fa-solid fa-school text-gold text-4xl mb-2"></i></div>
+                    <span id="theme-badge" class="inline-block py-1 px-5 rounded-full bg-gold/20 text-gold backdrop-blur-md border border-gold/40 text-xs font-bold mb-4 tracking-widest uppercase">OFFICIAL WEBSITE</span>
                     <h2 class="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight drop-shadow-lg" id="hero-title">SDN 4 TAMAN</h2>
                     <div class="bg-primary/40 backdrop-blur-md rounded-xl p-4 mb-8 max-w-2xl mx-auto border border-gold/30 shadow-2xl">
-                         <p id="running-text-display" class="text-amber-100 text-lg font-medium">Selamat Datang di Bulan Penuh Berkah...</p>
+                         <p id="running-text-display" class="text-white text-lg font-medium">Selamat Datang...</p>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4 justify-center">
                         <a href="#spmb-section" class="px-8 py-3 bg-accent text-white font-bold rounded-full hover:bg-gold hover:text-primary transition-colors shadow-lg shadow-accent/30 border border-gold/50">Info SPMB</a>
@@ -168,29 +218,29 @@
         </section>
 
         <!-- VISI MISI -->
-        <section id="visi-misi" class="py-16 bg-ramadhanbg text-center relative editable" onclick="if(isAdmin) openAdminModal('config')">
+        <section id="visi-misi" class="py-16 bg-pagebg text-center relative editable" onclick="if(isAdmin) openAdminModal('config')">
             <div class="max-w-4xl mx-auto px-4">
                 <div class="flex justify-center mb-3"><i class="fa-solid fa-book-open text-accent text-2xl"></i></div>
                 <span class="text-accent font-bold tracking-widest uppercase text-sm mb-2 block">Visi & Misi Sekolah</span>
-                <h3 class="text-2xl font-bold text-primary mb-6">Mewujudkan Generasi Unggul & Islami</h3>
+                <h3 class="text-2xl font-bold text-primary mb-6">Mewujudkan Generasi Unggul</h3>
                 <div class="bg-white p-8 rounded-2xl shadow-md border-t-4 border-accent relative">
-                    <i class="fa-solid fa-quote-left absolute top-4 left-4 text-amber-100 text-4xl"></i>
+                    <i class="fa-solid fa-quote-left absolute top-4 left-4 text-pagebg text-4xl"></i>
                     <p id="visi-misi-text" class="text-lg text-primary leading-relaxed italic relative z-10 font-medium">"Memuat Visi Misi..."</p>
                 </div>
             </div>
         </section>
 
         <!-- SAMBUTAN -->
-        <section id="sambutan" class="py-20 bg-white relative border-y border-amber-100">
+        <section id="sambutan" class="py-20 bg-white relative border-y border-pagebg">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/3 text-center relative">
                     <div class="absolute inset-0 bg-gold/20 rounded-3xl rotate-3 transform"></div>
-                    <img id="ks-foto" src="https://i.postimg.cc/Vs2v3Dcg/1-TENTREM-LESTARI-S-Pd.png" class="relative rounded-3xl shadow-2xl w-full max-w-xs mx-auto object-cover h-[450px] border-4 border-white bg-amber-50" onerror="this.src='https://via.placeholder.com/400x600?text=Foto+KS'">
+                    <img id="ks-foto" src="https://i.postimg.cc/Vs2v3Dcg/1-TENTREM-LESTARI-S-Pd.png" class="relative rounded-3xl shadow-2xl w-full max-w-xs mx-auto object-cover h-[450px] border-4 border-white bg-pagebg" onerror="this.src='https://via.placeholder.com/400x600?text=Foto+KS'">
                 </div>
                 <div class="md:w-2/3">
                     <span class="text-accent font-bold tracking-wider uppercase text-sm mb-2 block flex items-center gap-2"><i class="fa-solid fa-microphone-lines"></i> Sambutan Kepala Sekolah</span>
                     <h2 class="text-3xl md:text-4xl font-bold text-primary mb-6">Assalamu'alaikum Warahmatullahi Wabarakatuh</h2>
-                    <div class="prose prose-lg text-slate-700 mb-6 italic border-l-4 border-accent pl-6 py-3 bg-ramadhanbg rounded-r-xl shadow-sm">
+                    <div class="prose prose-lg text-slate-700 mb-6 italic border-l-4 border-accent pl-6 py-3 bg-pagebg rounded-r-xl shadow-sm">
                         <p id="ks-sambutan">"Pendidikan adalah tiket ke masa depan..."</p>
                     </div>
                     <h4 id="ks-nama" class="font-bold text-xl text-primary">Kepala Sekolah</h4>
@@ -199,7 +249,7 @@
         </section>
 
         <!-- DATA SISWA & STATISTIK -->
-        <section id="data-siswa" class="py-20 bg-ramadhanbg relative overflow-hidden">
+        <section id="data-siswa" class="py-20 bg-pagebg relative overflow-hidden">
             <div class="absolute top-0 right-0 text-gold/10 text-9xl transform translate-x-1/4 -translate-y-1/4"><i class="fa-solid fa-users"></i></div>
             <div class="max-w-7xl mx-auto px-4 relative z-10">
                 <div class="text-center mb-10">
@@ -209,19 +259,19 @@
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
                     <div class="bg-white p-6 rounded-2xl shadow-sm text-center border-b-4 border-primary hover:shadow-md transition transform hover:-translate-y-1"><h3 id="total-siswa" class="text-3xl font-extrabold text-primary">0</h3><p class="text-xs uppercase font-bold text-slate-500 mt-2">Total Siswa</p></div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm text-center border-b-4 border-emerald-600 hover:shadow-md transition transform hover:-translate-y-1"><h3 id="total-lk" class="text-3xl font-extrabold text-emerald-600">0</h3><p class="text-xs uppercase font-bold text-slate-500 mt-2">Laki-Laki</p></div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm text-center border-b-4 border-rose-500 hover:shadow-md transition transform hover:-translate-y-1"><h3 id="total-pr" class="text-3xl font-extrabold text-rose-500">0</h3><p class="text-xs uppercase font-bold text-slate-500 mt-2">Perempuan</p></div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm text-center border-b-4 border-blue-500 hover:shadow-md transition transform hover:-translate-y-1"><h3 id="total-lk" class="text-3xl font-extrabold text-blue-600">0</h3><p class="text-xs uppercase font-bold text-slate-500 mt-2">Laki-Laki</p></div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm text-center border-b-4 border-pink-500 hover:shadow-md transition transform hover:-translate-y-1"><h3 id="total-pr" class="text-3xl font-extrabold text-pink-500">0</h3><p class="text-xs uppercase font-bold text-slate-500 mt-2">Perempuan</p></div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm text-center border-b-4 border-accent hover:shadow-md transition transform hover:-translate-y-1"><h3 id="total-rombel" class="text-3xl font-extrabold text-accent">0</h3><p class="text-xs uppercase font-bold text-slate-500 mt-2">Rombel</p></div>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-8 mb-12">
-                    <div class="bg-white rounded-2xl shadow-md border border-amber-100 p-5 relative">
-                         <div class="flex justify-between items-center mb-4 border-b border-amber-100 pb-2"><h4 class="font-bold text-primary flex items-center gap-2"><i class="fa-solid fa-table-list text-accent"></i> Data Rombel</h4><button onclick="openAdminModal('siswa')" class="admin-only text-xs bg-amber-100 text-accent px-2 py-1 rounded font-bold">Edit</button></div>
-                        <div class="overflow-x-auto"><table class="w-full text-sm text-center"><thead class="bg-ramadhanbg text-xs uppercase font-bold text-primary"><tr><th class="p-3 text-left rounded-tl-lg">Kelas</th><th class="p-3 text-emerald-700">L</th><th class="p-3 text-rose-600">P</th><th class="p-3 bg-amber-100 rounded-tr-lg">JML</th></tr></thead><tbody id="siswa-tbody" class="divide-y divide-amber-50"></tbody></table></div>
+                    <div class="bg-white rounded-2xl shadow-md border border-white p-5 relative">
+                         <div class="flex justify-between items-center mb-4 border-b border-pagebg pb-2"><h4 class="font-bold text-primary flex items-center gap-2"><i class="fa-solid fa-table-list text-accent"></i> Data Rombel</h4><button onclick="openAdminModal('siswa')" class="admin-only text-xs bg-pagebg text-accent px-2 py-1 rounded font-bold">Edit</button></div>
+                        <div class="overflow-x-auto"><table class="w-full text-sm text-center"><thead class="bg-pagebg text-xs uppercase font-bold text-primary"><tr><th class="p-3 text-left rounded-tl-lg">Kelas</th><th class="p-3 text-blue-700">L</th><th class="p-3 text-pink-600">P</th><th class="p-3 bg-gold/20 rounded-tr-lg">JML</th></tr></thead><tbody id="siswa-tbody" class="divide-y divide-pagebg"></tbody></table></div>
                     </div>
                     <!-- DIAGRAM BATANG -->
-                    <div class="bg-white rounded-2xl shadow-md border border-amber-100 p-5 relative flex flex-col justify-center">
-                        <h4 class="font-bold text-primary mb-4 border-b border-amber-100 pb-2 flex items-center gap-2"><i class="fa-solid fa-chart-column text-accent"></i> Grafik Siswa</h4>
+                    <div class="bg-white rounded-2xl shadow-md border border-white p-5 relative flex flex-col justify-center">
+                        <h4 class="font-bold text-primary mb-4 border-b border-pagebg pb-2 flex items-center gap-2"><i class="fa-solid fa-chart-column text-accent"></i> Grafik Siswa</h4>
                         <div class="w-full overflow-x-auto pb-2 custom-scroll">
                             <div class="h-64 min-w-[500px]"> 
                                 <canvas id="siswaChart"></canvas>
@@ -230,15 +280,15 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-md border border-amber-100 p-5 relative">
-                    <div class="flex justify-between items-center mb-4 border-b border-amber-100 pb-2"><h4 class="font-bold text-primary flex items-center gap-2"><i class="fa-solid fa-right-left text-accent"></i> Mutasi Bulan Ini</h4><button onclick="openAdminModal('mutasi')" class="admin-only text-xs bg-amber-100 text-accent px-2 py-1 rounded font-bold">Edit</button></div>
-                     <div class="overflow-x-auto"><table class="w-full text-sm text-center"><thead class="bg-primary text-white"><tr><th class="p-3 text-left rounded-tl-lg border-r border-emerald-800">Kelas</th><th class="bg-emerald-600 p-2">Masuk L</th><th class="bg-emerald-600 p-2 border-r border-emerald-800">Masuk P</th><th class="bg-rose-600 p-2">Keluar L</th><th class="bg-rose-600 p-2 rounded-tr-lg">Keluar P</th></tr></thead><tbody id="mutasi-tbody" class="divide-y divide-amber-50"></tbody></table></div>
+                <div class="bg-white rounded-2xl shadow-md border border-white p-5 relative">
+                    <div class="flex justify-between items-center mb-4 border-b border-pagebg pb-2"><h4 class="font-bold text-primary flex items-center gap-2"><i class="fa-solid fa-right-left text-accent"></i> Mutasi Bulan Ini</h4><button onclick="openAdminModal('mutasi')" class="admin-only text-xs bg-pagebg text-accent px-2 py-1 rounded font-bold">Edit</button></div>
+                     <div class="overflow-x-auto"><table class="w-full text-sm text-center"><thead class="bg-primary text-white"><tr><th class="p-3 text-left rounded-tl-lg border-r border-primary/50">Kelas</th><th class="bg-emerald-600 p-2">Masuk L</th><th class="bg-emerald-600 p-2 border-r border-primary/50">Masuk P</th><th class="bg-rose-600 p-2">Keluar L</th><th class="bg-rose-600 p-2 rounded-tr-lg">Keluar P</th></tr></thead><tbody id="mutasi-tbody" class="divide-y divide-pagebg"></tbody></table></div>
                 </div>
             </div>
         </section>
 
         <!-- GURU -->
-        <section id="guru" class="py-20 bg-white relative border-y border-amber-100">
+        <section id="guru" class="py-20 bg-white relative border-y border-pagebg">
             <button onclick="openAdminModal('guru')" class="admin-only absolute top-8 right-8 bg-accent text-white px-4 py-2 rounded-lg shadow text-sm font-bold"><i class="fa-solid fa-cog mr-2"></i> Kelola</button>
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
@@ -246,12 +296,12 @@
                     <h2 class="text-3xl font-bold text-primary">Guru dan Staf</h2>
                 </div>
                 <div id="guru-container" class="flex gap-6 overflow-x-auto pb-8 px-4 snap-x custom-scroll"></div>
-                <div id="sotk" class="mt-16 bg-ramadhanbg p-8 rounded-2xl shadow-sm border border-gold/30 text-center relative"><button onclick="openAdminModal('config')" class="admin-only absolute top-4 right-4 text-xs bg-white text-accent px-3 py-1 rounded shadow">Edit di Config</button><h3 class="text-xl font-bold mb-6 text-primary"><i class="fa-solid fa-sitemap text-accent mr-2"></i> Struktur Organisasi</h3><div id="sotk-container" class="flex justify-center"><p class="text-slate-400">Memuat SOTK...</p></div></div>
+                <div id="sotk" class="mt-16 bg-pagebg p-8 rounded-2xl shadow-sm border border-gold/30 text-center relative"><button onclick="openAdminModal('config')" class="admin-only absolute top-4 right-4 text-xs bg-white text-accent px-3 py-1 rounded shadow">Edit di Config</button><h3 class="text-xl font-bold mb-6 text-primary"><i class="fa-solid fa-sitemap text-accent mr-2"></i> Struktur Organisasi</h3><div id="sotk-container" class="flex justify-center"><p class="text-slate-400">Memuat SOTK...</p></div></div>
             </div>
         </section>
 
         <!-- FASILITAS -->
-        <section id="fasilitas" class="py-20 bg-ramadhanbg relative">
+        <section id="fasilitas" class="py-20 bg-pagebg relative">
             <button onclick="openAdminModal('fasilitas')" class="admin-only absolute top-8 right-8 bg-accent text-white px-4 py-2 rounded shadow text-sm font-bold"><i class="fa-solid fa-cog mr-2"></i> Kelola</button>
             <div class="max-w-7xl mx-auto px-4">
                  <div class="text-center mb-12">
@@ -263,9 +313,9 @@
         </section>
 
         <!-- GALERI KEGIATAN -->
-        <section id="galeri-kegiatan" class="py-20 bg-white border-y border-amber-100 relative">
+        <section id="galeri-kegiatan" class="py-20 bg-white border-y border-pagebg relative">
             <div class="max-w-7xl mx-auto px-4">
-                <div class="flex justify-between items-center mb-8 border-b border-amber-100 pb-4">
+                <div class="flex justify-between items-center mb-8 border-b border-pagebg pb-4">
                     <div>
                         <span class="text-accent font-bold tracking-widest uppercase text-xs mb-1 block">Dokumentasi</span>
                         <h2 class="text-3xl font-bold text-primary"><i class="fa-solid fa-images text-gold mr-2"></i> Galeri Kegiatan</h2>
@@ -277,7 +327,7 @@
         </section>
 
         <!-- BERITA -->
-        <section id="berita" class="py-20 bg-ramadhanbg relative">
+        <section id="berita" class="py-20 bg-pagebg relative">
             <button onclick="openAdminModal('berita')" class="admin-only absolute top-8 right-8 bg-primary text-white px-4 py-2 rounded-lg shadow text-sm font-bold"><i class="fa-solid fa-plus mr-2"></i> Tambah Berita</button>
             <div class="max-w-7xl mx-auto px-4">
                 <div class="mb-10 text-center">
@@ -289,29 +339,29 @@
         </section>
 
         <!-- SPMB & DOWNLOAD -->
-        <section id="spmb-section" class="py-20 bg-gradient-to-b from-white to-amber-50 border-t border-amber-200">
+        <section id="spmb-section" class="py-20 bg-gradient-to-b from-white to-pagebg border-t border-pagebg">
             <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-12">
                 <div class="md:col-span-1 bg-white p-6 rounded-2xl shadow-lg border-t-4 border-gold h-fit relative">
-                    <button onclick="openAdminModal('downloads')" class="admin-only absolute top-4 right-4 text-xs bg-amber-100 text-accent px-2 py-1 rounded font-bold">Edit</button>
-                    <h3 class="font-bold text-primary text-xl mb-4 flex items-center border-b border-amber-100 pb-3"><i class="fa-solid fa-download mr-2 text-accent"></i> Unduhan</h3>
+                    <button onclick="openAdminModal('downloads')" class="admin-only absolute top-4 right-4 text-xs bg-pagebg text-accent px-2 py-1 rounded font-bold">Edit</button>
+                    <h3 class="font-bold text-primary text-xl mb-4 flex items-center border-b border-pagebg pb-3"><i class="fa-solid fa-download mr-2 text-accent"></i> Unduhan</h3>
                     <ul id="download-list" class="space-y-4 text-sm mt-4"></ul>
                 </div>
-                <div class="md:col-span-2 bg-gradient-to-br from-primary to-emerald-900 rounded-3xl p-10 text-white shadow-2xl relative overflow-hidden group border border-emerald-700/50">
+                <div class="md:col-span-2 bg-gradient-to-br from-primary to-slate-900 rounded-3xl p-10 text-white shadow-2xl relative overflow-hidden group border border-white/10">
                     <div class="absolute top-0 right-0 text-white/5 text-9xl transform translate-x-1/4 -translate-y-1/4 group-hover:scale-110 transition duration-700"><i class="fa-solid fa-graduation-cap"></i></div>
                     <div class="relative z-10">
                         <span class="inline-block py-1 px-4 rounded-full bg-white/20 text-gold backdrop-blur-sm border border-white/20 text-xs font-bold mb-4 tracking-widest">PENDAFTARAN</span>
                         <h3 class="font-extrabold text-4xl mb-2 text-gold">SPMB Online</h3>
-                        <p class="text-emerald-100 mb-8 text-lg">Bergabunglah menjadi bagian dari generasi unggul dan berkarakter islami bersama SDN 4 Taman.</p>
+                        <p class="text-slate-200 mb-8 text-lg">Bergabunglah menjadi bagian dari generasi unggul bersama SDN 4 Taman.</p>
                         
                         <div class="flex items-center gap-4 mb-8">
                             <div class="bg-black/30 p-1 rounded-full pl-4 pr-1 flex items-center gap-4 backdrop-blur-sm border border-white/10">
-                                <span class="text-sm font-medium text-emerald-100">Status Pendaftaran:</span>
+                                <span class="text-sm font-medium text-slate-200">Status Pendaftaran:</span>
                                 <span id="spmb-status-badge" class="px-5 py-2 rounded-full text-xs font-bold uppercase bg-slate-500 text-white shadow-inner">Loading...</span>
                             </div>
                         </div>
 
                         <div class="flex gap-4 flex-wrap">
-                            <button id="btn-spmb-register" onclick="document.getElementById('modal-spmb').classList.remove('hidden')" class="px-8 py-4 bg-gold text-primary font-bold rounded-xl disabled:opacity-50 shadow-lg hover:bg-amber-300 transition transform hover:-translate-y-1">Isi Formulir Sekarang</button>
+                            <button id="btn-spmb-register" onclick="document.getElementById('modal-spmb').classList.remove('hidden')" class="px-8 py-4 bg-gold text-primary font-bold rounded-xl disabled:opacity-50 shadow-lg hover:bg-white transition transform hover:-translate-y-1">Isi Formulir Sekarang</button>
                             <a href="#" id="btn-spmb-wa" target="_blank" class="px-8 py-4 bg-white/10 text-white font-bold rounded-xl hover:bg-white/20 transition backdrop-blur-sm border border-white/20 flex items-center"><i class="fa-brands fa-whatsapp mr-2 text-xl text-green-400"></i> Hubungi Panitia</a>
                         </div>
                     </div>
@@ -321,17 +371,17 @@
 
         <!-- FOOTER -->
         <footer id="footer" class="bg-primary text-white pt-20 pb-8 border-t-8 border-accent relative overflow-hidden">
-            <div class="absolute bottom-0 left-0 text-white/5 text-9xl"><i class="fa-solid fa-mosque"></i></div>
+            <div class="absolute bottom-0 left-0 text-white/5 text-9xl"><i id="footer-icon" class="fa-solid fa-school"></i></div>
             <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12 mb-16 relative z-10">
                 <div>
                     <div class="flex items-center gap-3 mb-6">
                         <img src="https://i.postimg.cc/CxkhTg41/Whats-App-Image-2025-03-06-at-09-04-17-removebg-preview.png" class="h-14 bg-white p-1 rounded-lg">
                         <div>
                             <h3 class="font-bold text-2xl text-gold" id="footer-nama">SDN 4 Taman</h3>
-                            <p class="text-[10px] text-emerald-200 tracking-widest">BERKARAKTER & BERPRESTASI</p>
+                            <p class="text-[10px] text-slate-300 tracking-widest">BERKARAKTER & BERPRESTASI</p>
                         </div>
                     </div>
-                    <p class="text-sm text-emerald-100/80 mb-6 leading-relaxed" id="footer-alamat"><i class="fa-solid fa-location-dot mr-2 text-accent"></i> Alamat...</p>
+                    <p class="text-sm text-slate-300 mb-6 leading-relaxed" id="footer-alamat"><i class="fa-solid fa-location-dot mr-2 text-accent"></i> Alamat...</p>
                     <div class="flex gap-4">
                         <a href="#" id="link-fb" target="_blank" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent hover:text-white transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
                         <a href="#" id="link-ig" target="_blank" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent hover:text-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
@@ -340,7 +390,7 @@
                 </div>
                 <div>
                     <h3 class="font-bold text-lg mb-6 text-gold border-b border-white/20 pb-2 inline-block">Tautan Cepat</h3>
-                    <ul class="text-sm space-y-3 text-emerald-100/80">
+                    <ul class="text-sm space-y-3 text-slate-300">
                         <li><a href="#visi-misi" class="hover:text-gold transition flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px] text-accent"></i> Visi & Misi</a></li>
                         <li><a href="#guru" class="hover:text-gold transition flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px] text-accent"></i> Data Guru & Staf</a></li>
                         <li><a href="#data-siswa" class="hover:text-gold transition flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px] text-accent"></i> Statistik Siswa</a></li>
@@ -352,52 +402,49 @@
                     <div class="absolute inset-0 flex items-center justify-center text-white/50 text-sm"><i class="fa-solid fa-map-location-dot mr-2"></i> Memuat Peta...</div>
                 </div>
             </div>
-            <div class="text-center text-xs text-emerald-200/50 pt-8 border-t border-white/10 relative z-10">&copy; 2026 <span class="text-gold">SDN 4 Taman</span>. All Rights Reserved.</div>
+            <div class="text-center text-xs text-slate-400 pt-8 border-t border-white/10 relative z-10">&copy; 2026 <span class="text-gold">SDN 4 Taman</span>. All Rights Reserved.</div>
         </footer>
     </main>
 
-    <!-- MOBILE MENU DRAWER (FIXED) -->
+    <!-- MOBILE MENU DRAWER -->
     <div id="mobile-menu" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm" onclick="toggleMobileMenu()">
         <div class="absolute right-0 top-0 h-full w-72 bg-white shadow-2xl flex flex-col transform transition-transform border-l-4 border-primary" onclick="event.stopPropagation()">
-            <!-- HEADER -->
-            <div class="p-5 border-b flex justify-between items-center bg-ramadhanbg flex-none">
+            <div class="p-5 border-b flex justify-between items-center bg-pagebg flex-none">
                 <h3 class="font-bold text-primary text-lg flex items-center gap-2"><i class="fa-solid fa-bars-staggered text-accent"></i> Menu Utama</h3>
                 <button onclick="toggleMobileMenu()" class="text-slate-400 hover:text-rose-500 transition"><i class="fa-solid fa-times text-2xl"></i></button>
             </div>
             
-            <!-- CONTENT (Scrollable) -->
             <div class="flex-1 overflow-y-auto p-2 space-y-1 pb-24 custom-scroll">
                 <a href="#beranda" onclick="toggleMobileMenu()" class="block p-3 mx-2 mt-2 bg-primary/5 hover:bg-primary/10 rounded-lg font-bold text-primary"><i class="fa-solid fa-house w-6 text-center text-accent"></i> Beranda</a>
                 
                 <div class="mt-6 mb-2 px-5 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Profil Sekolah</div>
-                <a href="#visi-misi" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-amber-50 hover:text-primary rounded-lg transition"><i class="fa-solid fa-book-open w-6 text-center text-slate-400"></i> Visi & Misi</a>
-                <a href="#sambutan" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-amber-50 hover:text-primary rounded-lg transition"><i class="fa-solid fa-microphone w-6 text-center text-slate-400"></i> Sambutan KS</a>
-                <a href="#guru" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-amber-50 hover:text-primary rounded-lg transition"><i class="fa-solid fa-chalkboard-user w-6 text-center text-slate-400"></i> Guru & Staf</a>
-                <a href="#fasilitas" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-amber-50 hover:text-primary rounded-lg transition"><i class="fa-solid fa-school w-6 text-center text-slate-400"></i> Fasilitas & Eskul</a>
-                <a href="#footer" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-amber-50 hover:text-primary rounded-lg transition"><i class="fa-solid fa-location-dot w-6 text-center text-slate-400"></i> Alamat</a>
+                <a href="#visi-misi" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-pagebg hover:text-primary rounded-lg transition"><i class="fa-solid fa-book-open w-6 text-center text-slate-400"></i> Visi & Misi</a>
+                <a href="#sambutan" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-pagebg hover:text-primary rounded-lg transition"><i class="fa-solid fa-microphone w-6 text-center text-slate-400"></i> Sambutan KS</a>
+                <a href="#guru" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-pagebg hover:text-primary rounded-lg transition"><i class="fa-solid fa-chalkboard-user w-6 text-center text-slate-400"></i> Guru & Staf</a>
+                <a href="#fasilitas" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-pagebg hover:text-primary rounded-lg transition"><i class="fa-solid fa-school w-6 text-center text-slate-400"></i> Fasilitas & Eskul</a>
+                <a href="#footer" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-pagebg hover:text-primary rounded-lg transition"><i class="fa-solid fa-location-dot w-6 text-center text-slate-400"></i> Alamat</a>
 
                 <div class="mt-6 mb-2 px-5 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Kesiswaan</div>
-                <a href="#data-siswa" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-amber-50 hover:text-primary rounded-lg transition"><i class="fa-solid fa-chart-pie w-6 text-center text-slate-400"></i> Data & Statistik</a>
-                <a href="#spmb-section" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-amber-50 hover:text-primary rounded-lg transition"><i class="fa-solid fa-user-plus w-6 text-center text-slate-400"></i> SPMB Online</a>
+                <a href="#data-siswa" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-pagebg hover:text-primary rounded-lg transition"><i class="fa-solid fa-chart-pie w-6 text-center text-slate-400"></i> Data & Statistik</a>
+                <a href="#spmb-section" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-pagebg hover:text-primary rounded-lg transition"><i class="fa-solid fa-user-plus w-6 text-center text-slate-400"></i> SPMB Online</a>
 
                 <div class="mt-6 mb-2 px-5 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Akademik</div>
-                <a href="#" id="mob-lms" target="_blank" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-amber-50 hover:text-primary rounded-lg transition"><i class="fa-solid fa-laptop-code w-6 text-center text-slate-400"></i> E-Learning / LMS</a>
-                <a href="#galeri-kegiatan" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-amber-50 hover:text-primary rounded-lg transition"><i class="fa-solid fa-images w-6 text-center text-slate-400"></i> Galeri Kegiatan</a>
+                <a href="#" id="mob-lms" target="_blank" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-pagebg hover:text-primary rounded-lg transition"><i class="fa-solid fa-laptop-code w-6 text-center text-slate-400"></i> E-Learning / LMS</a>
+                <a href="#galeri-kegiatan" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 hover:bg-pagebg hover:text-primary rounded-lg transition"><i class="fa-solid fa-images w-6 text-center text-slate-400"></i> Galeri Kegiatan</a>
 
                 <div class="mt-6 mb-2 px-5 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Kontak Cepat</div>
                 <a href="#" id="mob-wa" class="block p-3 mx-2 text-sm text-green-600 font-medium hover:bg-green-50 rounded-lg transition border border-transparent hover:border-green-200"><i class="fa-brands fa-whatsapp w-6 text-center text-green-500 text-lg"></i> Chat WhatsApp</a>
                 <a href="#" id="mob-ig" class="block p-3 mx-2 text-sm text-pink-600 font-medium hover:bg-pink-50 rounded-lg transition border border-transparent hover:border-pink-200 mb-6"><i class="fa-brands fa-instagram w-6 text-center text-pink-500 text-lg"></i> Follow Instagram</a>
             </div>
 
-            <!-- FOOTER (Login Button - Fixed Bottom) -->
+            <!-- FOOTER MOBILE MENU -->
             <div class="p-4 border-t border-slate-100 bg-white flex-none absolute bottom-0 w-full shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)]">
                 <button onclick="toggleMobileMenu(); handleLoginButton();" class="w-full bg-primary text-white py-3.5 rounded-xl font-bold text-sm shadow-lg hover:bg-slate-800 transition flex items-center justify-center gap-2"><i class="fa-solid fa-shield-halved"></i> Login Admin</button>
             </div>
         </div>
     </div>
 
-    <!-- === KODE ADMIN MODAL, FORM MODAL, DAN JAVASCRIPT TETAP SAMA SEPERTI VERSI SEBELUMNYA === -->
-    <!-- (Agar respon tidak terpotong, bagian admin dan JS dipertahankan identik fungsinya) -->
+    <!-- === KODE ADMIN MODAL, FORM MODAL, DAN JAVASCRIPT === -->
     
     <!-- ADMIN MODAL -->
     <div id="modal-admin" class="fixed inset-0 bg-black/50 hidden z-[70] flex items-center justify-center p-4 backdrop-blur-sm">
@@ -481,12 +528,37 @@
     </div>
 
     <!-- LOGIN & SPMB -->
-    <div id="modal-login" class="fixed inset-0 bg-black/80 hidden z-[80] flex items-center justify-center p-4"><div class="bg-white rounded-xl max-w-sm w-full p-6 relative border-t-4 border-accent"><button onclick="document.getElementById('modal-login').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-times"></i></button><div class="text-center mb-4"><div class="w-12 h-12 bg-ramadhanbg rounded-full flex items-center justify-center mx-auto mb-2 text-accent"><i class="fa-solid fa-shield-halved text-xl"></i></div><h3 class="text-xl font-bold text-primary">Login Admin</h3></div><form onsubmit="doLogin(event)"><input type="text" name="user" placeholder="Username" class="input-field mb-3" required><input type="password" name="pass" placeholder="Password" class="input-field mb-4" required><button type="submit" class="w-full bg-primary text-white font-bold py-3 rounded-lg">Masuk</button></form></div></div>
+    <div id="modal-login" class="fixed inset-0 bg-black/80 hidden z-[80] flex items-center justify-center p-4"><div class="bg-white rounded-xl max-w-sm w-full p-6 relative border-t-4 border-accent"><button onclick="document.getElementById('modal-login').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-times"></i></button><div class="text-center mb-4"><div class="w-12 h-12 bg-pagebg rounded-full flex items-center justify-center mx-auto mb-2 text-accent"><i class="fa-solid fa-shield-halved text-xl"></i></div><h3 class="text-xl font-bold text-primary">Login Admin</h3></div><form onsubmit="doLogin(event)"><input type="text" name="user" placeholder="Username" class="input-field mb-3" required><input type="password" name="pass" placeholder="Password" class="input-field mb-4" required><button type="submit" class="w-full bg-primary text-white font-bold py-3 rounded-lg">Masuk</button></form></div></div>
     <div id="modal-spmb" class="fixed inset-0 bg-black/80 hidden z-[90] flex items-center justify-center p-4"><div class="bg-white rounded-xl max-w-md w-full p-6 relative border-t-4 border-emerald-500"><button onclick="document.getElementById('modal-spmb').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-times"></i></button><h3 class="text-xl font-bold text-primary mb-1">Formulir SPMB</h3><form onsubmit="kirimSPMB(event)" class="space-y-3"><input type="text" name="nama" placeholder="Nama Lengkap" class="input-field" required><input type="text" name="nik" placeholder="NIK" class="input-field" required><input type="text" name="hp" placeholder="No WA" class="input-field" required><button type="submit" class="w-full bg-emerald-600 text-white font-bold py-3 rounded hover:bg-emerald-700">Kirim</button></form></div></div>
 
-    <style>.input-field{width:100%;padding:0.5rem;border:1px solid #cbd5e1;border-radius:0.5rem; outline:none; transition:border 0.2s;}.input-field:focus{border-color:#064e3b;}.label{font-size:0.75rem;font-weight:700;color:#064e3b}.btn-add{background:#064e3b;color:white;padding:0.5rem 1rem;border-radius:0.5rem;font-size:0.875rem}.btn-save{background:#d97706;color:white;padding:0.5rem;border-radius:0.5rem;font-weight:600;font-size:0.875rem}.action-btn{padding:0.25rem 0.5rem;border-radius:0.25rem;font-size:0.75rem;margin:0 0.1rem}</style>
+    <style>
+        .input-field{width:100%;padding:0.5rem;border:1px solid #cbd5e1;border-radius:0.5rem; outline:none; transition:border 0.2s;}
+        .input-field:focus{border-color:var(--tw-colors-primary);}
+        .label{font-size:0.75rem;font-weight:700;color:var(--tw-colors-primary);}
+        .btn-add{background:var(--tw-colors-primary);color:white;padding:0.5rem 1rem;border-radius:0.5rem;font-size:0.875rem;}
+        .btn-save{background:var(--tw-colors-accent);color:white;padding:0.5rem;border-radius:0.5rem;font-weight:600;font-size:0.875rem;}
+        .action-btn{padding:0.25rem 0.5rem;border-radius:0.25rem;font-size:0.75rem;margin:0 0.1rem;}
+    </style>
 
     <script>
+        // INISIALISASI TEMA ORNAMEN (Dijalankan saat halaman dimuat)
+        document.addEventListener("DOMContentLoaded", () => {
+            const orn = document.getElementById('dynamic-ornaments');
+            if(orn) orn.innerHTML = activeTheme.ornaments;
+            
+            const badge = document.getElementById('theme-badge');
+            if(badge) badge.innerText = activeTheme.badge;
+
+            const heroIcon = document.getElementById('hero-icon');
+            if(heroIcon) heroIcon.className = `fa-solid ${activeTheme.icon} text-gold text-4xl mb-2`;
+
+            const footerIcon = document.getElementById('footer-icon');
+            if(footerIcon) footerIcon.className = `fa-solid ${activeTheme.icon}`;
+
+            // Ubah warna scrollbar
+            document.documentElement.style.setProperty('--scrollbar-color', activeTheme.accent);
+        });
+
         // ===========================================
         // GANTI URL DI BAWAH DENGAN URL DEPLOY TERBARU
         // ===========================================
@@ -556,7 +628,7 @@
                     } else {
                         btnRegister.disabled = false;
                         btnRegister.innerText = "Isi Formulir Sekarang";
-                        btnRegister.className = "px-8 py-4 bg-gold text-primary font-bold rounded-xl hover:bg-amber-300 transition transform hover:-translate-y-1 shadow-lg";
+                        btnRegister.className = "px-8 py-4 bg-gold text-primary font-bold rounded-xl hover:bg-opacity-80 transition transform hover:-translate-y-1 shadow-lg";
                     }
                 }
             }
@@ -569,16 +641,16 @@
             const gurus = (d.guru || []).filter(g => !String(g[5]).toLowerCase().includes('kepala'));
             const ks = (d.guru || []).find(g => String(g[5]).toLowerCase().includes('kepala'));
             if(ks) { safeSetText('ks-nama', ks[3]); safeSetAttr('ks-foto', 'src', ks[7]); }
-            safeSetHtml('guru-container', gurus.map(g => `<div class="snap-center shrink-0 w-64 bg-white rounded-xl p-4 text-center shadow-md border-b-4 border-primary"><div class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-3 bg-ramadhanbg border-2 border-gold/30"><img src="${g[7] || 'https://via.placeholder.com/150'}" class="w-full h-full object-cover"></div><h5 class="font-bold text-sm text-primary truncate">${g[3]}</h5><span class="text-[10px] bg-amber-50 px-3 py-1 rounded-full text-accent font-bold mt-2 inline-block">${g[5]}</span></div>`).join(''));
-            safeSetHtml('siswa-tbody', siswas.map(s => `<tr><td class="p-2 text-left font-bold text-primary border-b border-amber-50">${s[0]}</td><td class="border-b border-amber-50 font-bold text-emerald-600">${s[1]}</td><td class="border-b border-amber-50 font-bold text-rose-500">${s[2]}</td><td class="border-b border-amber-50 font-bold bg-amber-50 text-accent">${parseInt(s[1])+parseInt(s[2])}</td></tr>`).join(''));
-            safeSetHtml('mutasi-tbody', (d.mutasi||[]).map(m => `<tr><td class="p-2 border-r border-amber-100 text-left font-bold text-primary">${m[0]}</td><td class="bg-emerald-50 text-emerald-700 font-bold border-r border-amber-100">${m[1]||0}</td><td class="bg-emerald-50 text-emerald-700 font-bold border-r border-amber-100">${m[2]||0}</td><td class="bg-rose-50 text-rose-700 font-bold border-r border-amber-100">${m[3]||0}</td><td class="bg-rose-50 text-rose-700 font-bold">${m[4]||0}</td></tr>`).join(''));
+            safeSetHtml('guru-container', gurus.map(g => `<div class="snap-center shrink-0 w-64 bg-white rounded-xl p-4 text-center shadow-md border-b-4 border-primary"><div class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-3 bg-pagebg border-2 border-gold/30"><img src="${g[7] || 'https://via.placeholder.com/150'}" class="w-full h-full object-cover"></div><h5 class="font-bold text-sm text-primary truncate">${g[3]}</h5><span class="text-[10px] bg-primary/10 px-3 py-1 rounded-full text-accent font-bold mt-2 inline-block">${g[5]}</span></div>`).join(''));
+            safeSetHtml('siswa-tbody', siswas.map(s => `<tr><td class="p-2 text-left font-bold text-primary border-b border-primary/10">${s[0]}</td><td class="border-b border-primary/10 font-bold text-blue-600">${s[1]}</td><td class="border-b border-primary/10 font-bold text-pink-500">${s[2]}</td><td class="border-b border-primary/10 font-bold bg-primary/5 text-accent">${parseInt(s[1])+parseInt(s[2])}</td></tr>`).join(''));
+            safeSetHtml('mutasi-tbody', (d.mutasi||[]).map(m => `<tr><td class="p-2 border-r border-primary/20 text-left font-bold text-primary">${m[0]}</td><td class="bg-emerald-50 text-emerald-700 font-bold border-r border-primary/20">${m[1]||0}</td><td class="bg-emerald-50 text-emerald-700 font-bold border-r border-primary/20">${m[2]||0}</td><td class="bg-rose-50 text-rose-700 font-bold border-r border-primary/20">${m[3]||0}</td><td class="bg-rose-50 text-rose-700 font-bold">${m[4]||0}</td></tr>`).join(''));
             
             safeSetHtml('berita-list', (d.berita||[]).slice(0,4).map(b => {
                 const link = b[5] ? `href="${b[5]}" target="_blank"` : '';
                 const cursor = b[5] ? 'cursor-pointer hover:shadow-md hover:border-gold/50' : '';
                 return `
                 <a ${link} class="bg-white p-4 rounded-xl shadow-sm border border-transparent flex gap-4 block ${cursor} transition bg-white/80 backdrop-blur">
-                    <img src="${b[4] || 'https://via.placeholder.com/100'}" class="w-20 h-20 rounded-lg object-cover bg-ramadhanbg shrink-0 border border-gold/20">
+                    <img src="${b[4] || 'https://via.placeholder.com/100'}" class="w-20 h-20 rounded-lg object-cover bg-pagebg shrink-0 border border-gold/20">
                     <div>
                         <span class="text-[10px] bg-accent/10 text-accent px-2 py-0.5 rounded font-bold">${b[2] || '-'}</span>
                         <h4 class="font-bold mt-2 line-clamp-2 text-primary hover:text-accent transition">${b[1]}</h4>
@@ -587,8 +659,8 @@
                 </a>`;
             }).join(''));
             
-            safeSetHtml('fasilitas-grid', (d.fasilitas||[]).map(f => `<div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-gold flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-ramadhanbg flex items-center justify-center text-accent shrink-0"><i class="fa-solid fa-check"></i></div><div><h5 class="font-bold text-sm text-primary">${f[2]}</h5><span class="text-[10px] text-slate-400 uppercase font-bold">${f[1]}</span></div></div>`).join(''));
-            safeSetHtml('download-list', (d.downloads||[]).map(f => `<li class="flex items-center gap-3 border-b border-amber-100 pb-3 last:border-0 group"><div class="w-8 h-8 rounded bg-rose-50 flex items-center justify-center text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition"><i class="fa-solid fa-file-pdf"></i></div> <a href="${f[3]}" target="_blank" class="text-primary hover:text-accent font-bold text-sm flex-1 truncate transition">${f[1]}</a></li>`).join(''));
+            safeSetHtml('fasilitas-grid', (d.fasilitas||[]).map(f => `<div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-gold flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-pagebg flex items-center justify-center text-accent shrink-0"><i class="fa-solid fa-check"></i></div><div><h5 class="font-bold text-sm text-primary">${f[2]}</h5><span class="text-[10px] text-slate-400 uppercase font-bold">${f[1]}</span></div></div>`).join(''));
+            safeSetHtml('download-list', (d.downloads||[]).map(f => `<li class="flex items-center gap-3 border-b border-primary/10 pb-3 last:border-0 group"><div class="w-8 h-8 rounded bg-rose-50 flex items-center justify-center text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition"><i class="fa-solid fa-file-pdf"></i></div> <a href="${f[3]}" target="_blank" class="text-primary hover:text-accent font-bold text-sm flex-1 truncate transition">${f[1]}</a></li>`).join(''));
             
             const banners = (d.galeri||[]).filter(g => String(g[1]).toLowerCase() === 'banner');
             safeSetHtml('banner-track', banners.length ? banners.map(b => {
@@ -601,15 +673,15 @@
             }).join('') : '<div class="w-full h-full flex items-center justify-center text-gold/50"><i class="fa-solid fa-image fa-2x opacity-50 mr-2"></i> Belum ada banner</div>');
             
             const activities = (d.galeri||[]).filter(g => String(g[1]).toLowerCase() !== 'banner');
-            safeSetHtml('galeri-kegiatan-grid', activities.map(g => `<div class="bg-white rounded-xl shadow-sm border border-amber-100 overflow-hidden group"><div class="h-40 overflow-hidden relative"><div class="absolute inset-0 bg-primary/20 z-10 group-hover:bg-transparent transition"></div><img src="${g[3]}" class="w-full h-full object-cover transition duration-500 transform group-hover:scale-110"></div><div class="p-3 bg-ramadhanbg border-t border-gold/20"><h5 class="text-sm font-bold text-primary truncate">${g[2]}</h5><p class="text-[10px] text-accent uppercase font-bold mt-1">${g[1]}</p></div></div>`).join(''));
+            safeSetHtml('galeri-kegiatan-grid', activities.map(g => `<div class="bg-white rounded-xl shadow-sm border border-primary/10 overflow-hidden group"><div class="h-40 overflow-hidden relative"><div class="absolute inset-0 bg-primary/20 z-10 group-hover:bg-transparent transition"></div><img src="${g[3]}" class="w-full h-full object-cover transition duration-500 transform group-hover:scale-110"></div><div class="p-3 bg-pagebg border-t border-gold/20"><h5 class="text-sm font-bold text-primary truncate">${g[2]}</h5><p class="text-[10px] text-accent uppercase font-bold mt-1">${g[1]}</p></div></div>`).join(''));
         }
 
         function renderChart(ctx, labels, dataL, dataP) {
             if (myChart) myChart.destroy();
-            // Tema Ramadhan Chart (Hijau Emerald & Rose)
+            // Warna Chart Tetap Standar (Biru & Pink)
             myChart = new Chart(ctx, {
                 type: 'bar',
-                data: { labels: labels, datasets: [{ label: 'Laki-laki', data: dataL, backgroundColor: '#059669', borderRadius: 4 }, { label: 'Perempuan', data: dataP, backgroundColor: '#f43f5e', borderRadius: 4 }] },
+                data: { labels: labels, datasets: [{ label: 'Laki-laki', data: dataL, backgroundColor: '#2563eb', borderRadius: 4 }, { label: 'Perempuan', data: dataP, backgroundColor: '#db2777', borderRadius: 4 }] },
                 options: { responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { autoSkip: false } }, y: { beginAtZero: true } } }
             });
         }
