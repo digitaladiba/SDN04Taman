@@ -137,11 +137,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <!-- LOGO -->
-                <div class="flex items-center gap-3">
-                    <img id="nav-logo" src="https://i.postimg.cc/CxkhTg41/Whats-App-Image-2025-03-06-at-09-04-17-removebg-preview.png" alt="Logo" class="h-12 w-auto object-contain">
+                <div class="flex items-center gap-2 md:gap-3 flex-shrink-0 z-50">
+                    <img id="nav-logo" src="https://i.postimg.cc/CxkhTg41/Whats-App-Image-2025-03-06-at-09-04-17-removebg-preview.png" alt="Logo" class="h-10 md:h-12 w-auto object-contain">
                     <div class="leading-tight">
-                        <h1 id="nav-nama-sekolah" class="text-xl font-bold text-primary dark:text-gold theme-transition">SDN 4 Taman</h1>
-                        <p class="text-[10px] md:text-xs text-accent font-bold tracking-widest uppercase">Berkarakter & Berprestasi</p>
+                        <h1 id="nav-nama-sekolah" class="text-lg md:text-xl font-bold text-primary dark:text-gold theme-transition">SDN 4 Taman</h1>
+                        <p class="text-[9px] md:text-[10px] text-accent font-bold tracking-widest uppercase">Berkarakter & Berprestasi</p>
                     </div>
                 </div>
                 
@@ -193,21 +193,15 @@
                         </div>
                     </div>
 
-                    <!-- Tombol Day/Night Mode -->
-                    <button onclick="toggleDarkMode()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-accent dark:text-gold hover:bg-primary hover:text-white dark:hover:bg-gold dark:hover:text-primary flex items-center justify-center transition-all shadow-sm">
-                        <i id="theme-icon" class="fa-solid fa-moon"></i>
-                    </button>
-
-                    <!-- Tombol Login -->
                     <button onclick="handleLoginButton()" id="btn-login" class="w-10 h-10 rounded-full bg-bgLight dark:bg-bgDark text-primary dark:text-gold hover:bg-primary hover:text-white dark:hover:bg-gold dark:hover:text-primary flex items-center justify-center transition-all shadow-sm border border-gold/50">
                         <i class="fa-solid fa-shield-halved text-xs"></i>
                     </button>
                 </div>
 
-                <!-- HAMBURGER BUTTON (MOBILE) -->
-                <div class="lg:hidden flex gap-2">
-                    <button onclick="toggleDarkMode()" class="w-10 h-10 rounded border border-gold/50 flex items-center justify-center text-primary dark:text-gold"><i id="theme-icon-mobile" class="fa-solid fa-moon"></i></button>
-                    <button onclick="toggleMobileMenu()" class="w-10 h-10 flex items-center justify-center text-primary dark:text-gold text-xl border border-gold/50 rounded hover:bg-bgLight dark:hover:bg-bgDark z-[60] relative"><i class="fa-solid fa-bars"></i></button>
+                <!-- MOBILE BUTTONS (Day/Night + Hamburger Fixed Visibility) -->
+                <div class="flex items-center gap-2 lg:hidden flex-shrink-0 z-50">
+                    <button onclick="toggleDarkMode()" class="w-9 h-9 md:w-10 md:h-10 rounded border border-gold/50 flex items-center justify-center text-primary dark:text-gold hover:bg-black/5 theme-transition"><i id="theme-icon-mobile" class="fa-solid fa-moon"></i></button>
+                    <button onclick="toggleMobileMenu()" class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center text-primary dark:text-gold text-lg md:text-xl border border-gold/50 rounded hover:bg-black/5 theme-transition"><i class="fa-solid fa-bars"></i></button>
                 </div>
             </div>
         </div>
@@ -217,7 +211,7 @@
     <div id="db-status" class="fixed bottom-4 left-4 z-[90] bg-cardLight dark:bg-cardDark border border-gold/30 shadow-lg rounded-lg px-4 py-3 text-xs font-medium text-primary dark:text-slate-200 flex flex-col gap-1 transition-all w-64 theme-transition">
         <div class="flex items-center gap-2">
             <span class="w-3 h-3 rounded-full bg-gold animate-pulse" id="db-indicator"></span>
-            <span id="db-text" class="font-bold">Menghubungkan Database...</span>
+            <span id="db-text" class="font-bold">Menghubungkan...</span>
         </div>
         <button id="btn-retry" onclick="location.reload()" class="hidden mt-2 bg-bgLight dark:bg-bgDark text-accent px-2 py-1.5 rounded border border-gold/30 w-full font-bold">Coba Lagi</button>
     </div>
@@ -226,7 +220,7 @@
         <!-- HERO TEMA DINAMIS -->
         <section id="beranda" class="relative w-full h-[500px] md:h-[650px] overflow-hidden bg-primary group theme-transition">
             <div id="hero-background" class="absolute inset-0 bg-cover bg-center transition-all duration-1000" style="background-image: url('https://i.postimg.cc/NfP9fBTD/Hijau-dan-Putih-Modern-Pengabdian-Kepada-Masyarakat-Benner.png');">
-                <!-- Overlay natural (tidak menghilangkan gambar) -->
+                <!-- Overlay natural -->
                 <div class="absolute inset-0 bg-black/40 dark:bg-black/60 theme-transition"></div>
             </div>
             
@@ -239,7 +233,7 @@
                     <span id="theme-badge" class="inline-block py-1 px-5 rounded-full bg-gold/90 text-primary border border-gold font-bold mb-4 tracking-widest uppercase shadow-lg">OFFICIAL WEBSITE</span>
                     <h2 class="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight drop-shadow-xl" id="hero-title" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">SDN 4 TAMAN</h2>
                     
-                    <!-- Teks sambutan solid (tidak transparan) -->
+                    <!-- Teks sambutan solid -->
                     <div class="bg-primary dark:bg-cardDark border-2 border-gold rounded-xl p-5 mb-8 max-w-2xl mx-auto shadow-2xl theme-transition">
                          <p id="running-text-display" class="text-white text-lg font-medium">Selamat Datang...</p>
                     </div>
@@ -252,11 +246,10 @@
             </div>
         </section>
 
-        <!-- BANNER SLIDER (SLIDE MODE) -->
+        <!-- BANNER SLIDER -->
         <section class="bg-cardLight dark:bg-bgDark border-t-2 border-b-4 border-gold relative overflow-hidden h-[250px] md:h-[450px] theme-transition">
             <button onclick="openForm('Galeri')" class="admin-only absolute top-4 right-4 bg-black/60 text-gold text-xs px-3 py-1 rounded hover:bg-black/80 z-20 border border-gold/50 shadow"><i class="fa-solid fa-plus"></i> Edit Banner</button>
             <div class="relative w-full h-full overflow-hidden">
-                <!-- Dikembalikan ke format scroll/slide menyamping -->
                 <div id="banner-track" class="flex h-full w-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth">
                     <div class="w-full h-full flex items-center justify-center text-slate-400 dark:text-slate-500 text-sm font-medium"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Memuat Banner...</div>
                 </div>
@@ -326,7 +319,7 @@
                     <!-- DIAGRAM BATANG -->
                     <div class="bg-cardLight dark:bg-cardDark rounded-2xl shadow-md border border-gold/10 p-4 md:p-5 relative flex flex-col justify-center theme-transition">
                         <h4 class="font-bold text-primary dark:text-slate-100 mb-4 border-b border-bgLight dark:border-slate-700 pb-2 flex items-center gap-2"><i class="fa-solid fa-chart-column text-accent dark:text-gold"></i> Grafik Siswa</h4>
-                        <!-- Container Scrollable di Mobile -->
+                        <!-- Container Scrollable -->
                         <div class="w-full overflow-x-auto pb-2 custom-scroll">
                             <div class="h-64 min-w-[450px]"> 
                                 <canvas id="siswaChart"></canvas>
@@ -672,7 +665,6 @@
             }
         }
 
-        let bannerInterval;
         function renderPublicUI(d) {
             const c = d.config || {};
             safeSetText('nav-nama-sekolah', c.NamaSekolah); safeSetText('hero-title', c.NamaSekolah ? c.NamaSekolah.toUpperCase() : null);
@@ -740,7 +732,7 @@
             safeSetHtml('fasilitas-grid', (d.fasilitas||[]).map(f => `<div class="bg-cardLight dark:bg-slate-800 p-4 rounded-xl shadow-sm border-l-4 border-gold flex items-center gap-3 theme-transition"><div class="w-10 h-10 rounded-full bg-bgLight dark:bg-slate-900 flex items-center justify-center text-accent dark:text-gold shrink-0 theme-transition"><i class="fa-solid fa-check"></i></div><div><h5 class="font-bold text-sm text-primary dark:text-white">${f[2]}</h5><span class="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-bold">${f[1]}</span></div></div>`).join(''));
             safeSetHtml('download-list', (d.downloads||[]).map(f => `<li class="flex items-center gap-3 border-b border-primary/10 dark:border-slate-700 pb-3 last:border-0 group"><div class="w-8 h-8 rounded bg-rose-50 dark:bg-rose-900/20 flex items-center justify-center text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition"><i class="fa-solid fa-file-pdf"></i></div> <a href="${f[3]}" target="_blank" class="text-primary dark:text-slate-200 hover:text-accent font-bold text-sm flex-1 truncate transition">${f[1]}</a></li>`).join(''));
             
-            // KEMBALI KE MODE SLIDE (GESER) UNTUK BANNER
+            // BANNER SLIDE MODE
             const banners = (d.galeri||[]).filter(g => String(g[1]).toLowerCase() === 'banner');
             safeSetHtml('banner-track', banners.length ? banners.map(b => {
                 const link = b[4] ? `onclick="window.open('${b[4]}', '_blank')"` : '';
@@ -826,7 +818,7 @@
         async function send(pl) { try { await fetch(API_URL, {method:'POST', body:JSON.stringify(pl)}); } catch(e){alert("Gagal Simpan (Offline)");} }
         async function refreshData() { await initApp(); const t=document.querySelector('.tab-content:not(.hidden)'); if(t) renderAdminData(t.id.replace('tab-','')); }
         
-        // SCRIPT KEMBALI KE MODE GESER
+        // SCRIPT GESER BANNER
         function startBannerScroll() { 
             const c = document.getElementById('banner-track'); 
             setInterval(()=>{ 
