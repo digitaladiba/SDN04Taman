@@ -80,7 +80,7 @@
         const activeTheme = themes[currentTheme];
 
         tailwind.config = {
-            darkMode: 'class', // Manual dark mode toggle
+            darkMode: 'class', 
             theme: {
                 extend: {
                     fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
@@ -119,10 +119,13 @@
         .glass-nav { backdrop-filter: blur(10px); }
         .admin-only { display: none !important; }
         body.admin-mode .admin-only { display: inline-flex !important; }
+        
+        /* SCROLLBAR CUSTOM */
         .custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: var(--tw-colors-accent); border-radius: 3px; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
         .group:hover .group-hover\:block { display: block; }
     </style>
 </head>
@@ -133,7 +136,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <!-- LOGO -->
-                <div class="flex items-center gap-2 md:gap-3 flex-shrink-0 z-50">
+                <div class="flex items-center gap-2 md:gap-3 flex-shrink-0 z-50 cursor-pointer" onclick="speakText('Sistem Informasi Digital S D Negeri 4 Taman')">
                     <img id="nav-logo" src="https://i.postimg.cc/CxkhTg41/Whats-App-Image-2025-03-06-at-09-04-17-removebg-preview.png" alt="Logo" class="h-10 md:h-12 w-auto object-contain">
                     <div class="leading-tight">
                         <h1 id="nav-nama-sekolah" class="text-lg md:text-xl font-bold text-primary dark:text-gold theme-transition">SDN 4 Taman</h1>
@@ -143,55 +146,60 @@
                 
                 <!-- DESKTOP MENU -->
                 <div class="hidden lg:flex space-x-6 items-center">
-                    <a href="#beranda" class="nav-item text-sm font-bold text-primary dark:text-slate-200 hover:text-accent dark:hover:text-gold theme-transition">BERANDA</a>
+                    <a href="#beranda" onclick="speakText('Beranda')" class="nav-item text-sm font-bold text-primary dark:text-slate-200 hover:text-accent dark:hover:text-gold theme-transition">BERANDA</a>
                     
                     <!-- Profil -->
                     <div class="relative group h-20 flex items-center">
-                        <button class="nav-item text-sm font-bold text-primary dark:text-slate-200 hover:text-accent dark:hover:text-gold theme-transition flex items-center gap-1">PROFIL <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                        <button onclick="speakText('Menu Profil Sekolah')" class="nav-item text-sm font-bold text-primary dark:text-slate-200 hover:text-accent dark:hover:text-gold theme-transition flex items-center gap-1">PROFIL <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
                         <div class="absolute top-16 left-0 w-56 bg-cardLight dark:bg-cardDark border-t-4 border-accent shadow-xl rounded-b-lg hidden group-hover:block p-2 theme-transition">
-                            <a href="#visi-misi" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Visi & Misi</a>
-                            <a href="#sambutan" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Sambutan KS</a>
-                            <a href="#guru" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Data Guru & Staf</a>
-                            <a href="#fasilitas" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Fasilitas & Eskul</a>
-                            <a href="#footer" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Alamat Sekolah</a>
+                            <a href="#visi-misi" onclick="speakText('Visi dan Misi Sekolah')" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Visi & Misi</a>
+                            <a href="#sambutan" onclick="speakText('Sambutan Kepala Sekolah')" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Sambutan KS</a>
+                            <a href="#guru" onclick="speakText('Data Guru dan Staf')" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Data Guru & Staf</a>
+                            <a href="#fasilitas" onclick="speakText('Fasilitas Sekolah')" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Fasilitas & Eskul</a>
+                            <a href="#footer" onclick="speakText('Alamat Sekolah')" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Alamat Sekolah</a>
                         </div>
                     </div>
 
                     <!-- Siswa -->
                     <div class="relative group h-20 flex items-center">
-                        <button class="nav-item text-sm font-bold text-primary dark:text-slate-200 hover:text-accent dark:hover:text-gold theme-transition flex items-center gap-1">SISWA <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                        <button onclick="speakText('Menu Siswa')" class="nav-item text-sm font-bold text-primary dark:text-slate-200 hover:text-accent dark:hover:text-gold theme-transition flex items-center gap-1">SISWA <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
                         <div class="absolute top-16 left-0 w-56 bg-cardLight dark:bg-cardDark border-t-4 border-accent shadow-xl rounded-b-lg hidden group-hover:block p-2 theme-transition">
-                            <a href="#data-siswa" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Statistik Siswa</a>
-                            <a href="#data-siswa" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Data Mutasi</a>
-                            <a href="#spmb-section" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Info SPMB</a>
+                            <a href="#data-siswa" onclick="speakText('Statistik Siswa')" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Statistik Siswa</a>
+                            <a href="#data-siswa" onclick="speakText('Data Mutasi')" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Data Mutasi</a>
+                            <a href="#spmb-section" onclick="speakText('Info Penerimaan Murid Baru')" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Info SPMB</a>
                         </div>
                     </div>
 
                     <!-- Akademik -->
                     <div class="relative group h-20 flex items-center">
-                        <button class="nav-item text-sm font-bold text-primary dark:text-slate-200 hover:text-accent dark:hover:text-gold theme-transition flex items-center gap-1">AKADEMIK <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                        <button onclick="speakText('Menu Akademik')" class="nav-item text-sm font-bold text-primary dark:text-slate-200 hover:text-accent dark:hover:text-gold theme-transition flex items-center gap-1">AKADEMIK <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
                         <div class="absolute top-16 left-0 w-56 bg-cardLight dark:bg-cardDark border-t-4 border-accent shadow-xl rounded-b-lg hidden group-hover:block p-2 theme-transition">
-                            <a href="#" id="nav-lms" target="_blank" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">LMS / E-Learning</a>
-                            <a href="#galeri-kegiatan" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Galeri Kegiatan</a>
+                            <a href="#" id="nav-lms" target="_blank" onclick="speakText('Menuju E-Learning')" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">LMS / E-Learning</a>
+                            <a href="#galeri-kegiatan" onclick="speakText('Galeri Kegiatan Sekolah')" class="block px-4 py-2 text-sm hover:bg-bgLight dark:hover:bg-bgDark text-primary dark:text-slate-200 font-medium rounded">Galeri Kegiatan</a>
                         </div>
                     </div>
 
                     <!-- Kontak -->
                     <div class="relative group h-20 flex items-center">
-                        <button class="nav-item text-sm font-bold text-primary dark:text-slate-200 hover:text-accent dark:hover:text-gold theme-transition flex items-center gap-1">KONTAK <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                        <button onclick="speakText('Menu Kontak')" class="nav-item text-sm font-bold text-primary dark:text-slate-200 hover:text-accent dark:hover:text-gold theme-transition flex items-center gap-1">KONTAK <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
                         <div class="absolute top-16 right-0 w-48 bg-cardLight dark:bg-cardDark border-t-4 border-accent shadow-xl rounded-b-lg hidden group-hover:block p-2 theme-transition">
-                            <a href="#" id="nav-wa" target="_blank" class="block px-4 py-2 text-sm hover:bg-green-50 dark:hover:bg-green-900/30 text-slate-600 dark:text-slate-200 font-medium rounded flex items-center gap-2"><i class="fa-brands fa-whatsapp text-green-500"></i> WhatsApp</a>
-                            <a href="#" id="nav-email" target="_blank" class="block px-4 py-2 text-sm hover:bg-red-50 dark:hover:bg-red-900/30 text-slate-600 dark:text-slate-200 font-medium rounded flex items-center gap-2"><i class="fa-solid fa-envelope text-red-500"></i> Email</a>
+                            <a href="#" id="nav-wa" target="_blank" onclick="speakText('Membuka WhatsApp')" class="block px-4 py-2 text-sm hover:bg-green-50 dark:hover:bg-green-900/30 text-slate-600 dark:text-slate-200 font-medium rounded flex items-center gap-2"><i class="fa-brands fa-whatsapp text-green-500"></i> WhatsApp</a>
+                            <a href="#" id="nav-email" target="_blank" onclick="speakText('Membuka Email')" class="block px-4 py-2 text-sm hover:bg-red-50 dark:hover:bg-red-900/30 text-slate-600 dark:text-slate-200 font-medium rounded flex items-center gap-2"><i class="fa-solid fa-envelope text-red-500"></i> Email</a>
                             <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
-                            <a href="#" id="nav-fb" target="_blank" class="block px-4 py-2 text-sm hover:bg-blue-50 dark:hover:bg-blue-900/30 text-slate-600 dark:text-slate-200 font-medium rounded flex items-center gap-2"><i class="fa-brands fa-facebook text-blue-500"></i> Facebook</a>
-                            <a href="#" id="nav-ig" target="_blank" class="block px-4 py-2 text-sm hover:bg-pink-50 dark:hover:bg-pink-900/30 text-slate-600 dark:text-slate-200 font-medium rounded flex items-center gap-2"><i class="fa-brands fa-instagram text-pink-500"></i> Instagram</a>
-                            <a href="#" id="nav-yt" target="_blank" class="block px-4 py-2 text-sm hover:bg-red-50 dark:hover:bg-red-900/30 text-slate-600 dark:text-slate-200 font-medium rounded flex items-center gap-2"><i class="fa-brands fa-youtube text-red-500"></i> Youtube</a>
+                            <a href="#" id="nav-fb" target="_blank" onclick="speakText('Membuka Facebook')" class="block px-4 py-2 text-sm hover:bg-blue-50 dark:hover:bg-blue-900/30 text-slate-600 dark:text-slate-200 font-medium rounded flex items-center gap-2"><i class="fa-brands fa-facebook text-blue-500"></i> Facebook</a>
+                            <a href="#" id="nav-ig" target="_blank" onclick="speakText('Membuka Instagram')" class="block px-4 py-2 text-sm hover:bg-pink-50 dark:hover:bg-pink-900/30 text-slate-600 dark:text-slate-200 font-medium rounded flex items-center gap-2"><i class="fa-brands fa-instagram text-pink-500"></i> Instagram</a>
+                            <a href="#" id="nav-yt" target="_blank" onclick="speakText('Membuka Youtube')" class="block px-4 py-2 text-sm hover:bg-red-50 dark:hover:bg-red-900/30 text-slate-600 dark:text-slate-200 font-medium rounded flex items-center gap-2"><i class="fa-brands fa-youtube text-red-500"></i> Youtube</a>
                         </div>
                     </div>
 
-                    <!-- TOMBOL DAY/NIGHT (DI LAPTOP MUNCUL) -->
-                    <button onclick="toggleDarkMode()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-accent dark:text-gold hover:bg-primary hover:text-white dark:hover:bg-gold dark:hover:text-primary flex items-center justify-center transition-all shadow-sm border border-gold/50">
-                        <i id="theme-icon" class="fa-solid fa-moon"></i>
+                    <!-- TOMBOL SOUND (VOICE) -->
+                    <button onclick="toggleSound()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-accent dark:text-gold hover:bg-primary hover:text-white dark:hover:bg-gold dark:hover:text-primary flex items-center justify-center transition-all shadow-sm border border-gold/50" title="Suara Web">
+                        <i class="fa-solid fa-volume-high sound-icon-class"></i>
+                    </button>
+
+                    <!-- TOMBOL DAY/NIGHT (DESKTOP) -->
+                    <button onclick="toggleDarkMode()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-accent dark:text-gold hover:bg-primary hover:text-white dark:hover:bg-gold dark:hover:text-primary flex items-center justify-center transition-all shadow-sm border border-gold/50" title="Mode Gelap/Terang">
+                        <i id="theme-icon-desktop" class="fa-solid fa-moon"></i>
                     </button>
 
                     <!-- TOMBOL LOGIN ADMIN -->
@@ -200,10 +208,12 @@
                     </button>
                 </div>
 
-                <!-- MOBILE BUTTONS (Day/Night + Hamburger Fixed Visibility) -->
+                <!-- MOBILE BUTTONS (Day/Night, Sound + Hamburger) -->
                 <div class="lg:hidden flex items-center gap-2 flex-shrink-0 z-50">
-                    <button onclick="toggleDarkMode()" class="w-10 h-10 rounded border border-gold/50 flex items-center justify-center text-primary dark:text-gold hover:bg-black/5 theme-transition"><i id="theme-icon-mobile" class="fa-solid fa-moon"></i></button>
-                    <button onclick="toggleMobileMenu()" class="w-10 h-10 flex items-center justify-center text-primary dark:text-gold text-xl border border-gold/50 rounded hover:bg-black/5 theme-transition"><i class="fa-solid fa-bars"></i></button>
+                    <button onclick="toggleSound()" class="w-9 h-9 md:w-10 md:h-10 rounded border border-gold/50 flex items-center justify-center text-primary dark:text-gold hover:bg-black/5 theme-transition"><i class="fa-solid fa-volume-high sound-icon-class"></i></button>
+                    <!-- TOMBOL DAY/NIGHT MOBILE -->
+                    <button onclick="toggleDarkMode()" class="w-9 h-9 md:w-10 md:h-10 rounded border border-gold/50 flex items-center justify-center text-primary dark:text-gold hover:bg-black/5 theme-transition"><i id="theme-icon-mobile" class="fa-solid fa-moon"></i></button>
+                    <button onclick="toggleMobileMenu()" class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center text-primary dark:text-gold text-lg md:text-xl border border-gold/50 rounded hover:bg-black/5 theme-transition"><i class="fa-solid fa-bars"></i></button>
                 </div>
             </div>
         </div>
@@ -236,7 +246,7 @@
                          <p id="running-text-display" class="text-white text-lg font-medium">Selamat Datang...</p>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4 justify-center">
-                        <a href="#spmb-section" class="px-8 py-3 bg-accent text-white font-bold rounded-full hover:bg-gold hover:text-primary transition-colors shadow-lg border border-gold/50">Info SPMB</a>
+                        <a href="#spmb-section" onclick="speakText('Melihat Informasi Pendaftaran')" class="px-8 py-3 bg-accent text-white font-bold rounded-full hover:bg-gold hover:text-primary transition-colors shadow-lg border border-gold/50">Info SPMB</a>
                         <button onclick="if(isAdmin) openAdminModal('config')" class="admin-only bg-white text-primary px-6 py-3 rounded-full font-bold shadow-lg">Edit Tampilan</button>
                     </div>
                 </div>
@@ -284,7 +294,7 @@
             </div>
         </section>
 
-        <!-- DATA SISWA & STATISTIK -->
+        <!-- DATA SISWA & STATISTIK (FIXED SWIPE MOBILE) -->
         <section id="data-siswa" class="py-20 relative overflow-hidden theme-transition">
             <div class="absolute top-0 right-0 text-gold/5 text-9xl transform translate-x-1/4 -translate-y-1/4"><i class="fa-solid fa-users"></i></div>
             <div class="max-w-7xl mx-auto px-4 relative z-10">
@@ -293,41 +303,50 @@
                     <p class="text-accent dark:text-gold font-medium theme-transition">Tahun Ajaran Berjalan</p>
                 </div>
 
-                <div class="flex overflow-x-auto gap-4 mb-12 pb-4 snap-x custom-scroll md:grid md:grid-cols-4">
-                    <div class="snap-center shrink-0 w-44 md:w-auto bg-cardLight dark:bg-cardDark p-5 md:p-6 rounded-2xl shadow-sm text-center border-b-4 border-primary dark:border-gold theme-transition"><h3 id="total-siswa" class="text-3xl font-extrabold text-primary dark:text-slate-100">0</h3><p class="text-[10px] md:text-xs uppercase font-bold text-slate-500 mt-2">Total Siswa</p></div>
-                    <div class="snap-center shrink-0 w-44 md:w-auto bg-cardLight dark:bg-cardDark p-5 md:p-6 rounded-2xl shadow-sm text-center border-b-4 border-emerald-500 theme-transition"><h3 id="total-lk" class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">0</h3><p class="text-[10px] md:text-xs uppercase font-bold text-slate-500 mt-2">Laki-Laki</p></div>
-                    <div class="snap-center shrink-0 w-44 md:w-auto bg-cardLight dark:bg-cardDark p-5 md:p-6 rounded-2xl shadow-sm text-center border-b-4 border-rose-500 theme-transition"><h3 id="total-pr" class="text-3xl font-extrabold text-rose-500 dark:text-rose-400">0</h3><p class="text-[10px] md:text-xs uppercase font-bold text-slate-500 mt-2">Perempuan</p></div>
-                    <div class="snap-center shrink-0 w-44 md:w-auto bg-cardLight dark:bg-cardDark p-5 md:p-6 rounded-2xl shadow-sm text-center border-b-4 border-accent theme-transition"><h3 id="total-rombel" class="text-3xl font-extrabold text-accent dark:text-gold">0</h3><p class="text-[10px] md:text-xs uppercase font-bold text-slate-500 mt-2">Rombel</p></div>
+                <!-- CARDS: Menggunakan min-w-full pada container agar bisa horizontal scroll sempurna -->
+                <div class="w-full overflow-x-auto pb-4 custom-scroll mb-8">
+                    <div class="flex gap-4 md:grid md:grid-cols-4 min-w-[600px] md:min-w-0">
+                        <div class="flex-1 bg-cardLight dark:bg-cardDark p-5 rounded-2xl shadow-sm text-center border-b-4 border-primary dark:border-gold theme-transition"><h3 id="total-siswa" class="text-3xl font-extrabold text-primary dark:text-slate-100">0</h3><p class="text-[10px] md:text-xs uppercase font-bold text-slate-500 mt-2">Total Siswa</p></div>
+                        <div class="flex-1 bg-cardLight dark:bg-cardDark p-5 rounded-2xl shadow-sm text-center border-b-4 border-emerald-500 theme-transition"><h3 id="total-lk" class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">0</h3><p class="text-[10px] md:text-xs uppercase font-bold text-slate-500 mt-2">Laki-Laki</p></div>
+                        <div class="flex-1 bg-cardLight dark:bg-cardDark p-5 rounded-2xl shadow-sm text-center border-b-4 border-rose-500 theme-transition"><h3 id="total-pr" class="text-3xl font-extrabold text-rose-500 dark:text-rose-400">0</h3><p class="text-[10px] md:text-xs uppercase font-bold text-slate-500 mt-2">Perempuan</p></div>
+                        <div class="flex-1 bg-cardLight dark:bg-cardDark p-5 rounded-2xl shadow-sm text-center border-b-4 border-accent theme-transition"><h3 id="total-rombel" class="text-3xl font-extrabold text-accent dark:text-gold">0</h3><p class="text-[10px] md:text-xs uppercase font-bold text-slate-500 mt-2">Rombel</p></div>
+                    </div>
                 </div>
 
                 <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                    <!-- Tabel Rombel -->
                     <div class="bg-cardLight dark:bg-cardDark rounded-2xl shadow-md border border-gold/10 p-4 md:p-5 relative theme-transition overflow-hidden">
-                         <div class="flex justify-between items-center mb-4 border-b border-bgLight dark:border-slate-700 pb-2"><h4 class="font-bold text-primary dark:text-slate-100 flex items-center gap-2"><i class="fa-solid fa-table-list text-accent dark:text-gold"></i> Data Rombel</h4><button onclick="openAdminModal('siswa')" class="admin-only text-xs bg-bgLight text-accent px-2 py-1 rounded font-bold">Edit</button></div>
+                        <div class="flex justify-between items-center mb-4 border-b border-bgLight dark:border-slate-700 pb-2"><h4 class="font-bold text-primary dark:text-slate-100 flex items-center gap-2"><i class="fa-solid fa-table-list text-accent dark:text-gold"></i> Data Rombel</h4><button onclick="openAdminModal('siswa')" class="admin-only text-xs bg-bgLight text-accent px-2 py-1 rounded font-bold">Edit</button></div>
+                        <!-- TABLE WRAPPER FOR HORIZONTAL SCROLL -->
                         <div class="overflow-x-auto custom-scroll pb-2">
-                            <table class="w-full text-sm text-center">
+                            <table class="w-full text-sm text-center min-w-[400px]">
                                 <thead class="bg-bgLight dark:bg-slate-800 text-xs uppercase font-bold text-primary dark:text-slate-300 theme-transition">
-                                    <tr><th class="p-3 text-left rounded-tl-lg">Kelas</th><th class="p-3 text-emerald-600 dark:text-emerald-400">L</th><th class="p-3 text-rose-500 dark:text-rose-400">P</th><th class="p-3 bg-gold/20 rounded-tr-lg">JML</th></tr>
+                                    <tr><th class="p-3 text-left rounded-tl-lg whitespace-nowrap">Kelas</th><th class="p-3 text-emerald-600 dark:text-emerald-400">L</th><th class="p-3 text-rose-500 dark:text-rose-400">P</th><th class="p-3 bg-gold/20 rounded-tr-lg">JML</th></tr>
                                 </thead>
                                 <tbody id="siswa-tbody" class="divide-y divide-bgLight dark:divide-slate-800"></tbody>
                             </table>
                         </div>
                     </div>
-                    <div class="bg-cardLight dark:bg-cardDark rounded-2xl shadow-md border border-gold/10 p-4 md:p-5 relative flex flex-col justify-center theme-transition">
+                    <!-- DIAGRAM BATANG -->
+                    <div class="bg-cardLight dark:bg-cardDark rounded-2xl shadow-md border border-gold/10 p-4 md:p-5 relative flex flex-col justify-center theme-transition overflow-hidden">
                         <h4 class="font-bold text-primary dark:text-slate-100 mb-4 border-b border-bgLight dark:border-slate-700 pb-2 flex items-center gap-2"><i class="fa-solid fa-chart-column text-accent dark:text-gold"></i> Grafik Siswa</h4>
+                        <!-- CHART WRAPPER FOR HORIZONTAL SCROLL -->
                         <div class="w-full overflow-x-auto pb-2 custom-scroll">
-                            <div class="h-64 min-w-[450px]"> 
+                            <div class="h-64 min-w-[500px]"> 
                                 <canvas id="siswaChart"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-cardLight dark:bg-cardDark rounded-2xl shadow-md border border-gold/10 p-4 md:p-5 relative theme-transition">
+                <!-- Mutasi -->
+                <div class="bg-cardLight dark:bg-cardDark rounded-2xl shadow-md border border-gold/10 p-4 md:p-5 relative theme-transition overflow-hidden">
                     <div class="flex justify-between items-center mb-4 border-b border-bgLight dark:border-slate-700 pb-2"><h4 class="font-bold text-primary dark:text-slate-100 flex items-center gap-2"><i class="fa-solid fa-right-left text-accent dark:text-gold"></i> Mutasi Bulan Ini</h4><button onclick="openAdminModal('mutasi')" class="admin-only text-xs bg-bgLight text-accent px-2 py-1 rounded font-bold">Edit</button></div>
+                     <!-- TABLE WRAPPER FOR HORIZONTAL SCROLL -->
                      <div class="overflow-x-auto custom-scroll pb-2">
-                        <table class="w-full text-sm text-center">
+                        <table class="w-full text-sm text-center min-w-[500px]">
                             <thead class="bg-primary dark:bg-slate-800 text-white theme-transition">
-                                <tr><th class="p-3 text-left rounded-tl-lg border-r border-white/20 min-w-[100px]">Kelas</th><th class="bg-emerald-600 dark:bg-emerald-700 p-2 whitespace-nowrap min-w-[80px]">Masuk L</th><th class="bg-emerald-600 dark:bg-emerald-700 p-2 border-r border-white/20 whitespace-nowrap min-w-[80px]">Masuk P</th><th class="bg-rose-600 dark:bg-rose-700 p-2 whitespace-nowrap min-w-[80px]">Keluar L</th><th class="bg-rose-600 dark:bg-rose-700 p-2 rounded-tr-lg whitespace-nowrap min-w-[80px]">Keluar P</th></tr>
+                                <tr><th class="p-3 text-left rounded-tl-lg border-r border-white/20 whitespace-nowrap">Kelas</th><th class="bg-emerald-600 dark:bg-emerald-700 p-2 whitespace-nowrap">Masuk L</th><th class="bg-emerald-600 dark:bg-emerald-700 p-2 border-r border-white/20 whitespace-nowrap">Masuk P</th><th class="bg-rose-600 dark:bg-rose-700 p-2 whitespace-nowrap">Keluar L</th><th class="bg-rose-600 dark:bg-rose-700 p-2 rounded-tr-lg whitespace-nowrap">Keluar P</th></tr>
                             </thead>
                             <tbody id="mutasi-tbody" class="divide-y divide-bgLight dark:divide-slate-800"></tbody>
                         </table>
@@ -411,7 +430,7 @@
 
                         <div class="flex gap-4 flex-col md:flex-row">
                             <button id="btn-spmb-register" onclick="document.getElementById('modal-spmb').classList.remove('hidden')" class="px-8 py-4 bg-gold text-primary font-bold rounded-xl disabled:opacity-50 shadow-lg hover:bg-white transition transform hover:-translate-y-1 w-full md:w-auto">Isi Formulir Sekarang</button>
-                            <a href="#" id="btn-spmb-wa" target="_blank" class="px-8 py-4 bg-white/10 text-white font-bold rounded-xl hover:bg-white/20 transition backdrop-blur-sm border border-white/20 flex items-center justify-center w-full md:w-auto"><i class="fa-brands fa-whatsapp mr-2 text-xl text-green-400"></i> Hubungi Panitia</a>
+                            <a href="#" id="btn-spmb-wa" target="_blank" onclick="speakText('Menghubungi Panitia lewat WhatsApp')" class="px-8 py-4 bg-white/10 text-white font-bold rounded-xl hover:bg-white/20 transition backdrop-blur-sm border border-white/20 flex items-center justify-center w-full md:w-auto"><i class="fa-brands fa-whatsapp mr-2 text-xl text-green-400"></i> Hubungi Panitia</a>
                         </div>
                     </div>
                 </div>
@@ -440,10 +459,10 @@
                 <div>
                     <h3 class="font-bold text-lg mb-6 text-gold border-b border-white/20 pb-2 inline-block">Tautan Cepat</h3>
                     <ul class="text-sm space-y-3 text-slate-300">
-                        <li><a href="#visi-misi" class="hover:text-gold transition flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px] text-accent"></i> Visi & Misi</a></li>
-                        <li><a href="#guru" class="hover:text-gold transition flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px] text-accent"></i> Data Guru & Staf</a></li>
-                        <li><a href="#data-siswa" class="hover:text-gold transition flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px] text-accent"></i> Statistik Siswa</a></li>
-                        <li><a href="#" id="footer-lms" target="_blank" class="hover:text-gold transition flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px] text-accent"></i> E-Learning / LMS</a></li>
+                        <li><a href="#visi-misi" onclick="speakText('Visi dan Misi Sekolah')" class="hover:text-gold transition flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px] text-accent"></i> Visi & Misi</a></li>
+                        <li><a href="#guru" onclick="speakText('Data Guru dan Staf')" class="hover:text-gold transition flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px] text-accent"></i> Data Guru & Staf</a></li>
+                        <li><a href="#data-siswa" onclick="speakText('Statistik Siswa')" class="hover:text-gold transition flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px] text-accent"></i> Statistik Siswa</a></li>
+                        <li><a href="#" id="footer-lms" target="_blank" onclick="speakText('Menuju E-Learning')" class="hover:text-gold transition flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px] text-accent"></i> E-Learning / LMS</a></li>
                         <li><a href="#" onclick="if(isAdmin) openAdminModal('config'); return false;" class="hover:text-gold transition flex items-center gap-2"><i class="fa-solid fa-lock text-[10px] text-accent"></i> Admin Panel</a></li>
                     </ul>
                 </div>
@@ -455,44 +474,48 @@
         </footer>
     </main>
 
-    <!-- MOBILE MENU DRAWER (KHUSUS HP) -->
+    <!-- MOBILE MENU DRAWER (FIXED LAYOUT & EMPTY SPACE ISSUE RESOLVED) -->
     <div id="mobile-menu" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm" onclick="toggleMobileMenu()">
+        <!-- Flex-col untuk mengisi ruang secara proporsional, hilangkan absolute bottom pada footer -->
         <div class="absolute right-0 top-0 h-full w-72 bg-cardLight dark:bg-cardDark shadow-2xl flex flex-col transform transition-transform border-l-4 border-primary dark:border-gold theme-transition" onclick="event.stopPropagation()">
+            <!-- HEADER MOBILE MENU -->
             <div class="p-5 border-b border-bgLight dark:border-slate-800 flex justify-between items-center flex-none">
                 <h3 class="font-bold text-primary dark:text-gold text-lg flex items-center gap-2 theme-transition"><i class="fa-solid fa-bars-staggered text-accent"></i> Menu Utama</h3>
                 <button onclick="toggleMobileMenu()" class="text-slate-400 hover:text-rose-500 transition"><i class="fa-solid fa-times text-2xl"></i></button>
             </div>
             
-            <div class="flex-1 overflow-y-auto p-2 space-y-1 pb-24 custom-scroll">
-                <a href="#beranda" onclick="toggleMobileMenu()" class="block p-3 mx-2 mt-2 bg-bgLight dark:bg-slate-800 hover:bg-primary/10 rounded-lg font-bold text-primary dark:text-slate-100 theme-transition"><i class="fa-solid fa-house w-6 text-center text-accent dark:text-gold"></i> Beranda</a>
+            <!-- SCROLLABLE CONTENT -->
+            <div class="flex-1 overflow-y-auto p-2 space-y-1 custom-scroll">
+                <a href="#beranda" onclick="toggleMobileMenu(); speakText('Beranda')" class="block p-3 mx-2 mt-2 bg-bgLight dark:bg-slate-800 hover:bg-primary/10 rounded-lg font-bold text-primary dark:text-slate-100 theme-transition"><i class="fa-solid fa-house w-6 text-center text-accent dark:text-gold"></i> Beranda</a>
                 
                 <div class="mt-6 mb-2 px-5 text-[10px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Profil Sekolah</div>
-                <a href="#visi-misi" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-book-open w-6 text-center text-slate-400"></i> Visi & Misi</a>
-                <a href="#sambutan" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-microphone w-6 text-center text-slate-400"></i> Sambutan KS</a>
-                <a href="#guru" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-chalkboard-user w-6 text-center text-slate-400"></i> Guru & Staf</a>
-                <a href="#fasilitas" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-school w-6 text-center text-slate-400"></i> Fasilitas & Eskul</a>
-                <a href="#footer" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-location-dot w-6 text-center text-slate-400"></i> Alamat</a>
+                <a href="#visi-misi" onclick="toggleMobileMenu(); speakText('Visi dan Misi Sekolah')" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-book-open w-6 text-center text-slate-400"></i> Visi & Misi</a>
+                <a href="#sambutan" onclick="toggleMobileMenu(); speakText('Sambutan Kepala Sekolah')" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-microphone w-6 text-center text-slate-400"></i> Sambutan KS</a>
+                <a href="#guru" onclick="toggleMobileMenu(); speakText('Data Guru dan Staf')" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-chalkboard-user w-6 text-center text-slate-400"></i> Guru & Staf</a>
+                <a href="#fasilitas" onclick="toggleMobileMenu(); speakText('Fasilitas dan Ekstrakurikuler')" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-school w-6 text-center text-slate-400"></i> Fasilitas & Eskul</a>
+                <a href="#footer" onclick="toggleMobileMenu(); speakText('Alamat Sekolah')" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-location-dot w-6 text-center text-slate-400"></i> Alamat</a>
 
                 <div class="mt-6 mb-2 px-5 text-[10px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Kesiswaan</div>
-                <a href="#data-siswa" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-chart-pie w-6 text-center text-slate-400"></i> Data & Statistik</a>
-                <a href="#spmb-section" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-user-plus w-6 text-center text-slate-400"></i> SPMB Online</a>
+                <a href="#data-siswa" onclick="toggleMobileMenu(); speakText('Statistik Siswa')" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-chart-pie w-6 text-center text-slate-400"></i> Data & Statistik</a>
+                <a href="#spmb-section" onclick="toggleMobileMenu(); speakText('Informasi Penerimaan Murid Baru')" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-user-plus w-6 text-center text-slate-400"></i> SPMB Online</a>
 
                 <div class="mt-6 mb-2 px-5 text-[10px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Akademik</div>
-                <a href="#" id="mob-lms" target="_blank" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-laptop-code w-6 text-center text-slate-400"></i> E-Learning / LMS</a>
-                <a href="#galeri-kegiatan" onclick="toggleMobileMenu()" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-images w-6 text-center text-slate-400"></i> Galeri Kegiatan</a>
+                <a href="#" id="mob-lms" target="_blank" onclick="toggleMobileMenu(); speakText('Menuju E-Learning')" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-laptop-code w-6 text-center text-slate-400"></i> E-Learning / LMS</a>
+                <a href="#galeri-kegiatan" onclick="toggleMobileMenu(); speakText('Galeri Kegiatan Sekolah')" class="block p-3 mx-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-bgLight dark:hover:bg-slate-800 hover:text-primary dark:hover:text-gold rounded-lg transition"><i class="fa-solid fa-images w-6 text-center text-slate-400"></i> Galeri Kegiatan</a>
 
                 <div class="mt-6 mb-2 px-5 text-[10px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Kontak Cepat</div>
-                <a href="#" id="mob-wa" class="block p-3 mx-2 text-sm text-emerald-600 dark:text-emerald-400 font-medium hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg transition border border-transparent"><i class="fa-brands fa-whatsapp w-6 text-center text-emerald-500 text-lg"></i> Chat WhatsApp</a>
-                <a href="#" id="mob-ig" class="block p-3 mx-2 text-sm text-pink-600 dark:text-pink-400 font-medium hover:bg-pink-50 dark:hover:bg-pink-900/30 rounded-lg transition border border-transparent mb-6"><i class="fa-brands fa-instagram w-6 text-center text-pink-500 text-lg"></i> Follow Instagram</a>
+                <a href="#" id="mob-wa" onclick="speakText('Membuka WhatsApp')" class="block p-3 mx-2 text-sm text-emerald-600 dark:text-emerald-400 font-medium hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg transition border border-transparent"><i class="fa-brands fa-whatsapp w-6 text-center text-emerald-500 text-lg"></i> Chat WhatsApp</a>
+                <a href="#" id="mob-ig" onclick="speakText('Membuka Instagram')" class="block p-3 mx-2 text-sm text-pink-600 dark:text-pink-400 font-medium hover:bg-pink-50 dark:hover:bg-pink-900/30 rounded-lg transition border border-transparent mb-6"><i class="fa-brands fa-instagram w-6 text-center text-pink-500 text-lg"></i> Follow Instagram</a>
             </div>
 
-            <div class="p-4 border-t border-bgLight dark:border-slate-800 bg-cardLight dark:bg-cardDark flex-none absolute bottom-0 w-full theme-transition">
+            <!-- FOOTER MOBILE MENU (TIDAK LAGI MENGGANTUNG) -->
+            <div class="p-4 border-t border-bgLight dark:border-slate-800 bg-cardLight dark:bg-cardDark flex-none theme-transition">
                 <button onclick="toggleMobileMenu(); handleLoginButton();" class="w-full bg-primary dark:bg-gold text-white dark:text-primary py-3.5 rounded-xl font-bold text-sm shadow-lg hover:opacity-90 transition flex items-center justify-center gap-2"><i class="fa-solid fa-shield-halved"></i> Login Admin</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL LOGIN ADMIN DIPERBARUI AGAR DIJAMIN MUNCUL & TERLIHAT JELAS -->
+    <!-- MODAL LOGIN ADMIN -->
     <div id="modal-login" class="fixed inset-0 bg-black/80 hidden z-[9999] flex items-center justify-center p-4 backdrop-blur-sm transition-all duration-300">
         <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-8 shadow-2xl relative border-t-4 border-accent theme-transition">
             <button type="button" onclick="document.getElementById('modal-login').classList.add('hidden')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-colors">
@@ -533,7 +556,7 @@
         </div>
     </div>
 
-    <!-- === ADMIN MODAL === -->
+    <!-- === ADMIN MODAL (DASHBOARD) === -->
     <div id="modal-admin" class="fixed inset-0 bg-black/50 hidden z-[70] flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white dark:bg-slate-900 rounded-xl w-full max-w-6xl h-[90vh] flex flex-col shadow-2xl overflow-hidden theme-transition text-slate-800 dark:text-slate-200">
             <div class="p-4 border-b dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800 theme-transition">
@@ -601,7 +624,7 @@
         </div>
     </div>
 
-    <!-- FORM MODAL (UNTUK TAMBAH/EDIT DATA) -->
+    <!-- FORM MODAL (TAMBAH/EDIT) -->
     <div id="modal-form" class="fixed inset-0 bg-black/60 hidden z-[80] flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-900 rounded-xl w-full max-w-md p-6 shadow-2xl relative border-t-4 border-accent theme-transition">
             <button onclick="closeForm()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500"><i class="fa-solid fa-times"></i></button>
@@ -610,22 +633,6 @@
                 <input type="hidden" id="f-id"><input type="hidden" id="f-type">
                 <div id="form-fields" class="space-y-3"></div>
                 <button type="submit" class="w-full bg-accent hover:opacity-90 text-white font-bold py-3 rounded-lg mt-4 transition">Simpan Data</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- FORM MODAL SPMB -->
-    <div id="modal-spmb" class="fixed inset-0 bg-black/80 hidden z-[90] flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-xl max-w-md w-full p-6 relative border-t-4 border-emerald-500 theme-transition">
-            <button type="button" onclick="document.getElementById('modal-spmb').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400">
-                <i class="fa-solid fa-times"></i>
-            </button>
-            <h3 class="text-xl font-bold text-primary dark:text-white mb-1">Formulir SPMB</h3>
-            <form onsubmit="kirimSPMB(event)" class="space-y-3 mt-4">
-                <input type="text" name="nama" placeholder="Nama Lengkap" class="input-field" required>
-                <input type="text" name="nik" placeholder="NIK" class="input-field" required>
-                <input type="text" name="hp" placeholder="No WA" class="input-field" required>
-                <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-3 rounded hover:bg-emerald-700 transition">Kirim Pendaftaran</button>
             </form>
         </div>
     </div>
@@ -651,22 +658,65 @@
         let rawData = {}; let isAdmin = false; let myChart = null;
         let globalLabels = [], globalDataL = [], globalDataP = [];
 
+        // ===========================================
+        // FITUR VOICE ASSISTANT (TEXT TO SPEECH)
+        // ===========================================
+        let soundEnabled = true;
+        let welcomeSpoken = false;
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icons = document.querySelectorAll('.sound-icon-class');
+            icons.forEach(i => i.className = soundEnabled ? 'fa-solid fa-volume-high sound-icon-class' : 'fa-solid fa-volume-xmark sound-icon-class');
+            if (soundEnabled) speakText("Suara diaktifkan");
+            else { if('speechSynthesis' in window) window.speechSynthesis.cancel(); }
+        }
+
+        function speakText(text) {
+            if (!soundEnabled) return;
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); 
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'id-ID'; 
+                utterance.rate = 1.0; 
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function playWelcome() {
+            if (!welcomeSpoken && soundEnabled) {
+                speakText("Selamat datang di Sistem Informasi Digital S D Negeri 4 Taman.");
+                welcomeSpoken = true;
+            }
+            document.body.removeEventListener('click', playWelcome);
+            document.body.removeEventListener('touchstart', playWelcome);
+        }
+        document.body.addEventListener('click', playWelcome);
+        document.body.addEventListener('touchstart', playWelcome);
+
+
+        // ===========================================
+        // LOGIKA TEMA & UI
+        // ===========================================
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
             const isDark = document.documentElement.classList.contains('dark');
-            const icn = document.getElementById('theme-icon');
+            
+            // Update ikon di Desktop & Mobile
+            const icnDesk = document.getElementById('theme-icon-desktop');
             const icnMob = document.getElementById('theme-icon-mobile');
-            if(icn) icn.className = isDark ? 'fa-solid fa-sun text-gold' : 'fa-solid fa-moon text-primary';
+            if(icnDesk) icnDesk.className = isDark ? 'fa-solid fa-sun text-gold' : 'fa-solid fa-moon text-primary';
             if(icnMob) icnMob.className = isDark ? 'fa-solid fa-sun text-gold' : 'fa-solid fa-moon text-primary';
             
+            // Render ulang chart untuk sesuaikan warna font
             if(myChart) renderChart(document.getElementById('siswaChart').getContext('2d'), globalLabels, globalDataL, globalDataP);
         }
 
         document.addEventListener("DOMContentLoaded", () => {
             const isDark = document.documentElement.classList.contains('dark');
-            const icn = document.getElementById('theme-icon');
+            const icnDesk = document.getElementById('theme-icon-desktop');
             const icnMob = document.getElementById('theme-icon-mobile');
-            if(icn) icn.className = isDark ? 'fa-solid fa-sun text-gold' : 'fa-solid fa-moon text-primary';
+            if(icnDesk) icnDesk.className = isDark ? 'fa-solid fa-sun text-gold' : 'fa-solid fa-moon text-primary';
             if(icnMob) icnMob.className = isDark ? 'fa-solid fa-sun text-gold' : 'fa-solid fa-moon text-primary';
 
             const orn = document.getElementById('dynamic-ornaments');
@@ -759,8 +809,8 @@
             const ks = (d.guru || []).find(g => String(g[5]).toLowerCase().includes('kepala'));
             if(ks) { safeSetText('ks-nama', ks[3]); safeSetAttr('ks-foto', 'src', ks[7]); }
             safeSetHtml('guru-container', gurus.map(g => `<div class="snap-center shrink-0 w-64 bg-cardLight dark:bg-slate-800 rounded-xl p-4 text-center shadow-md border-b-4 border-primary dark:border-gold theme-transition"><div class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-3 bg-bgLight dark:bg-slate-900 border-2 border-gold/30"><img src="${g[7] || 'https://via.placeholder.com/150'}" class="w-full h-full object-cover"></div><h5 class="font-bold text-sm text-primary dark:text-white truncate theme-transition">${g[3]}</h5><span class="text-[10px] bg-primary/10 dark:bg-white/10 px-3 py-1 rounded-full text-accent dark:text-gold font-bold mt-2 inline-block">${g[5]}</span></div>`).join(''));
-            safeSetHtml('siswa-tbody', siswas.map(s => `<tr><td class="p-2 text-left font-bold text-primary dark:text-white border-b border-primary/10 dark:border-slate-700">${s[0]}</td><td class="border-b border-primary/10 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">${s[1]}</td><td class="border-b border-primary/10 dark:border-slate-700 font-bold text-rose-500 dark:text-rose-400">${s[2]}</td><td class="border-b border-primary/10 dark:border-slate-700 font-bold bg-primary/5 dark:bg-white/5 text-accent dark:text-gold">${parseInt(s[1])+parseInt(s[2])}</td></tr>`).join(''));
-            safeSetHtml('mutasi-tbody', (d.mutasi||[]).map(m => `<tr><td class="p-2 border-r border-primary/20 dark:border-slate-700 text-left font-bold text-primary dark:text-white">${m[0]}</td><td class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 font-bold border-r border-primary/20 dark:border-slate-700">${m[1]||0}</td><td class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 font-bold border-r border-primary/20 dark:border-slate-700">${m[2]||0}</td><td class="bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-400 font-bold border-r border-primary/20 dark:border-slate-700">${m[3]||0}</td><td class="bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-400 font-bold">${m[4]||0}</td></tr>`).join(''));
+            safeSetHtml('siswa-tbody', siswas.map(s => `<tr><td class="p-2 text-left font-bold text-primary dark:text-white border-b border-primary/10 dark:border-slate-700 whitespace-nowrap">${s[0]}</td><td class="border-b border-primary/10 dark:border-slate-700 font-bold text-emerald-600 dark:text-emerald-400">${s[1]}</td><td class="border-b border-primary/10 dark:border-slate-700 font-bold text-rose-500 dark:text-rose-400">${s[2]}</td><td class="border-b border-primary/10 dark:border-slate-700 font-bold bg-primary/5 dark:bg-white/5 text-accent dark:text-gold">${parseInt(s[1])+parseInt(s[2])}</td></tr>`).join(''));
+            safeSetHtml('mutasi-tbody', (d.mutasi||[]).map(m => `<tr><td class="p-2 border-r border-primary/20 dark:border-slate-700 text-left font-bold text-primary dark:text-white whitespace-nowrap">${m[0]}</td><td class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 font-bold border-r border-primary/20 dark:border-slate-700">${m[1]||0}</td><td class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 font-bold border-r border-primary/20 dark:border-slate-700">${m[2]||0}</td><td class="bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-400 font-bold border-r border-primary/20 dark:border-slate-700">${m[3]||0}</td><td class="bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-400 font-bold">${m[4]||0}</td></tr>`).join(''));
             
             safeSetHtml('berita-list', (d.berita||[]).slice(0,4).map(b => {
                 const link = b[5] ? `href="${b[5]}" target="_blank"` : '';
@@ -811,9 +861,6 @@
             });
         }
 
-        // ===========================================
-        // FUNGSI LOGIN DIPERBAIKAN
-        // ===========================================
         async function doLogin(e) { 
             e.preventDefault();
             const u = e.target.user.value.trim(); 
@@ -833,7 +880,8 @@
                     document.body.classList.add('admin-mode'); 
                     document.getElementById('modal-login').classList.add('hidden'); 
                     openAdminModal('config'); 
-                    e.target.reset(); // Kosongkan inputan setelah sukses
+                    e.target.reset();
+                    speakText('Login berhasil. Selamat datang admin.');
                 } else {
                     alert("Password atau Username Salah! Silakan coba lagi.");
                 }
@@ -849,14 +897,6 @@
         function openAdminModal(tab) { document.getElementById('modal-admin').classList.remove('hidden'); switchTab(tab); }
         function closeModal() { document.getElementById('modal-admin').classList.add('hidden'); }
         function switchTab(tab) { document.querySelectorAll('.tab-content').forEach(el=>el.classList.add('hidden')); document.getElementById(`tab-${tab}`).classList.remove('hidden'); renderAdminData(tab); }
-
-        function handleLoginButton() { 
-            if(isAdmin) {
-                doLogout(); 
-            } else {
-                document.getElementById('modal-login').classList.remove('hidden'); 
-            }
-        }
 
         function renderAdminData(tab) {
             if(tab==='config') { const c = rawData.config||{}; Object.keys(c).forEach(k=>{ const el=document.getElementById(`adm-${k}`); if(el) el.value=c[k]; }); }
@@ -899,16 +939,8 @@
         async function kirimSPMB(e) { e.preventDefault(); await send({action:'submitSPMB', data:{nama:e.target.nama.value, nik:e.target.nik.value, hp:e.target.hp.value}}); alert("Terkirim"); document.getElementById('modal-spmb').classList.add('hidden'); }
         async function send(pl) { try { await fetch(API_URL, {method:'POST', body:JSON.stringify(pl)}); } catch(e){alert("Gagal Simpan (Offline)");} }
         async function refreshData() { await initApp(); const t=document.querySelector('.tab-content:not(.hidden)'); if(t) renderAdminData(t.id.replace('tab-','')); }
-        
-        function startBannerScroll() { 
-            const c = document.getElementById('banner-track'); 
-            setInterval(()=>{ 
-                if(c && c.scrollWidth) { 
-                    if(c.scrollLeft + c.clientWidth >= c.scrollWidth - 10) c.scrollTo({left:0, behavior:'smooth'}); 
-                    else c.scrollBy({left:c.clientWidth,behavior:'smooth'}); 
-                } 
-            }, 4000); 
-        }
+        function handleLoginButton() { if(isAdmin) doLogout(); else document.getElementById('modal-login').classList.remove('hidden'); }
+        function startBannerScroll() { const c=document.getElementById('banner-track'); setInterval(()=>{ if(c&&c.scrollWidth) { if(c.scrollLeft + c.clientWidth >= c.scrollWidth - 10) c.scrollTo({left:0, behavior:'smooth'}); else c.scrollBy({left:c.clientWidth,behavior:'smooth'}); } },4000); }
     </script>
 </body>
 </html>
